@@ -477,6 +477,20 @@ export default function AdminPage() {
                   />
                 </div>
 
+                {/* Featured Toggle */}
+                <div>
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={editingProduct.featured || false}
+                      onChange={(e) => updateEditingProduct('featured', e.target.checked)}
+                      className="w-4 h-4 text-orange-500 bg-white/10 border-white/20 rounded focus:ring-orange-500 focus:ring-2"
+                    />
+                    <span className="text-sm font-medium">Featured Product</span>
+                    <span className="text-xs text-gray-400">(Will show special badge)</span>
+                  </label>
+                </div>
+
                 {/* Images and Links */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
