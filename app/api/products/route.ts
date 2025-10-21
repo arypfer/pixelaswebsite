@@ -6,6 +6,9 @@ import { allProducts } from '@/lib/products';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
+console.log('Supabase URL configured:', !!supabaseUrl);
+console.log('Supabase Key configured:', !!supabaseServiceKey);
+
 if (!supabaseUrl || !supabaseServiceKey) {
   console.warn('Supabase credentials not found. Using static data fallback.');
 }
@@ -45,12 +48,15 @@ async function getProductsFromSupabase() {
 
 // Save products to Supabase
 async function saveProductsToSupabase(products: any[]) {
+  console.log('Attempting to save products to Supabase, count:', products.length);
   try {
     if (!supabaseUrl || !supabaseServiceKey) {
+      console.log('No Supabase credentials, skipping save');
       return false; // No credentials available
     }
 
     // Clear existing products
+    console.log('Clearing existing products...');
     const { error: deleteError } = await supabase
       .from('products')
       .delete()
@@ -60,6 +66,7 @@ async function saveProductsToSupabase(products: any[]) {
       console.error('Error clearing products:', deleteError);
       return false;
     }
+    console.log('Products cleared successfully');
 
     // Insert new products with timestamps
     const productsWithTimestamps = products.map(product => ({
@@ -67,6 +74,7 @@ async function saveProductsToSupabase(products: any[]) {
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     }));
+    console.log('Inserting products:', productsWithTimestamps.length);
 
     const { error: insertError } = await supabase
       .from('products')
@@ -77,6 +85,7 @@ async function saveProductsToSupabase(products: any[]) {
       return false;
     }
 
+    console.log('Products inserted successfully');
     return true;
   } catch (error) {
     console.error('Error saving products to Supabase:', error);
