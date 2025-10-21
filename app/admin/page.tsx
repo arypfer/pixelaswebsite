@@ -37,10 +37,26 @@ export default function AdminPage() {
     loadUploadedImages();
   }, []);
 
-  // Sync products across browser tabs using localStorage events
-  const syncProductsAcrossTabs = (productsToSave: any[]) => {
+  // Save products to database and localStorage
+  const saveToDatabaseAndStorage = async (productsToSave: any[]) => {
     try {
-      // Save to localStorage with a timestamp to trigger sync
+      // Save to database first
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ products: productsToSave }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save to database');
+      }
+
+      // If database save successful, save to localStorage for local sync
+      localStorage.setItem('admin-products', JSON.stringify(productsToSave));
+
+      // Trigger localStorage sync for immediate UI updates
       const syncData = {
         products: productsToSave,
         timestamp: Date.now(),
@@ -48,54 +64,20 @@ export default function AdminPage() {
       };
       localStorage.setItem('admin-products-sync', JSON.stringify(syncData));
 
-      // Also save to regular localStorage for persistence
-      localStorage.setItem('admin-products', JSON.stringify(productsToSave));
-
-      console.log('Products synced across tabs:', productsToSave.length, 'products');
+      console.log('Products saved to database and synced locally');
+      return true;
     } catch (error) {
-      console.error('Error syncing products:', error);
+      console.error('Error saving to database:', error);
+      // Fallback to localStorage only
+      localStorage.setItem('admin-products', JSON.stringify(productsToSave));
+      alert('Database save failed. Changes saved locally only and won\'t sync to other devices.');
+      return false;
     }
   };
 
-  // Listen for localStorage changes from other tabs
+  // Save products whenever they change
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'admin-products-sync' && e.newValue) {
-        try {
-          const syncData = JSON.parse(e.newValue);
-          if (syncData.source !== 'admin-panel') {
-            // This change came from another source, update our state
-            setProducts(syncData.products);
-            console.log('Products updated from another tab');
-          }
-        } catch (error) {
-          console.error('Error parsing sync data:', error);
-        }
-      }
-    };
-
-    // Listen for localStorage changes
-    window.addEventListener('storage', handleStorageChange);
-
-    // Also check for initial sync data on mount
-    const existingSync = localStorage.getItem('admin-products-sync');
-    if (existingSync) {
-      try {
-        const syncData = JSON.parse(existingSync);
-        setProducts(syncData.products);
-      } catch (error) {
-        console.error('Error parsing existing sync data:', error);
-      }
-    }
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
-
-  // Save products to localStorage and sync across tabs
-  useEffect(() => {
-    syncProductsAcrossTabs(products);
+    saveToDatabaseAndStorage(products);
   }, [products]);
 
   const loadUploadedImages = async () => {
