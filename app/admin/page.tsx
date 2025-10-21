@@ -37,9 +37,36 @@ export default function AdminPage() {
     loadUploadedImages();
   }, []);
 
+  // Save products to localStorage and server
+  const saveToStorageAndServer = async (productsToSave: any[]) => {
+    try {
+      // Save to server first
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ products: productsToSave }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save to server');
+      }
+
+      // If server save successful, save to localStorage
+      localStorage.setItem('admin-products', JSON.stringify(productsToSave));
+      console.log('Products saved to server and localStorage');
+    } catch (error) {
+      console.error('Error saving to server:', error);
+      // Fallback to localStorage only
+      localStorage.setItem('admin-products', JSON.stringify(productsToSave));
+      alert('Server save failed. Changes saved locally only.');
+    }
+  };
+
   // Save products to localStorage whenever products change
   useEffect(() => {
-    localStorage.setItem('admin-products', JSON.stringify(products));
+    saveToStorageAndServer(products);
   }, [products]);
 
   const loadUploadedImages = async () => {

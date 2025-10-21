@@ -13,12 +13,32 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [products, setProducts] = useState<any[]>(allProducts);
 
-  // Load products from localStorage on mount
+  // Load products from API on mount
   useEffect(() => {
-    const savedProducts = localStorage.getItem('admin-products');
-    if (savedProducts) {
-      setProducts(JSON.parse(savedProducts));
-    }
+    const loadProductsFromAPI = async () => {
+      try {
+        const response = await fetch('/api/products');
+        if (response.ok) {
+          const data = await response.json();
+          setProducts(data.products);
+        } else {
+          // Fallback to localStorage if API fails
+          const savedProducts = localStorage.getItem('admin-products');
+          if (savedProducts) {
+            setProducts(JSON.parse(savedProducts));
+          }
+        }
+      } catch (error) {
+        console.error('Error loading products:', error);
+        // Fallback to localStorage
+        const savedProducts = localStorage.getItem('admin-products');
+        if (savedProducts) {
+          setProducts(JSON.parse(savedProducts));
+        }
+      }
+    };
+
+    loadProductsFromAPI();
   }, []);
 
   // Prevent body scroll when modal is open
