@@ -1,50 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { allProducts } from '@/lib/products';
-import fs from 'fs';
-import path from 'path';
 
-const PRODUCTS_FILE = path.join(process.cwd(), 'data', 'products.json');
-
-// Ensure data directory exists
-const ensureDataDir = () => {
-  const dataDir = path.join(process.cwd(), 'data');
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-};
-
-// Load products from file or fallback to static data
-const loadProducts = () => {
-  try {
-    ensureDataDir();
-    if (fs.existsSync(PRODUCTS_FILE)) {
-      const data = fs.readFileSync(PRODUCTS_FILE, 'utf8');
-      return JSON.parse(data);
-    }
-  } catch (error) {
-    console.error('Error loading products from file:', error);
-  }
+// For now, use static data since Vercel doesn't support persistent file writes
+// In production, you'd use Vercel KV, MongoDB, or another database
+const getStoredProducts = () => {
+  // For Vercel deployment, return static data
+  // Admin changes are handled via localStorage sync
   return allProducts;
 };
 
-// Save products to file
-const saveProducts = (products: any[]) => {
-  try {
-    ensureDataDir();
-    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2));
-    return true;
-  } catch (error) {
-    console.error('Error saving products to file:', error);
-    return false;
-  }
+const updateStoredProducts = (products: any[]) => {
+  // For Vercel deployment, this is a no-op
+  // Admin changes are handled via localStorage sync
+  console.log('Products update requested:', products.length, 'products');
+  return true;
 };
 
 export async function GET() {
   try {
-    const products = loadProducts();
+    const products = getStoredProducts();
     return NextResponse.json({
       success: true,
-      products
+      products,
+      note: "Using static data - admin changes sync via localStorage"
     });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -66,20 +44,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Save the updated products
-    const saved = saveProducts(products);
-
-    if (!saved) {
-      return NextResponse.json(
-        { error: 'Failed to save products' },
-        { status: 500 }
-      );
-    }
+    // For Vercel, just acknowledge the update
+    // Real persistence would require Vercel KV or database
+    updateStoredProducts(products);
 
     return NextResponse.json({
       success: true,
-      message: 'Products updated successfully',
-      products
+      message: 'Products update acknowledged',
+      products,
+      note: "Changes saved locally - use localStorage sync for multi-user updates"
     });
   } catch (error) {
     console.error('Error updating products:', error);

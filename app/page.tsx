@@ -11,34 +11,67 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [products, setProducts] = useState<any[]>(allProducts);
+  const [products, setProducts] = useState<any[]>([]);
+  const [apiLoaded, setApiLoaded] = useState(false);
 
-  // Load products from API on mount
+  // Load products from synced localStorage and listen for updates
   useEffect(() => {
-    const loadProductsFromAPI = async () => {
-      try {
-        const response = await fetch('/api/products');
-        if (response.ok) {
-          const data = await response.json();
-          setProducts(data.products);
-        } else {
-          // Fallback to localStorage if API fails
-          const savedProducts = localStorage.getItem('admin-products');
-          if (savedProducts) {
-            setProducts(JSON.parse(savedProducts));
-          }
+    const loadProducts = () => {
+      // First try synced admin data
+      const syncedProducts = localStorage.getItem('admin-products-sync');
+      if (syncedProducts) {
+        try {
+          const syncData = JSON.parse(syncedProducts);
+          setProducts(syncData.products);
+          setApiLoaded(true);
+          setIsLoading(false);
+          return;
+        } catch (error) {
+          console.error('Error parsing synced products:', error);
         }
-      } catch (error) {
-        console.error('Error loading products:', error);
-        // Fallback to localStorage
-        const savedProducts = localStorage.getItem('admin-products');
-        if (savedProducts) {
+      }
+
+      // Fallback to regular localStorage
+      const savedProducts = localStorage.getItem('admin-products');
+      if (savedProducts) {
+        try {
           setProducts(JSON.parse(savedProducts));
+          setApiLoaded(true);
+          setIsLoading(false);
+          return;
+        } catch (error) {
+          console.error('Error parsing saved products:', error);
+        }
+      }
+
+      // Final fallback to static data
+      setProducts(allProducts);
+      setApiLoaded(true);
+      setIsLoading(false);
+    };
+
+    // Listen for localStorage changes from admin panel
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'admin-products-sync' && e.newValue) {
+        try {
+          const syncData = JSON.parse(e.newValue);
+          setProducts(syncData.products);
+          console.log('Main page updated with admin changes');
+        } catch (error) {
+          console.error('Error parsing admin sync data:', error);
         }
       }
     };
 
-    loadProductsFromAPI();
+    // Load initial products
+    loadProducts();
+
+    // Listen for admin updates
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   // Prevent body scroll when modal is open
@@ -61,15 +94,15 @@ export default function Home() {
   });
 
   // Filter products based on search query and category
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = products.length > 0 ? products.filter(product => {
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
-    
+
     return matchesSearch && matchesCategory;
-  });
+  }) : [];
 
   return (
     <div className="relative w-full min-h-screen bg-black overflow-hidden">
@@ -158,6 +191,25 @@ export default function Home() {
                 </div>
               ))}
             </div>
+          ) : !apiLoaded ? (
+            // API failed to load
+            <div className="col-span-full text-center py-20">
+              <div className="mb-6">
+                <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
+                  <X className="w-10 h-10 text-red-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">Unable to load products</h3>
+                <p className="text-white/40 text-base mb-6">
+                  There was an error loading the product data. Please try refreshing the page.
+                </p>
+              </div>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-6 py-2.5 bg-white text-black hover:bg-gray-200 rounded-lg text-sm font-semibold transition-all"
+              >
+                Refresh Page
+              </button>
+            </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
               {filteredProducts.length > 0 ? (
@@ -183,7 +235,7 @@ export default function Home() {
                     </div>
                     <h3 className="text-2xl font-bold text-white mb-2">No products found</h3>
                     <p className="text-white/40 text-base mb-6">
-                      {searchQuery 
+                      {searchQuery
                         ? `We couldn't find any products matching "${searchQuery}"`
                         : `No products in ${selectedCategory}`
                       }
@@ -191,7 +243,7 @@ export default function Home() {
                   </div>
                   <div className="flex justify-center gap-3">
                     {searchQuery && (
-                      <button 
+                      <button
                         onClick={() => setSearchQuery("")}
                         className="px-6 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-white text-sm font-medium transition-all"
                       >
@@ -199,7 +251,7 @@ export default function Home() {
                       </button>
                     )}
                     {selectedCategory !== "All" && (
-                      <button 
+                      <button
                         onClick={() => setSelectedCategory("All")}
                         className="px-6 py-2.5 bg-white text-black hover:bg-gray-200 rounded-lg text-sm font-semibold transition-all"
                       >

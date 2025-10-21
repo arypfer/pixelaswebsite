@@ -37,36 +37,65 @@ export default function AdminPage() {
     loadUploadedImages();
   }, []);
 
-  // Save products to localStorage and server
-  const saveToStorageAndServer = async (productsToSave: any[]) => {
+  // Sync products across browser tabs using localStorage events
+  const syncProductsAcrossTabs = (productsToSave: any[]) => {
     try {
-      // Save to server first
-      const response = await fetch('/api/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ products: productsToSave }),
-      });
+      // Save to localStorage with a timestamp to trigger sync
+      const syncData = {
+        products: productsToSave,
+        timestamp: Date.now(),
+        source: 'admin-panel'
+      };
+      localStorage.setItem('admin-products-sync', JSON.stringify(syncData));
 
-      if (!response.ok) {
-        throw new Error('Failed to save to server');
-      }
-
-      // If server save successful, save to localStorage
+      // Also save to regular localStorage for persistence
       localStorage.setItem('admin-products', JSON.stringify(productsToSave));
-      console.log('Products saved to server and localStorage');
+
+      console.log('Products synced across tabs:', productsToSave.length, 'products');
     } catch (error) {
-      console.error('Error saving to server:', error);
-      // Fallback to localStorage only
-      localStorage.setItem('admin-products', JSON.stringify(productsToSave));
-      alert('Server save failed. Changes saved locally only.');
+      console.error('Error syncing products:', error);
     }
   };
 
-  // Save products to localStorage whenever products change
+  // Listen for localStorage changes from other tabs
   useEffect(() => {
-    saveToStorageAndServer(products);
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'admin-products-sync' && e.newValue) {
+        try {
+          const syncData = JSON.parse(e.newValue);
+          if (syncData.source !== 'admin-panel') {
+            // This change came from another source, update our state
+            setProducts(syncData.products);
+            console.log('Products updated from another tab');
+          }
+        } catch (error) {
+          console.error('Error parsing sync data:', error);
+        }
+      }
+    };
+
+    // Listen for localStorage changes
+    window.addEventListener('storage', handleStorageChange);
+
+    // Also check for initial sync data on mount
+    const existingSync = localStorage.getItem('admin-products-sync');
+    if (existingSync) {
+      try {
+        const syncData = JSON.parse(existingSync);
+        setProducts(syncData.products);
+      } catch (error) {
+        console.error('Error parsing existing sync data:', error);
+      }
+    }
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  // Save products to localStorage and sync across tabs
+  useEffect(() => {
+    syncProductsAcrossTabs(products);
   }, [products]);
 
   const loadUploadedImages = async () => {
