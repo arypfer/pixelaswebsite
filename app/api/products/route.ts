@@ -21,6 +21,26 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   }
 });
 
+function mapDbProductToApp(product: any) {
+  return {
+    id: product.id,
+    title: product.title,
+    subtitle: product.subtitle,
+    description: product.description,
+    featured: product.featured,
+    link: product.link,
+    image: product.image,
+    category: product.category,
+    detailedDescription: product.detaileddescription,
+    features: product.features ?? [],
+    detailedImage: product.detailedimage,
+    downloadButtons: product.downloadbuttons ?? [],
+    icon: product.icon ?? 'Star',
+    createdAt: product.created_at,
+    updatedAt: product.updated_at
+  };
+}
+
 // Get products from Supabase
 async function getProductsFromSupabase() {
   try {
@@ -39,7 +59,7 @@ async function getProductsFromSupabase() {
     }
 
     // Return products if found, otherwise return static data
-    return data && data.length > 0 ? data : allProducts;
+    return data && data.length > 0 ? data.map(mapDbProductToApp) : allProducts;
   } catch (error) {
     console.error('Error fetching products from Supabase:', error);
     return allProducts;
@@ -59,13 +79,19 @@ async function saveProductsToSupabase(products: any[]) {
     console.log('Clearing existing products...');
     const { error: deleteError } = await supabase
       .from('products')
-      .delete();
+      .delete()
+      .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all
 
     if (deleteError) {
       console.error('Error clearing products:', deleteError);
       return false;
     }
     console.log('Products cleared successfully');
+
+    if (products.length === 0) {
+      console.log('No products provided after clearing. Leaving table empty.');
+      return true;
+    }
 
     // Insert new products with timestamps, mapping to correct schema column names
     const productsWithTimestamps = products.map(product => ({
@@ -80,7 +106,7 @@ async function saveProductsToSupabase(products: any[]) {
       features: product.features,
       detailedimage: product.detailedImage,
       downloadbuttons: product.downloadButtons,
-      icon: null, // Icon is a React component, not storable as text
+      icon: product.icon ?? null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     }));
