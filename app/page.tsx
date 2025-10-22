@@ -486,10 +486,10 @@ function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
         </button>
 
         {/* Product Image */}
-        {product.detailedImage && (
+        {product.detailedimage && (
           <div className="relative h-64 sm:h-80 overflow-hidden rounded-t-2xl">
             <Image 
-              src={product.detailedImage} 
+              src={product.detailedimage} 
               alt={product.title}
               fill
               className="w-full h-full object-cover"
@@ -521,7 +521,7 @@ function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
           <div className="mb-6">
             <h3 className="text-xl font-bold text-white mb-4">About This Product</h3>
             <p className="text-white/80 leading-relaxed text-base whitespace-pre-line">
-              {product.detailedDescription || product.description}
+              {product.detaileddescription || product.description}
             </p>
           </div>
 
@@ -552,29 +552,29 @@ function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
             </div>
 
             {/* Download Buttons */}
-            {product.downloadButtons && product.downloadButtons.length >= 2 && (
+            {product.downloadbuttons && product.downloadbuttons.length >= 2 && (
               <div className="flex gap-3">
-                {product.downloadButtons[0]?.url && product.downloadButtons[0]?.text && (
+                {product.downloadbuttons[0]?.url && product.downloadbuttons[0]?.text && (
                   <button 
-                    onClick={() => window.open(product.downloadButtons[0].url, '_blank')}
+                    onClick={() => window.open(product.downloadbuttons[0].url, '_blank')}
                     className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/25"
                   >
-                    {product.downloadButtons[0].text}
+                    {product.downloadbuttons[0].text}
                   </button>
                 )}
-                {product.downloadButtons[1]?.url && product.downloadButtons[1]?.text && (
+                {product.downloadbuttons[1]?.url && product.downloadbuttons[1]?.text && (
                   <button 
-                    onClick={() => window.open(product.downloadButtons[1].url, '_blank')}
+                    onClick={() => window.open(product.downloadbuttons[1].url, '_blank')}
                     className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-green-500/25"
                   >
-                    {product.downloadButtons[1].text}
+                    {product.downloadbuttons[1].text}
                   </button>
                 )}
               </div>
             )}
 
             {/* Fallback download link */}
-            {!product.downloadButtons?.[0]?.url && product.link && (
+            {!product.downloadbuttons?.[0]?.url && product.link && (
               <button 
                 onClick={() => window.open(product.link, '_blank')}
                 className="w-full px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-all shadow-lg"

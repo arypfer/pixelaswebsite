@@ -77,10 +77,10 @@ async function saveProductsToSupabase(products: any[]) {
       link: product.link,
       image: product.image,
       category: product.category,
-      detailedDescription: product.detailedDescription,
+      detaileddescription: product.detailedDescription,
       features: product.features,
-      detailedImage: product.detailedImage,
-      downloadButtons: product.downloadButtons,
+      detailedimage: product.detailedImage,
+      downloadbuttons: product.downloadButtons,
       icon: null, // Icon is a React component, not storable as text
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
