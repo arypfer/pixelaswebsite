@@ -58,8 +58,11 @@ async function getProductsFromSupabase() {
       return allProducts;
     }
 
-    // Return products if found, otherwise return static data
-    return data && data.length > 0 ? data.map(mapDbProductToApp) : allProducts;
+    if (!data) {
+      return [];
+    }
+
+    return data.length > 0 ? data.map(mapDbProductToApp) : [];
   } catch (error) {
     console.error('Error fetching products from Supabase:', error);
     return allProducts;
