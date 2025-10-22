@@ -467,12 +467,12 @@ function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300"
+    <div
+      className="fixed inset-0 z-[100] overflow-y-auto p-4 sm:p-8 bg-black/60 backdrop-blur-md animate-in fade-in duration-300"
       onClick={onClose}
     >
-      <div 
-        className={`relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 border border-white/20 rounded-3xl shadow-2xl shadow-white/20 animate-in zoom-in-95 slide-in-from-bottom-4 duration-500 ${
+      <div
+        className={`relative mx-auto max-w-4xl bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 border border-white/20 rounded-3xl shadow-2xl shadow-white/20 animate-in zoom-in-95 slide-in-from-bottom-4 duration-500 ${
           product.featured ? 'border-orange-500/50 shadow-orange-500/20 ring-2 ring-orange-500/30' : ''
         }`}
         onClick={(e) => e.stopPropagation()}
