@@ -68,9 +68,20 @@ async function saveProductsToSupabase(products: any[]) {
     }
     console.log('Products cleared successfully');
 
-    // Insert new products with timestamps
+    // Insert new products with timestamps, mapping to correct schema column names
     const productsWithTimestamps = products.map(product => ({
-      ...product,
+      title: product.title,
+      subtitle: product.subtitle,
+      description: product.description,
+      featured: product.featured,
+      link: product.link,
+      image: product.image,
+      category: product.category,
+      detaileddescription: product.detailedDescription,
+      features: product.features,
+      detailedimage: product.detailedImage,
+      downloadbuttons: product.downloadButtons,
+      icon: null, // Icon is a React component, not storable as text
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     }));
