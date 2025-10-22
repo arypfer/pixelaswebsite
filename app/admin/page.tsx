@@ -8,6 +8,8 @@ const ADMIN_PASSWORD = "040620";
 
 export default function AdminPage() {
   const [products, setProducts] = useState<any[]>(allProducts);
+  const hasInitializedSave = useRef(false);
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
@@ -28,12 +30,38 @@ export default function AdminPage() {
     }
   }, []);
 
-  // Load products from localStorage on mount
+  // Load products on mount (Supabase → localStorage → defaults)
   useEffect(() => {
-    const savedProducts = localStorage.getItem('admin-products');
-    if (savedProducts) {
-      setProducts(JSON.parse(savedProducts));
-    }
+    const loadProducts = async () => {
+      try {
+        const response = await fetch('/api/products');
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data.products)) {
+            setProducts(data.products);
+            localStorage.setItem('admin-products', JSON.stringify(data.products));
+            setInitialLoadComplete(true);
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load products from API:', error);
+      }
+
+      const savedProducts = localStorage.getItem('admin-products');
+      if (savedProducts) {
+        try {
+          const parsed = JSON.parse(savedProducts);
+          setProducts(parsed);
+        } catch (error) {
+          console.error('Failed to parse saved products:', error);
+        }
+      }
+
+      setInitialLoadComplete(true);
+    };
+
+    loadProducts();
     loadUploadedImages();
   }, []);
 
@@ -77,8 +105,17 @@ export default function AdminPage() {
 
   // Save products whenever they change
   useEffect(() => {
+    if (!initialLoadComplete) {
+      return;
+    }
+
+    if (!hasInitializedSave.current) {
+      hasInitializedSave.current = true;
+      return;
+    }
+
     saveToDatabaseAndStorage(products);
-  }, [products]);
+  }, [products, initialLoadComplete]);
 
   const loadUploadedImages = async () => {
     try {
