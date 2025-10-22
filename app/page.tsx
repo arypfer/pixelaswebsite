@@ -151,8 +151,8 @@ export default function Home() {
           </div>
           
           <button 
-            className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-white transition-all"
-            onClick={() => alert("We'll get back to you soon.")}
+            className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-white/10 hover:bg-white/20 border border-white/30 rounded-lg text-white transition-all"
+            onClick={() => window.open('mailto:amlolife.contact@gmail.com', '_self')}
           >
             Contact
           </button>
@@ -299,45 +299,24 @@ export default function Home() {
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/10 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 py-12 sm:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            {/* Brand */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
               <h3 className="text-lg font-bold text-white mb-3">AMLOLIFE</h3>
-              <p className="text-sm text-white/60 leading-relaxed">
+              <p className="text-sm text-white/60 leading-relaxed max-w-xl">
                 Professional AI-powered tools for creative professionals. One-time payment, lifetime access.
               </p>
             </div>
-
-            {/* Quick Links */}
-            <div>
-              <h4 className="text-sm font-semibold text-white mb-3">Quick Links</h4>
-              <ul className="space-y-2 text-sm text-white/60">
-                <li><a href="#" className="hover:text-white transition-colors">All Products</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Support</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Refund Policy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h4 className="text-sm font-semibold text-white mb-3">Connect</h4>
-              <ul className="space-y-2 text-sm text-white/60">
-                <li><a href="https://instagram.com/amlolife" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Email Support</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-              </ul>
-            </div>
+            <button
+              onClick={() => window.open('mailto:amlolife.contact@gmail.com', '_self')}
+              className="px-5 py-3 rounded-xl border border-white/20 bg-white/10 text-sm font-semibold text-white hover:bg-white/20 transition-colors"
+            >
+              Contact Us
+            </button>
           </div>
 
-          {/* Bottom Bar */}
-          <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-white/40">
+          <div className="mt-10 pt-8 border-t border-white/10 text-sm text-white/40 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p>© 2024 Amlolife. All rights reserved.</p>
-            <div className="flex gap-4">
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
-              <a href="#" className="hover:text-white transition-colors">Cookies</a>
-            </div>
+            <span>amlolife.contact@gmail.com</span>
           </div>
         </div>
       </footer>
