@@ -195,7 +195,7 @@ export default function Home() {
           
           {/* Loading State */}
           {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
               {[...Array(8)].map((_, i) => (
                 <div key={i} className="animate-pulse">
                   <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl h-64">
@@ -233,7 +233,7 @@ export default function Home() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product, index) => (
                   <ProductCard
@@ -373,13 +373,14 @@ function ProductCard({ title, subtitle, description, featured, link, image, cate
   };
 
   return (
-    <div 
+    <div
       className={`
-        group relative backdrop-blur-xl bg-black/40 border border-white/10 rounded-xl overflow-hidden
-        hover:bg-black/50 hover:border-white/30 hover:shadow-lg
+        group relative isolation overflow-hidden rounded-2xl border border-white/12 backdrop-blur-xl
+        bg-black/35 shadow-[0_18px_45px_-20px_rgba(0,0,0,0.85)] ring-1 ring-inset ring-white/5
+        hover:border-white/35 hover:bg-black/45 hover:shadow-[0_28px_65px_-20px_rgba(0,0,0,0.9)]
         flex flex-col h-full cursor-pointer transition-all duration-300
         ${featured ? 
-          'border-orange-500/70 shadow-xl shadow-orange-500/30' : ''
+          'border-orange-500/70 ring-orange-500/30 shadow-xl shadow-orange-500/30' : ''
         }
       `}
       onClick={handleCardClick}
