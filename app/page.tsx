@@ -375,12 +375,12 @@ function ProductCard({ title, subtitle, description, featured, link, image, cate
   return (
     <div
       className={`
-        group relative isolation overflow-hidden rounded-2xl border border-white/12 backdrop-blur-xl
-        bg-black/35 shadow-[0_18px_45px_-20px_rgba(0,0,0,0.85)] ring-1 ring-inset ring-white/5
-        hover:border-white/35 hover:bg-black/45 hover:shadow-[0_28px_65px_-20px_rgba(0,0,0,0.9)]
+        group relative isolation overflow-hidden rounded-2xl border border-white/20 backdrop-blur-xl
+        bg-gradient-to-br from-white/12 via-black/40 to-black/70 shadow-[0_22px_55px_-24px_rgba(0,0,0,0.95)] ring-1 ring-inset ring-white/12
+        hover:border-white/60 hover:ring-white/35 hover:shadow-[0_28px_70px_-24px_rgba(0,0,0,0.95)]
         flex flex-col h-full cursor-pointer transition-all duration-300
         ${featured ? 
-          'border-orange-500/70 ring-orange-500/30 shadow-xl shadow-orange-500/30' : ''
+          'border-orange-400/70 ring-orange-400/40 shadow-xl shadow-orange-400/35' : ''
         }
       `}
       onClick={handleCardClick}
