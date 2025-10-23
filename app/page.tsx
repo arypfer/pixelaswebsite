@@ -14,6 +14,30 @@ export default function Home() {
   const [products, setProducts] = useState<any[]>([]);
   const [apiLoaded, setApiLoaded] = useState(false);
 
+  // Detect TikTok browser and redirect to external browser
+  useEffect(() => {
+    const userAgent = navigator.userAgent;
+    const isTikTokBrowser = /TikTok/i.test(userAgent);
+    const isInAppBrowser = /Instagram|Facebook|Line|WeChat|WhatsApp|Twitter|LinkedIn/i.test(userAgent) ||
+                           (/Safari/i.test(userAgent) && /Mobile/i.test(userAgent) && !/Chrome|CriOS|FxiOS|EdgiOS/i.test(userAgent));
+
+    if (isTikTokBrowser || isInAppBrowser) {
+      const currentUrl = window.location.href;
+      if (/Android/i.test(userAgent)) {
+        // For Android, use intent
+        const intentUrl = `intent://${currentUrl.replace('https://', '').replace('http://', '')}#Intent;scheme=${currentUrl.startsWith('https') ? 'https' : 'http'};action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(currentUrl)};end`;
+        window.location.href = intentUrl;
+      } else {
+        // For iOS and others, try window.open
+        const newWindow = window.open(currentUrl, '_blank');
+        if (!newWindow) {
+          // If popup blocked, try direct redirect
+          window.location.href = currentUrl;
+        }
+      }
+    }
+  }, []);
+
   // Load products from database and sync with localStorage
   useEffect(() => {
     const loadProductsFromDatabase = async () => {
