@@ -3,6 +3,7 @@ import { Star, Globe, Zap } from "lucide-react";
 
 export const allProducts = [
   {
+    id: 'static-1',
     icon: <Star className="w-5 h-5" />,
     title: "Software Pixelas Studio",
     subtitle: "International Payment",
@@ -17,9 +18,12 @@ export const allProducts = [
     downloadButtons: [
       { text: "Download Windows", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" },
       { text: "Download Mac", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" }
-    ]
+    ],
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z'
   },
   {
+    id: 'static-2',
     icon: <Globe className="w-5 h-5" />,
     title: "Aplikasi Amlo Pose",
     subtitle: "Pose Reference Tool",
@@ -32,13 +36,18 @@ export const allProducts = [
     downloadButtons: [
       { text: "Download Windows", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" },
       { text: "Download Mac", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" }
-    ]
+    ],
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z'
   },
   {
+    id: 'static-3',
     icon: <Globe className="w-5 h-5" />,
     title: "Aplikasi Shotto",
     subtitle: "Screenshot Enhancement",
     description: "Advanced screenshot tool with annotation and editing capabilities.",
+    featured: false,
+    link: "https://lynk.id/pixelas.cloud/mq7on743wrqq",
     image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=400&h=300&fit=crop",
     category: "Standalone Apps",
     detailedDescription: "Shotto revolutionizes screenshot capture with powerful annotation tools, instant editing, and smart organization. Capture, edit, and share screenshots in seconds with built-in blur tools, arrows, text, and shapes. Ideal for tutorials, documentation, and presentations.",
@@ -47,13 +56,18 @@ export const allProducts = [
     downloadButtons: [
       { text: "Download Windows", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" },
       { text: "Download Mac", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" }
-    ]
+    ],
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z'
   },
   {
+    id: 'static-4',
     icon: <Globe className="w-5 h-5" />,
     title: "Plugin Retouch Photoshop",
     subtitle: "Professional Retouching",
     description: "Advanced retouching plugin for Adobe Photoshop with AI-powered tools.",
+    featured: false,
+    link: "https://lynk.id/pixelas.cloud/mq7on743wrqq",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop",
     category: "Photoshop Plugins",
     detailedDescription: "Professional-grade retouching plugin that integrates seamlessly with Adobe Photoshop. Powered by advanced AI algorithms, it automates skin retouching, blemish removal, and color correction while maintaining natural results. Save hours on every project.",
@@ -62,13 +76,18 @@ export const allProducts = [
     downloadButtons: [
       { text: "Download Plugin", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" },
       { text: "Free Trial", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" }
-    ]
+    ],
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z'
   },
   {
+    id: 'static-5',
     icon: <Globe className="w-5 h-5" />,
     title: "Action Retouch Photoshop",
     subtitle: "Mac Friendly",
     description: "Professional Photoshop actions optimized for Mac users.",
+    featured: false,
+    link: "https://lynk.id/pixelas.cloud/mq7on743wrqq",
     image: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&h=300&fit=crop",
     category: "Photoshop Plugins",
     detailedDescription: "A curated collection of professional Photoshop actions specifically optimized for Mac systems. These actions streamline your retouching workflow with one-click solutions for common tasks. Fully compatible with M1/M2 chips and the latest macOS versions.",
@@ -77,13 +96,18 @@ export const allProducts = [
     downloadButtons: [
       { text: "Download Actions", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" },
       { text: "Mac Bundle", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" }
-    ]
+    ],
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z'
   },
   {
+    id: 'static-6',
     icon: <Zap className="w-5 h-5" />,
     title: "Amlogen AI",
     subtitle: "Photoshop Alternative",
     description: "AI-powered image editing software as a complete alternative to Photoshop.",
+    featured: false,
+    link: "https://lynk.id/pixelas.cloud/mq7on743wrqq",
     image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop",
     category: "AI Tools",
     detailedDescription: "Amlogen AI is a next-generation image editor that leverages cutting-edge artificial intelligence to provide professional results with minimal effort. From background removal to style transfer, every feature is designed to be intuitive yet powerful. A true Photoshop alternative at a fraction of the cost.",
@@ -92,13 +116,18 @@ export const allProducts = [
     downloadButtons: [
       { text: "Download AI Tool", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" },
       { text: "Try Free Demo", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" }
-    ]
+    ],
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z'
   },
   {
+    id: 'static-7',
     icon: <Globe className="w-5 h-5" />,
     title: "Amlogen Nano Banana",
     subtitle: "Photoshop Plugin",
     description: "Ultra-fast AI processing plugin for Photoshop with Nano Banana technology.",
+    featured: false,
+    link: "https://lynk.id/pixelas.cloud/mq7on743wrqq",
     image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop",
     category: "Photoshop Plugins",
     detailedDescription: "Powered by revolutionary Nano Banana technology, this plugin brings lightning-fast AI processing directly into Photoshop. Process images 10x faster than traditional methods while maintaining exceptional quality. Perfect for high-volume workflows and time-sensitive projects.",
@@ -107,13 +136,18 @@ export const allProducts = [
     downloadButtons: [
       { text: "Download Plugin", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" },
       { text: "Nano Banana Pro", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" }
-    ]
+    ],
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z'
   },
   {
+    id: 'static-8',
     icon: <Globe className="w-5 h-5" />,
     title: "Software Pixelas Studio",
     subtitle: "Windows Only",
     description: "Complete AI image editing suite for Windows with advanced features.",
+    featured: false,
+    link: "https://lynk.id/pixelas.cloud/mq7on743wrqq",
     image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=300&fit=crop",
     category: "Standalone Apps",
     detailedDescription: "The Windows-exclusive version of Pixelas Studio, optimized for maximum performance on Windows systems. Includes all professional features plus Windows-specific integrations like DirectX acceleration and native file explorer integration. The ultimate tool for Windows-based creative professionals.",
@@ -122,7 +156,9 @@ export const allProducts = [
     downloadButtons: [
       { text: "Download Windows", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" },
       { text: "Windows Pro", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" }
-    ]
+    ],
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z'
   }
 ];
 

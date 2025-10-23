@@ -2,6 +2,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { allProducts } from '@/lib/products';
 
+// Product type definition
+type Product = {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  featured: boolean;
+  link: string;
+  image: string;
+  category: string;
+  detailedDescription: string;
+  features: string[];
+  detailedImage: string;
+  downloadButtons: any[];
+  icon: string | React.ReactElement;
+  createdAt: string;
+  updatedAt: string;
+};
+
 // Supabase configuration
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -21,7 +40,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   }
 });
 
-function mapDbProductToApp(product: any) {
+function mapDbProductToApp(product: any): Product {
   return {
     id: product.id,
     title: product.title,
@@ -42,10 +61,10 @@ function mapDbProductToApp(product: any) {
 }
 
 // Get products from Supabase
-async function getProductsFromSupabase() {
+async function getProductsFromSupabase(): Promise<Product[]> {
   try {
     if (!supabaseUrl || !supabaseServiceKey) {
-      return allProducts; // Fallback if no credentials
+      return allProducts as unknown as Product[]; // Fallback if no credentials
     }
 
     const { data, error } = await supabase
@@ -55,7 +74,7 @@ async function getProductsFromSupabase() {
 
     if (error) {
       console.error('Supabase error:', error);
-      return allProducts;
+      return allProducts as unknown as Product[];
     }
 
     if (!data) {
@@ -65,7 +84,7 @@ async function getProductsFromSupabase() {
     return data.length > 0 ? data.map(mapDbProductToApp) : [];
   } catch (error) {
     console.error('Error fetching products from Supabase:', error);
-    return allProducts;
+    return allProducts as unknown as Product[];
   }
 }
 
@@ -132,12 +151,24 @@ async function saveProductsToSupabase(products: any[]) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const products = await getProductsFromSupabase();
+
+    // Get the base URL for redirects
+    const host = request.headers.get('host');
+    const protocol = host?.includes('localhost') ? 'http' : 'https';
+    const baseUrl = `${protocol}://${host}`;
+
+    // Wrap product links with redirect to bypass in-app browser blocking
+    const modifiedProducts = products.map(product => ({
+      ...product,
+      link: `${baseUrl}/redirect?url=${encodeURIComponent(product.link)}`
+    }));
+
     return NextResponse.json({
       success: true,
-      products,
+      products: modifiedProducts,
       source: supabaseUrl ? 'supabase' : 'static'
     });
   } catch (error) {
