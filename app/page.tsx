@@ -13,28 +13,15 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [products, setProducts] = useState<any[]>([]);
   const [apiLoaded, setApiLoaded] = useState(false);
+  const [showTikTokMessage, setShowTikTokMessage] = useState(false);
 
-  // Detect TikTok browser and redirect to external browser
+  // Detect TikTok browser and show message instead of redirecting
   useEffect(() => {
     const userAgent = navigator.userAgent;
     const isTikTokBrowser = /TikTok/i.test(userAgent);
-    const isInAppBrowser = /Instagram|Facebook|Line|WeChat|WhatsApp|Twitter|LinkedIn/i.test(userAgent) ||
-                           (/Safari/i.test(userAgent) && /Mobile/i.test(userAgent) && !/Chrome|CriOS|FxiOS|EdgiOS/i.test(userAgent));
 
-    if (isTikTokBrowser || isInAppBrowser) {
-      const currentUrl = window.location.href;
-      if (/Android/i.test(userAgent)) {
-        // For Android, use intent
-        const intentUrl = `intent://${currentUrl.replace('https://', '').replace('http://', '')}#Intent;scheme=${currentUrl.startsWith('https') ? 'https' : 'http'};action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(currentUrl)};end`;
-        window.location.href = intentUrl;
-      } else {
-        // For iOS and others, try window.open
-        const newWindow = window.open(currentUrl, '_blank');
-        if (!newWindow) {
-          // If popup blocked, try direct redirect
-          window.location.href = currentUrl;
-        }
-      }
+    if (isTikTokBrowser) {
+      setShowTikTokMessage(true);
     }
   }, []);
 
@@ -152,6 +139,42 @@ export default function Home() {
 
   return (
     <div className="relative w-full min-h-screen bg-black overflow-hidden">
+      {/* TikTok Browser Warning */}
+      {showTikTokMessage && (
+        <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex items-center justify-center p-6">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Open in Browser</h2>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              You're viewing this in TikTok's browser. For the best experience and to access all features, please copy this link and open it in Chrome or Safari:
+            </p>
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
+              <p className="text-sm font-mono text-gray-800 break-all select-all">
+                {typeof window !== 'undefined' ? window.location.href : 'pixelas.store'}
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => navigator.clipboard.writeText(typeof window !== 'undefined' ? window.location.href : 'pixelas.store')}
+                className="flex-1 px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Copy Link
+              </button>
+              <button
+                onClick={() => setShowTikTokMessage(false)}
+                className="flex-1 px-4 py-3 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Animated Background */}
       <AnimatedBackground />
       
