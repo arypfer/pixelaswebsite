@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-export default function RedirectPage() {
+function RedirectPage() {
   const searchParams = useSearchParams();
   const url = searchParams.get('url');
 
@@ -41,5 +41,13 @@ export default function RedirectPage() {
         <p className="text-sm text-gray-600 mt-2">If nothing happens, <a href={url || '#'} className="text-blue-600 underline">click here</a></p>
       </div>
     </div>
+  );
+}
+
+export default function Redirect() {
+  return (
+    <Suspense fallback={<div>Redirecting...</div>}>
+      <RedirectPage />
+    </Suspense>
   );
 }
