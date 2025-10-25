@@ -251,6 +251,7 @@ export default function AdminPage() {
       icon: 'Star',
       downloadButtons: [
         { text: '', url: '' },
+        { text: '', url: '' },
         { text: '', url: '' }
       ]
     });
@@ -703,7 +704,7 @@ export default function AdminPage() {
                         type="text"
                         value={editingProduct.downloadButtons?.[0]?.text || ''}
                         onChange={(e) => {
-                          const newButtons = [...(editingProduct.downloadButtons || [{ text: '', url: '' }, { text: '', url: '' }])];
+                          const newButtons = [...(editingProduct.downloadButtons || [{ text: '', url: '' }, { text: '', url: '' }, { text: '', url: '' }])];
                           newButtons[0] = { ...newButtons[0], text: e.target.value };
                           updateEditingProduct('downloadButtons', newButtons);
                         }}
@@ -717,7 +718,7 @@ export default function AdminPage() {
                         type="url"
                         value={editingProduct.downloadButtons?.[0]?.url || ''}
                         onChange={(e) => {
-                          const newButtons = [...(editingProduct.downloadButtons || [{ text: '', url: '' }, { text: '', url: '' }])];
+                          const newButtons = [...(editingProduct.downloadButtons || [{ text: '', url: '' }, { text: '', url: '' }, { text: '', url: '' }])];
                           newButtons[0] = { ...newButtons[0], url: e.target.value };
                           updateEditingProduct('downloadButtons', newButtons);
                         }}
@@ -735,7 +736,7 @@ export default function AdminPage() {
                         type="text"
                         value={editingProduct.downloadButtons?.[1]?.text || ''}
                         onChange={(e) => {
-                          const newButtons = [...(editingProduct.downloadButtons || [{ text: '', url: '' }, { text: '', url: '' }])];
+                          const newButtons = [...(editingProduct.downloadButtons || [{ text: '', url: '' }, { text: '', url: '' }, { text: '', url: '' }])];
                           newButtons[1] = { ...newButtons[1], text: e.target.value };
                           updateEditingProduct('downloadButtons', newButtons);
                         }}
@@ -749,8 +750,40 @@ export default function AdminPage() {
                         type="url"
                         value={editingProduct.downloadButtons?.[1]?.url || ''}
                         onChange={(e) => {
-                          const newButtons = [...(editingProduct.downloadButtons || [{ text: '', url: '' }, { text: '', url: '' }])];
+                          const newButtons = [...(editingProduct.downloadButtons || [{ text: '', url: '' }, { text: '', url: '' }, { text: '', url: '' }])];
                           newButtons[1] = { ...newButtons[1], url: e.target.value };
+                          updateEditingProduct('downloadButtons', newButtons);
+                        }}
+                        className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white"
+                        placeholder="https://..."
+                      />
+                    </div>
+                  </div>
+
+                  {/* Button 3 */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Button 3 Text</label>
+                      <input
+                        type="text"
+                        value={editingProduct.downloadButtons?.[2]?.text || ''}
+                        onChange={(e) => {
+                          const newButtons = [...(editingProduct.downloadButtons || [{ text: '', url: '' }, { text: '', url: '' }, { text: '', url: '' }])];
+                          newButtons[2] = { ...newButtons[2], text: e.target.value };
+                          updateEditingProduct('downloadButtons', newButtons);
+                        }}
+                        className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white"
+                        placeholder="e.g. Download Linux"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Button 3 URL</label>
+                      <input
+                        type="url"
+                        value={editingProduct.downloadButtons?.[2]?.url || ''}
+                        onChange={(e) => {
+                          const newButtons = [...(editingProduct.downloadButtons || [{ text: '', url: '' }, { text: '', url: '' }, { text: '', url: '' }])];
+                          newButtons[2] = { ...newButtons[2], url: e.target.value };
                           updateEditingProduct('downloadButtons', newButtons);
                         }}
                         className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white"

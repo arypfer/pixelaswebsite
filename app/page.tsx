@@ -579,7 +579,7 @@ function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
             </div>
 
             {/* Download Buttons */}
-            {product.downloadButtons && product.downloadButtons.length >= 2 && (
+            {product.downloadButtons && product.downloadButtons.length >= 1 && (
               <div className="flex gap-3">
                 {product.downloadButtons[0]?.url && product.downloadButtons[0]?.text && (
                   <button 
@@ -595,6 +595,14 @@ function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
                     className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-green-500/25"
                   >
                     {product.downloadButtons[1].text}
+                  </button>
+                )}
+                {product.downloadButtons[2]?.url && product.downloadButtons[2]?.text && (
+                  <button 
+                    onClick={() => window.open(product.downloadButtons[2].url, '_blank')}
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-purple-500/25"
+                  >
+                    {product.downloadButtons[2].text}
                   </button>
                 )}
               </div>
