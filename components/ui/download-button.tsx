@@ -78,8 +78,7 @@ export function DownloadButton({
       variants={buttonVariants}
       className={cn(
         "group relative grid overflow-hidden rounded-full px-6 py-3 transition-all duration-200",
-        "shadow-[0_1000px_0_0_hsl(0_0%_85%)_inset] dark:shadow-[0_1000px_0_0_hsl(0_0%_20%)_inset]",
-        "hover:shadow-lg w-full",
+        "shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.25)] w-full",
         className
       )}
       style={{ minWidth: "200px" }}
@@ -89,25 +88,17 @@ export function DownloadButton({
         <span
           className={cn(
             "spark mask-gradient absolute inset-0 h-[100%] w-[100%] animate-flip overflow-hidden rounded-full",
-            "[mask:linear-gradient(black,_transparent_50%)] before:absolute before:aspect-square before:w-[200%] before:bg-[conic-gradient(from_0deg,transparent_0_340deg,black_360deg)]",
-            "before:rotate-[-90deg] before:animate-rotate dark:before:bg-[conic-gradient(from_0deg,transparent_0_340deg,white_360deg)]",
-            "before:content-[''] before:[inset:0_auto_auto_50%] before:[translate:-50%_-15%] dark:[mask:linear-gradient(white,_transparent_50%)]",
+            "[mask:linear-gradient(black,_transparent_50%)] before:absolute before:aspect-square before:w-[200%] before:bg-[conic-gradient(from_0deg,transparent_0_340deg,white_360deg)]",
+            "before:rotate-[-90deg] before:animate-rotate",
+            "before:content-[''] before:[inset:0_auto_auto_50%] before:[translate:-50%_-15%]",
           )}
         />
       </span>
 
-      {/* Backdrop */}
-      <span
-        className={cn(
-          "backdrop absolute inset-px rounded-[22px] transition-colors duration-200",
-          "bg-neutral-100 group-hover:bg-neutral-200 dark:bg-neutral-950 dark:group-hover:bg-neutral-900",
-        )}
-      />
-
-      {/* Content */}
-      <span className="z-10 flex items-center justify-center gap-3 text-white text-sm font-medium">
-        <Download className="w-4 h-4 flex-shrink-0" />
-        <span>{text}</span>
+      {/* Content - ensure white text on colored backgrounds */}
+      <span className="z-10 flex items-center justify-center gap-3 text-white text-sm font-semibold relative">
+        <Download className="w-4 h-4 flex-shrink-0 drop-shadow-sm" />
+        <span className="drop-shadow-sm">{text}</span>
       </span>
     </motion.button>
   )
