@@ -5,6 +5,7 @@ import Image from "next/image";
 import AnimatedBackground from "@/components/ui/background-animated";
 import { Star, Globe, Zap, Search, X } from "lucide-react";
 import { allProducts, categories } from "@/lib/products";
+import { DownloadButton } from "@/components/ui/download-button";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -580,42 +581,38 @@ function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
 
             {/* Download Buttons */}
             {product.downloadButtons && product.downloadButtons.length >= 1 && (
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 {product.downloadButtons[0]?.url && product.downloadButtons[0]?.text && (
-                  <button 
+                  <DownloadButton
+                    text={product.downloadButtons[0].text}
+                    variant="blue"
                     onClick={() => window.open(product.downloadButtons[0].url, '_blank')}
-                    className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/25"
-                  >
-                    {product.downloadButtons[0].text}
-                  </button>
+                  />
                 )}
                 {product.downloadButtons[1]?.url && product.downloadButtons[1]?.text && (
-                  <button 
+                  <DownloadButton
+                    text={product.downloadButtons[1].text}
+                    variant="green"
                     onClick={() => window.open(product.downloadButtons[1].url, '_blank')}
-                    className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-green-500/25"
-                  >
-                    {product.downloadButtons[1].text}
-                  </button>
+                  />
                 )}
                 {product.downloadButtons[2]?.url && product.downloadButtons[2]?.text && (
-                  <button 
+                  <DownloadButton
+                    text={product.downloadButtons[2].text}
+                    variant="purple"
                     onClick={() => window.open(product.downloadButtons[2].url, '_blank')}
-                    className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-purple-500/25"
-                  >
-                    {product.downloadButtons[2].text}
-                  </button>
+                  />
                 )}
               </div>
             )}
 
             {/* Fallback download link */}
             {!product.downloadButtons?.[0]?.url && product.link && (
-              <button 
+              <DownloadButton
+                text="Download"
+                variant="gray"
                 onClick={() => window.open(product.link, '_blank')}
-                className="w-full px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-all shadow-lg"
-              >
-                Download
-              </button>
+              />
             )}
           </div>
         </div>
