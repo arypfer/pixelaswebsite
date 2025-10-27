@@ -6,6 +6,7 @@ import AnimatedBackground from "@/components/ui/background-animated";
 import { Star, Globe, Zap, Search, X } from "lucide-react";
 import { allProducts, categories } from "@/lib/products";
 import { DownloadButton } from "@/components/ui/download-button";
+import FireEffect from '@/components/ui/fire-effect';
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -436,6 +437,7 @@ function ProductCard({ title, subtitle, description, featured, link, image, cate
 
       {/* Content Layer - Enhanced Layout & Typography */}
       <div className={`relative z-10 p-5 flex flex-col h-full transition-all duration-300 ${featured ? 'ring-1 ring-orange-500/20' : ''}`}>
+        {featured && <FireEffect />}
         {featured && (
           <div className="absolute -top-2 -right-2 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg shadow-orange-500/50 border border-orange-400/50">
             ⭐ Featured

@@ -2,6 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+.fire {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 60px;
+  width: 60px;
+  filter: blur(5px) contrast(10);
+}
+
+.particle {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: #ff5000;
+  border-radius: 50%;
+  animation: burn 1.5s ease-in-out infinite;
+}
+
+@keyframes burn {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) scale(3);
+    opacity: 0;
+  }
+}
+
 :root {
   --background: oklch(0 0 0);
   --foreground: oklch(1 0 0);
