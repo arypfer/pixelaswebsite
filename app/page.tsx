@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import AnimatedBackground from "@/components/ui/background-animated";
-import { Star, Globe, Zap, Search, X } from "lucide-react";
+import { Star, Globe, Zap, Search, X, Link2, Check } from "lucide-react";
 import { allProducts, categories } from "@/lib/products";
 import { DownloadButton } from "@/components/ui/download-button";
 import FireEffect from '@/components/ui/fire-effect';
@@ -16,6 +16,7 @@ export default function Home() {
   const [products, setProducts] = useState<any[]>([]);
   const [apiLoaded, setApiLoaded] = useState(false);
   const [showTikTokMessage, setShowTikTokMessage] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   // Detect TikTok browser and show message instead of redirecting
   useEffect(() => {
@@ -26,6 +27,21 @@ export default function Home() {
       setShowTikTokMessage(true);
     }
   }, []);
+
+  // Handle URL parameters to open specific products
+  useEffect(() => {
+    if (products.length === 0) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('product');
+
+    if (productId) {
+      const product = products.find(p => p.id === productId);
+      if (product) {
+        setSelectedProduct(product);
+      }
+    }
+  }, [products]);
 
   // Load products from database and sync with localStorage
   useEffect(() => {
@@ -294,7 +310,13 @@ export default function Home() {
                     link={product.link}
                     image={product.image}
                     category={product.category}
-                    onDetailsClick={() => setSelectedProduct(product)}
+                    onDetailsClick={() => {
+                      setSelectedProduct(product);
+                      // Update URL with product ID
+                      const url = new URL(window.location.href);
+                      url.searchParams.set('product', product.id);
+                      window.history.pushState({}, '', url.toString());
+                    }}
                   />
                 ))
               ) : (
@@ -341,7 +363,21 @@ export default function Home() {
       {selectedProduct && (
         <ProductDetailModal
           product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
+          onClose={() => {
+            setSelectedProduct(null);
+            // Clear URL parameter when closing
+            const url = new URL(window.location.href);
+            url.searchParams.delete('product');
+            window.history.replaceState({}, '', url.toString());
+          }}
+          copySuccess={copySuccess}
+          onCopyLink={() => {
+            const url = new URL(window.location.href);
+            url.searchParams.set('product', selectedProduct.id);
+            navigator.clipboard.writeText(url.toString());
+            setCopySuccess(true);
+            setTimeout(() => setCopySuccess(false), 2000);
+          }}
         />
       )}
 
@@ -484,9 +520,11 @@ function ProductCard({ title, subtitle, description, featured, link, image, cate
 interface ProductDetailModalProps {
   product: any;
   onClose: () => void;
+  copySuccess?: boolean;
+  onCopyLink?: () => void;
 }
 
-function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
+function ProductDetailModal({ product, onClose, copySuccess, onCopyLink }: ProductDetailModalProps) {
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'Star': return <Star className="w-5 h-5" />;
@@ -507,13 +545,29 @@ function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button - Enhanced */}
-        <button
-          onClick={onClose}
-          className="absolute top-6 right-6 z-20 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 border border-white/20 hover:border-white/30 shadow-lg hover:shadow-xl hover:shadow-white/20 transform hover:scale-110 active:scale-95"
-        >
-          <X className="w-6 h-6 text-white" />
-        </button>
+        {/* Action Buttons - Enhanced */}
+        <div className="absolute top-6 right-6 z-20 flex gap-2">
+          {/* Copy Link Button */}
+          <button
+            onClick={onCopyLink}
+            className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 border border-white/20 hover:border-white/30 shadow-lg hover:shadow-xl hover:shadow-white/20 transform hover:scale-110 active:scale-95 group"
+            title="Copy link to this product"
+          >
+            {copySuccess ? (
+              <Check className="w-6 h-6 text-green-400" />
+            ) : (
+              <Link2 className="w-6 h-6 text-white group-hover:text-blue-400 transition-colors" />
+            )}
+          </button>
+          
+          {/* Close Button */}
+          <button
+            onClick={onClose}
+            className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 border border-white/20 hover:border-white/30 shadow-lg hover:shadow-xl hover:shadow-white/20 transform hover:scale-110 active:scale-95"
+          >
+            <X className="w-6 h-6 text-white" />
+          </button>
+        </div>
 
         {/* Product Image */}
         {product.detailedImage && (
