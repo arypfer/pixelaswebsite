@@ -1,8 +1,8 @@
 "use client"
 
-import { motion } from "framer-motion"
 import { Download } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useState } from "react"
 
 interface DownloadButtonProps {
   text: string
@@ -17,89 +17,59 @@ export function DownloadButton({
   onClick,
   variant = "blue"
 }: DownloadButtonProps) {
-  const getColors = () => {
+  const [isHovered, setIsHovered] = useState(false)
+
+  const getVariantClasses = () => {
     switch (variant) {
       case "blue":
-        return {
-          idle: "rgb(59, 130, 246)",
-          hover: "rgb(37, 99, 235)",
-          tap: "rgb(29, 78, 216)"
-        }
+        return "bg-blue-600 hover:bg-blue-700 border-blue-500/30 shadow-blue-500/20 hover:shadow-blue-500/30"
       case "green":
-        return {
-          idle: "rgb(34, 197, 94)",
-          hover: "rgb(22, 163, 74)",
-          tap: "rgb(21, 128, 61)"
-        }
+        return "bg-green-600 hover:bg-green-700 border-green-500/30 shadow-green-500/20 hover:shadow-green-500/30"
       case "purple":
-        return {
-          idle: "rgb(147, 51, 234)",
-          hover: "rgb(126, 34, 206)",
-          tap: "rgb(107, 33, 168)"
-        }
+        return "bg-purple-600 hover:bg-purple-700 border-purple-500/30 shadow-purple-500/20 hover:shadow-purple-500/30"
       case "gray":
-        return {
-          idle: "rgb(107, 114, 128)",
-          hover: "rgb(75, 85, 99)",
-          tap: "rgb(55, 65, 81)"
-        }
+        return "bg-gray-700 hover:bg-gray-800 border-gray-600/30 shadow-gray-500/20 hover:shadow-gray-500/30"
       default:
-        return {
-          idle: "rgb(59, 130, 246)",
-          hover: "rgb(37, 99, 235)",
-          tap: "rgb(29, 78, 216)"
-        }
+        return "bg-blue-600 hover:bg-blue-700 border-blue-500/30 shadow-blue-500/20 hover:shadow-blue-500/30"
     }
   }
 
-  const colors = getColors()
-
-  const buttonVariants = {
-    idle: {
-      backgroundColor: colors.idle,
-      scale: 1,
-    },
-    hover: {
-      backgroundColor: colors.hover,
-      scale: 1.02,
-    },
-    tap: {
-      backgroundColor: colors.tap,
-      scale: 0.98,
-    },
-  }
-
   return (
-    <motion.button
+    <button
       onClick={onClick}
-      initial="idle"
-      whileHover="hover"
-      whileTap="tap"
-      variants={buttonVariants}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        "group relative grid overflow-hidden rounded-full px-6 py-3 transition-all duration-200",
-        "shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.25)] w-full",
+        "group relative w-full overflow-hidden rounded-xl px-6 py-3.5",
+        "border backdrop-blur-sm",
+        "transition-all duration-300 ease-out",
+        "shadow-lg hover:shadow-xl",
+        "active:scale-[0.98] hover:scale-[1.01]",
+        "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-black",
+        getVariantClasses(),
         className
       )}
-      style={{ minWidth: "200px" }}
     >
-      {/* Spark effect */}
-      <span>
-        <span
-          className={cn(
-            "spark mask-gradient absolute inset-0 h-[100%] w-[100%] animate-flip overflow-hidden rounded-full",
-            "[mask:linear-gradient(black,_transparent_50%)] before:absolute before:aspect-square before:w-[200%] before:bg-[conic-gradient(from_0deg,transparent_0_340deg,white_360deg)]",
-            "before:rotate-[-90deg] before:animate-rotate",
-            "before:content-[''] before:[inset:0_auto_auto_50%] before:[translate:-50%_-15%]",
-          )}
-        />
-      </span>
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      
+      {/* Shine effect on hover */}
+      <div 
+        className={cn(
+          "absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent",
+          "transition-transform duration-700 ease-out",
+          isHovered && "translate-x-full"
+        )}
+      />
 
-      {/* Content - ensure white text on colored backgrounds */}
-      <span className="z-10 flex items-center justify-center gap-3 text-white text-sm font-semibold relative">
-        <Download className="w-4 h-4 flex-shrink-0 drop-shadow-sm" />
-        <span className="drop-shadow-sm">{text}</span>
+      {/* Content */}
+      <span className="relative z-10 flex items-center justify-center gap-2.5 text-white text-sm font-semibold">
+        <Download className={cn(
+          "w-4 h-4 flex-shrink-0 transition-transform duration-300",
+          isHovered && "translate-y-0.5"
+        )} />
+        <span>{text}</span>
       </span>
-    </motion.button>
+    </button>
   )
 }

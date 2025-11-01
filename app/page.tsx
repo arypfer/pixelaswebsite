@@ -6,7 +6,6 @@ import AnimatedBackground from "@/components/ui/background-animated";
 import { Star, Globe, Zap, Search, X, Link2, Check, ArrowRight, Sparkles, TrendingUp } from "lucide-react";
 import { allProducts, categories } from "@/lib/products";
 import { DownloadButton } from "@/components/ui/download-button";
-import FireEffect from '@/components/ui/fire-effect';
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -481,8 +480,6 @@ function ProductCard({ title, subtitle, description, featured, link, image, cate
 
       {/* Content Layer */}
       <div className={`relative z-10 p-6 flex flex-col h-full transition-all duration-300`}>
-        {featured && <FireEffect />}
-        
         {/* Top Section: Badges */}
         <div className="flex items-start justify-between mb-4 gap-2">
           {/* Category Badge */}
