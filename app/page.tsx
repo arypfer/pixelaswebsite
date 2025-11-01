@@ -652,41 +652,8 @@ function ProductDetailModal({ product, onClose, copySuccess, onCopyLink }: Produ
 
         {/* Content */}
         <div className="p-6 sm:p-8">
-          {/* Description */}
-          <div className="mb-6">
-            <h3 className="text-xl font-bold text-white mb-4">About This Product</h3>
-            <p className="text-white/80 leading-relaxed text-base whitespace-pre-line">
-              {product.detailedDescription || product.description}
-            </p>
-          </div>
-
-          {/* Features */}
-          {product.features && product.features.length > 0 && (
-            <div>
-              <h3 className="text-xl font-bold text-white mb-4">Key Features</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {product.features.map((feature: string, index: number) => (
-                  <div 
-                    key={index}
-                    className="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all"
-                  >
-                    <div className="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full" />
-                    <span className="text-white/80 text-sm">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Category Badge and Download Buttons */}
-          <div className="mt-6 pt-6 border-t border-white/10">
-            <div className="flex justify-between items-center mb-4">
-              <span className="inline-block px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/60 text-sm">
-                {product.category}
-              </span>
-            </div>
-
-            {/* Download Buttons */}
+          {/* Download Buttons - Moved to top */}
+          <div className="mb-8">
             {product.downloadButtons && product.downloadButtons.length >= 1 && (
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 {product.downloadButtons[0]?.url && product.downloadButtons[0]?.text && (
@@ -721,6 +688,39 @@ function ProductDetailModal({ product, onClose, copySuccess, onCopyLink }: Produ
                 onClick={() => window.open(product.link, '_blank')}
               />
             )}
+          </div>
+
+          {/* Description */}
+          <div className="mb-6">
+            <h3 className="text-xl font-bold text-white mb-4">About This Product</h3>
+            <p className="text-white/80 leading-relaxed text-base whitespace-pre-line">
+              {product.detailedDescription || product.description}
+            </p>
+          </div>
+
+          {/* Features */}
+          {product.features && product.features.length > 0 && (
+            <div>
+              <h3 className="text-xl font-bold text-white mb-4">Key Features</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {product.features.map((feature: string, index: number) => (
+                  <div 
+                    key={index}
+                    className="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all"
+                  >
+                    <div className="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full" />
+                    <span className="text-white/80 text-sm">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Category Badge */}
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <span className="inline-block px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/60 text-sm">
+              {product.category}
+            </span>
           </div>
         </div>
       </div>
