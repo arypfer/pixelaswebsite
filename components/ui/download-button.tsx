@@ -22,15 +22,15 @@ export function DownloadButton({
   const getVariantClasses = () => {
     switch (variant) {
       case "blue":
-        return "bg-blue-600 hover:bg-blue-700 border-blue-500/30 shadow-blue-500/20 hover:shadow-blue-500/30"
+        return "bg-slate-700 hover:bg-slate-600 border-slate-600/40 shadow-slate-900/30 hover:shadow-slate-900/40"
       case "green":
-        return "bg-green-600 hover:bg-green-700 border-green-500/30 shadow-green-500/20 hover:shadow-green-500/30"
+        return "bg-slate-700 hover:bg-slate-600 border-slate-600/40 shadow-slate-900/30 hover:shadow-slate-900/40"
       case "purple":
-        return "bg-purple-600 hover:bg-purple-700 border-purple-500/30 shadow-purple-500/20 hover:shadow-purple-500/30"
+        return "bg-slate-700 hover:bg-slate-600 border-slate-600/40 shadow-slate-900/30 hover:shadow-slate-900/40"
       case "gray":
-        return "bg-gray-700 hover:bg-gray-800 border-gray-600/30 shadow-gray-500/20 hover:shadow-gray-500/30"
+        return "bg-slate-700 hover:bg-slate-600 border-slate-600/40 shadow-slate-900/30 hover:shadow-slate-900/40"
       default:
-        return "bg-blue-600 hover:bg-blue-700 border-blue-500/30 shadow-blue-500/20 hover:shadow-blue-500/30"
+        return "bg-slate-700 hover:bg-slate-600 border-slate-600/40 shadow-slate-900/30 hover:shadow-slate-900/40"
     }
   }
 
