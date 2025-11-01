@@ -659,21 +659,21 @@ function ProductDetailModal({ product, onClose, copySuccess, onCopyLink }: Produ
                 {product.downloadButtons[0]?.url && product.downloadButtons[0]?.text && (
                   <DownloadButton
                     text={product.downloadButtons[0].text}
-                    variant="blue"
+                    variant="primary"
                     onClick={() => window.open(product.downloadButtons[0].url, '_blank')}
                   />
                 )}
                 {product.downloadButtons[1]?.url && product.downloadButtons[1]?.text && (
                   <DownloadButton
                     text={product.downloadButtons[1].text}
-                    variant="green"
+                    variant="secondary"
                     onClick={() => window.open(product.downloadButtons[1].url, '_blank')}
                   />
                 )}
                 {product.downloadButtons[2]?.url && product.downloadButtons[2]?.text && (
                   <DownloadButton
                     text={product.downloadButtons[2].text}
-                    variant="purple"
+                    variant="tertiary"
                     onClick={() => window.open(product.downloadButtons[2].url, '_blank')}
                   />
                 )}
@@ -684,7 +684,7 @@ function ProductDetailModal({ product, onClose, copySuccess, onCopyLink }: Produ
             {!product.downloadButtons?.[0]?.url && product.link && (
               <DownloadButton
                 text="Download"
-                variant="gray"
+                variant="primary"
                 onClick={() => window.open(product.link, '_blank')}
               />
             )}
