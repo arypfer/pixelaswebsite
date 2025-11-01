@@ -58,6 +58,13 @@
   --input: oklch(1 0 0 / 0.1);
   --ring: oklch(1 0 0 / 0.3);
   --radius: 0.5rem;
+  
+  /* Rainbow button colors */
+  --color-1: 0deg 100% 63%;
+  --color-2: 270deg 100% 63%;
+  --color-3: 210deg 100% 63%;
+  --color-4: 195deg 100% 63%;
+  --color-5: 90deg 100% 63%;
 }
 
 @layer base {
@@ -100,6 +107,15 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes rainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
   }
 }
 
