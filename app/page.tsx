@@ -6,7 +6,6 @@ import AnimatedBackground from "@/components/ui/background-animated";
 import { Star, Globe, Zap, Search, X, Link2, Check, ArrowRight, Sparkles, TrendingUp } from "lucide-react";
 import { allProducts, categories } from "@/lib/products";
 import { DownloadButton } from "@/components/ui/download-button";
-import { EnhancedProductCard } from "@/components/ui/enhanced-product-card";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -300,61 +299,25 @@ export default function Home() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
               {filteredProducts.length > 0 ? (
-                filteredProducts.map((product, index) => {
-                  // Use EnhancedProductCard for Amlo Action product
-                  if (product.id === 'static-5' || product.title?.includes('Amlo Action')) {
-                    return (
-                      <EnhancedProductCard
-                        key={index}
-                        title={product.title}
-                        subtitle={product.subtitle}
-                        description={product.description}
-                        features={product.features}
-                        highlights={product.highlights}
-                        price={product.price}
-                        originalPrice={product.originalPrice}
-                        rating={product.rating}
-                        reviewCount={product.reviewCount}
-                        featured={product.featured}
-                        image={product.image}
-                        category={product.category}
-                        badge={product.badge}
-                        stats={product.stats}
-                        onDetailsClick={() => {
-                          setSelectedProduct(product);
-                          const url = new URL(window.location.href);
-                          url.searchParams.set('product', product.id);
-                          window.history.pushState({}, '', url.toString());
-                        }}
-                        onDownloadClick={() => {
-                          if (product.link) {
-                            window.open(product.link, '_blank');
-                          }
-                        }}
-                      />
-                    );
-                  }
-                  
-                  // Use regular ProductCard for other products
-                  return (
-                    <ProductCard
-                      key={index}
-                      title={product.title}
-                      subtitle={product.subtitle}
-                      description={product.description}
-                      featured={product.featured}
-                      link={product.link}
-                      image={product.image}
-                      category={product.category}
-                      onDetailsClick={() => {
-                        setSelectedProduct(product);
-                        const url = new URL(window.location.href);
-                        url.searchParams.set('product', product.id);
-                        window.history.pushState({}, '', url.toString());
-                      }}
-                    />
-                  );
-                })
+                filteredProducts.map((product, index) => (
+                  <ProductCard
+                    key={index}
+                    title={product.title}
+                    subtitle={product.subtitle}
+                    description={product.description}
+                    featured={product.featured}
+                    link={product.link}
+                    image={product.image}
+                    category={product.category}
+                    onDetailsClick={() => {
+                      setSelectedProduct(product);
+                      // Update URL with product ID
+                      const url = new URL(window.location.href);
+                      url.searchParams.set('product', product.id);
+                      window.history.pushState({}, '', url.toString());
+                    }}
+                  />
+                ))
               ) : (
                 // Enhanced Empty State
                 <div className="col-span-full text-center py-20">
