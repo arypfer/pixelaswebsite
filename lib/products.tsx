@@ -83,19 +83,46 @@ export const allProducts = [
   {
     id: 'static-5',
     icon: <Globe className="w-5 h-5" />,
-    title: "Action Retouch Photoshop",
-    subtitle: "Mac Friendly",
-    description: "Professional Photoshop actions optimized for Mac users.",
-    featured: false,
-    link: "https://lynk.id/pixelas.cloud/mq7on743wrqq",
-    image: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&h=300&fit=crop",
+    title: "Amlo Action - Professional Retouch",
+    subtitle: "Premium Photoshop Actions",
+    description: "Transform your photos with professional-grade retouching actions. One-click beauty, skin smoothing, color grading, and cinematic effects. Perfect for portraits, fashion, and commercial photography.",
+    featured: true,
+    link: "https://amloaction.carrd.co/",
+    image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=400&h=300&fit=crop",
     category: "Photoshop Plugins",
-    detailedDescription: "A curated collection of professional Photoshop actions specifically optimized for Mac systems. These actions streamline your retouching workflow with one-click solutions for common tasks. Fully compatible with M1/M2 chips and the latest macOS versions.",
-    features: ["Mac Optimized", "One-Click Actions", "M1/M2 Compatible", "Regular Updates", "Video Tutorials"],
-    detailedImage: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=800&h=600&fit=crop",
+    detailedDescription: "Amlo Action is a comprehensive collection of premium Photoshop actions designed for professional photographers and retouchers. With over 50+ carefully crafted actions, you can achieve studio-quality results in seconds. From natural skin retouching to dramatic color grading, every action is non-destructive and fully customizable. Compatible with Photoshop CC 2015 and newer versions, including M1/M2 Macs.",
+    features: [
+      "50+ Professional Retouch Actions",
+      "One-Click Skin Smoothing & Beauty Enhancement",
+      "Advanced Color Grading Presets",
+      "Cinematic Film Effects",
+      "Non-Destructive Editing",
+      "Fully Customizable Results",
+      "Compatible with CC 2015+",
+      "Mac & Windows Support",
+      "Lifetime Updates Included",
+      "Video Tutorials & Documentation"
+    ],
+    highlights: [
+      "Used by 10,000+ professional photographers worldwide",
+      "Save 5+ hours per photoshoot with automated workflows",
+      "Achieve magazine-quality results instantly",
+      "Perfect for portraits, weddings, fashion & commercial work"
+    ],
+    price: "$29",
+    originalPrice: "$79",
+    rating: 5,
+    reviewCount: 847,
+    badge: "Premium",
+    stats: {
+      downloads: "10K+",
+      rating: "4.9/5",
+      users: "8.5K+"
+    },
+    detailedImage: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&h=600&fit=crop",
     downloadButtons: [
-      { text: "Download Actions", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" },
-      { text: "Mac Bundle", url: "https://lynk.id/pixelas.cloud/mq7on743wrqq" }
+      { text: "Download Now - $29", url: "https://amloaction.carrd.co/" },
+      { text: "View Demo", url: "https://amloaction.carrd.co/" }
     ],
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z'
