@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ArrowLeft, Check, Download, Camera, Palette, Zap, ChevronLeft, ChevronRight, Info } from "lucide-react";
 import Link from "next/link";
@@ -137,19 +137,44 @@ export default function CanonStylePage() {
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging) return;
+    e.preventDefault();
     
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
+    const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
     const percentage = (x / rect.width) * 100;
-    setSliderPosition(Math.min(Math.max(percentage, 0), 100));
+    setSliderPosition(percentage);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    e.preventDefault();
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.touches[0].clientX - rect.left;
+    const x = Math.max(0, Math.min(e.touches[0].clientX - rect.left, rect.width));
     const percentage = (x / rect.width) * 100;
-    setSliderPosition(Math.min(Math.max(percentage, 0), 100));
+    setSliderPosition(percentage);
   };
+
+  // Prevent body scroll when dragging
+  useEffect(() => {
+    if (isDragging) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
+  }, [isDragging]);
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -168,30 +193,30 @@ export default function CanonStylePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
+      <section className="pt-24 md:pt-32 pb-12 md:pb-20 px-4">
         <div className="container mx-auto max-w-6xl text-center">
           <div className="inline-block mb-4 px-4 py-2 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-full border border-orange-500/30">
-            <span className="text-orange-400 font-semibold">57 Picture Style Premium</span>
+            <span className="text-sm md:text-base text-orange-400 font-semibold">57 Picture Style Premium</span>
           </div>
-          <h2 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent leading-tight">
             Film Look Analog
             <br />
             Langsung dari Kamera Canon
           </h2>
-          <p className="text-xl text-white/60 mb-8 max-w-3xl mx-auto">
+          <p className="text-base md:text-xl text-white/60 mb-6 md:mb-8 max-w-3xl mx-auto px-4">
             Transformasi foto digital Anda dengan warna dan karakter film analog legendaris. 
             Hemat waktu editing dengan hasil SOOC yang memukau.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center">
             <a 
               href="#beli" 
-              className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full font-semibold hover:shadow-lg hover:shadow-orange-500/50 transition-all"
+              className="w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full font-semibold hover:shadow-lg hover:shadow-orange-500/50 transition-all text-center text-sm md:text-base"
             >
               Beli Sekarang - Rp 175.000
             </a>
             <a 
               href="#showcase" 
-              className="px-8 py-4 bg-white/5 border border-white/10 rounded-full font-semibold hover:bg-white/10 transition-all"
+              className="w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 bg-white/5 border border-white/10 rounded-full font-semibold hover:bg-white/10 transition-all text-center text-sm md:text-base"
             >
               Lihat Contoh Hasil
             </a>
@@ -200,7 +225,7 @@ export default function CanonStylePage() {
       </section>
 
       {/* Features */}
-      <section className="py-20 px-4 bg-gradient-to-b from-black to-orange-950/20">
+      <section className="py-12 md:py-20 px-4 bg-gradient-to-b from-black to-orange-950/20">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
@@ -220,31 +245,33 @@ export default function CanonStylePage() {
       </section>
 
       {/* Before/After Showcase */}
-      <section id="showcase" className="py-20 px-4">
+      <section id="showcase" className="py-12 md:py-20 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
               Lihat Perbedaannya
             </h2>
-            <p className="text-xl text-white/60">
+            <p className="text-base md:text-xl text-white/60">
               Geser untuk membandingkan Before & After
             </p>
           </div>
 
           <div className="bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-4 md:p-8">
             {/* Style Name */}
-            <div className="text-center mb-6">
-              <h3 className="text-3xl font-bold mb-2">{currentStyle.name}</h3>
-              <p className="text-white/60">{currentStyle.description}</p>
+            <div className="text-center mb-4 md:mb-6">
+              <h3 className="text-2xl md:text-3xl font-bold mb-2">{currentStyle.name}</h3>
+              <p className="text-sm md:text-base text-white/60">{currentStyle.description}</p>
             </div>
 
             {/* Image Comparison Slider */}
             <div 
-              className="relative aspect-[3/4] max-w-2xl mx-auto rounded-2xl overflow-hidden mb-6 bg-white/5 select-none"
+              className="relative aspect-[3/4] max-w-2xl mx-auto rounded-2xl overflow-hidden mb-6 bg-white/5 select-none touch-none"
               onMouseDown={handleMouseDown}
               onMouseUp={handleMouseUp}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseUp}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
               onTouchMove={handleTouchMove}
             >
               {/* Before Image (Full) */}
@@ -277,7 +304,7 @@ export default function CanonStylePage() {
               {/* After Image (Clipped) */}
               <div 
                 className="absolute inset-0"
-                style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+                style={{ clipPath: `inset(0 0 0 ${sliderPosition}%)` }}
               >
                 <Image
                   src={currentStyle.afterImage}
