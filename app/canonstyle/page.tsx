@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { ArrowLeft, Check, Download, Camera, Palette, Zap, ChevronLeft, ChevronRight, Info } from "lucide-react";
+import { ArrowLeft, Check, Download, Camera, Palette, Zap, ChevronLeft, ChevronRight, Info, X } from "lucide-react";
 import Link from "next/link";
 
 // Picture Style showcase data
@@ -107,6 +107,8 @@ export default function CanonStylePage() {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [showGallery, setShowGallery] = useState(false);
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
 
   const currentStyle = pictureStyles[currentStyleIndex];
 
@@ -182,6 +184,29 @@ export default function CanonStylePage() {
       afterImg.src = style.afterImage;
     });
   }, []);
+
+  // Load gallery images for current style
+  useEffect(() => {
+    const loadGalleryImages = async () => {
+      try {
+        const response = await fetch(`/api/gallery?style=${currentStyle.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setGalleryImages(data.images || []);
+        }
+      } catch (error) {
+        console.error('Error loading gallery:', error);
+        // Fallback: try to load from static folder
+        const styleFolder = currentStyle.name.toLowerCase().replace(/\s+/g, '-');
+        const images = [];
+        for (let i = 1; i <= 20; i++) {
+          images.push(`/canonstyle/gallery/${styleFolder}/${i}.webp`);
+        }
+        setGalleryImages(images);
+      }
+    };
+    loadGalleryImages();
+  }, [currentStyleIndex]);
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -374,11 +399,22 @@ export default function CanonStylePage() {
               max="100"
               value={sliderPosition}
               onChange={handleSliderChange}
-              className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer mb-6"
+              className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer mb-4"
               style={{
                 background: `linear-gradient(to right, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.1) ${sliderPosition}%, rgba(249,115,22,0.3) ${sliderPosition}%, rgba(249,115,22,0.3) 100%)`
               }}
             />
+
+            {/* Gallery Button */}
+            <div className="flex justify-center mb-6">
+              <button
+                onClick={() => setShowGallery(true)}
+                className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-full font-semibold hover:shadow-lg hover:shadow-orange-500/50 transition-all flex items-center gap-2"
+              >
+                <Camera className="w-5 h-5" />
+                <span>Lihat Galeri Foto</span>
+              </button>
+            </div>
 
             {/* Navigation */}
             <div className="flex items-center justify-between">
@@ -574,6 +610,70 @@ export default function CanonStylePage() {
           </div>
         </div>
       </section>
+
+      {/* Gallery Modal */}
+      {showGallery && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl overflow-y-auto"
+          onClick={() => setShowGallery(false)}
+        >
+          <div className="container mx-auto px-4 py-20">
+            {/* Close Button */}
+            <button
+              onClick={() => setShowGallery(false)}
+              className="fixed top-4 right-4 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all z-50"
+              aria-label="Close gallery"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* Gallery Header */}
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-2">
+                Galeri Foto - {currentStyle.name}
+              </h2>
+              <p className="text-white/60">
+                Contoh hasil foto menggunakan {currentStyle.name} picture style
+              </p>
+            </div>
+
+            {/* Gallery Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
+              {galleryImages.map((imageSrc, index) => (
+                <div 
+                  key={index}
+                  className="relative aspect-[3/4] rounded-xl overflow-hidden bg-white/5 group cursor-pointer"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Image
+                    src={imageSrc}
+                    alt={`${currentStyle.name} example ${index + 1}`}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      const target = e.target as HTMLElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Empty State */}
+            {galleryImages.length === 0 && (
+              <div className="text-center py-20">
+                <Camera className="w-16 h-16 text-white/20 mx-auto mb-4" />
+                <p className="text-white/40 text-lg">
+                  Belum ada foto di galeri untuk {currentStyle.name}
+                </p>
+                <p className="text-white/30 text-sm mt-2">
+                  Tambahkan foto ke folder: /canonstyle/gallery/{currentStyle.name.toLowerCase().replace(/\s+/g, '-')}/
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="py-12 px-4 border-t border-white/10">
