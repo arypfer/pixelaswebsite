@@ -594,7 +594,7 @@ export default function CanonStylePage() {
             </div>
 
             <a
-              href="https://wa.me/625183186370?text=Halo,%20saya%20ingin%20membeli%20Canon%20Picture%20Style%20Package"
+              href="https://wa.me/6285183186370?text=Halo,%20saya%20ingin%20membeli%20Canon%20Picture%20Style%20Package"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-orange-500/50 transition-all hover:scale-105"
