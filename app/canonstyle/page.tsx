@@ -160,9 +160,9 @@ export default function CanonStylePage() {
     setSliderPosition(percentage);
   };
 
-  // Prevent body scroll when dragging
+  // Prevent body scroll when dragging or gallery open
   useEffect(() => {
-    if (isDragging) {
+    if (isDragging || showGallery) {
       document.body.style.overflow = 'hidden';
       document.body.style.touchAction = 'none';
     } else {
@@ -173,7 +173,7 @@ export default function CanonStylePage() {
       document.body.style.overflow = '';
       document.body.style.touchAction = '';
     };
-  }, [isDragging]);
+  }, [isDragging, showGallery]);
 
   // Preload all images on mount
   useEffect(() => {
@@ -393,22 +393,11 @@ export default function CanonStylePage() {
               max="100"
               value={sliderPosition}
               onChange={handleSliderChange}
-              className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer mb-4"
+              className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer mb-6"
               style={{
                 background: `linear-gradient(to right, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.1) ${sliderPosition}%, rgba(249,115,22,0.3) ${sliderPosition}%, rgba(249,115,22,0.3) 100%)`
               }}
             />
-
-            {/* Gallery Button */}
-            <div className="flex justify-center mb-6">
-              <button
-                onClick={() => setShowGallery(true)}
-                className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-full font-semibold hover:shadow-lg hover:shadow-orange-500/50 transition-all flex items-center gap-2"
-              >
-                <Camera className="w-5 h-5" />
-                <span>Lihat Galeri Foto</span>
-              </button>
-            </div>
 
             {/* Navigation */}
             <div className="flex items-center justify-between">
@@ -446,6 +435,22 @@ export default function CanonStylePage() {
               >
                 <span className="hidden md:inline mr-2">Next</span>
                 <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Gallery Button - Better Placement */}
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={() => setShowGallery(true)}
+                className="group px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-orange-500/50 rounded-2xl font-semibold transition-all flex items-center gap-3"
+              >
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Camera className="w-5 h-5 text-white" />
+                </div>
+                <div className="text-left">
+                  <div className="text-base font-bold">Lihat Galeri Foto</div>
+                  <div className="text-xs text-white/60">Contoh hasil semua picture style</div>
+                </div>
               </button>
             </div>
           </div>
@@ -608,10 +613,11 @@ export default function CanonStylePage() {
       {/* Gallery Modal */}
       {showGallery && (
         <div 
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl overflow-y-auto"
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl overflow-y-auto overscroll-contain"
           onClick={() => setShowGallery(false)}
+          onTouchMove={(e) => e.stopPropagation()}
         >
-          <div className="container mx-auto px-4 py-20">
+          <div className="container mx-auto px-4 py-20" onClick={(e) => e.stopPropagation()}>
             {/* Close Button */}
             <button
               onClick={() => setShowGallery(false)}
