@@ -10,7 +10,7 @@ const pictureStyles = [
   {
     id: 1,
     name: "Fuji Natura 1600",
-    description: "Warna natural yang khas Fujifilm",
+    description: "Warna natural khas Fujifilm",
     beforeImage: "/canonstyle/fuji-natura-before.webp",
     afterImage: "/canonstyle/fuji-natura-after.webp"
   },
@@ -47,15 +47,15 @@ const pictureStyles = [
 const features = [
   {
     title: "57 Picture Style Premium",
-    description: "Koleksi lengkap picture style yang dirancang khusus untuk fotografer profesional"
+    description: "Koleksi lengkap picture style untuk fotografer profesional"
   },
   {
     title: "Film Look Authentic",
-    description: "Hasil warna yang terinspirasi dari film analog legendaris"
+    description: "Warna khas film analog legendaris langsung di foto Anda"
   },
   {
     title: "Langsung dari Kamera",
-    description: "Hemat waktu editing dengan hasil SOOC (Straight Out Of Camera) yang stunning"
+    description: "Hasil SOOC tanpa perlu editing panjang"
   }
 ];
 
@@ -77,11 +77,11 @@ const compatibleCameras = [
 const faqItems = [
   {
     question: "Apa itu Picture Style?",
-    answer: "Picture Style adalah profil warna yang dapat diinstal ke kamera Canon untuk menghasilkan warna dan kontras tertentu langsung dari kamera. Setiap kamera Canon memiliki 3 slot User Defined yang dapat diisi dengan custom picture style."
+    answer: "Picture Style adalah profil warna yang bisa diinstall ke kamera Canon untuk memberikan warna dan kontras tertentu langsung dari kamera. Setiap kamera Canon memiliki 3 slot User Defined yang bisa diisi custom picture style."
   },
   {
-    question: "Bagaimana cara menginstall Picture Style?",
-    answer: "Anda memerlukan kabel USB Canon dan software Canon EOS Utility. Hubungkan kamera ke komputer, buka EOS Utility, dan load file .pf3 ke slot User Def 1, 2, atau 3 di kamera Anda."
+    question: "Bagaimana cara install Picture Style?",
+    answer: "Anda memerlukan kabel USB Canon dan software Canon EOS Utility. Hubungkan kamera ke komputer, buka EOS Utility, lalu load file .pf3 ke slot User Def 1, 2, atau 3 di kamera Anda."
   },
   {
     question: "Apakah Picture Style bekerja untuk foto RAW?",
@@ -89,15 +89,15 @@ const faqItems = [
   },
   {
     question: "Apakah Picture Style bekerja untuk video?",
-    answer: "Ya! Picture Style akan langsung diterapkan ke video dan JPEG yang diambil. Setelah video atau JPEG diambil, picture style yang dipilih tidak dapat diubah, hanya bisa dilakukan color grading tambahan."
+    answer: "Ya! Picture Style langsung diterapkan ke video dan JPEG yang diambil. Setelah video atau JPEG diambil, picture style yang dipilih tidak dapat diubah, hanya bisa dilakukan color grading tambahan."
   },
   {
-    question: "Bisakah saya mengubah setting Picture Style?",
-    answer: "Tentu! Anda bebas menyesuaikan parameter seperti Contrast, Saturation, Color Tone, dan Sharpness sesuai selera dan kebutuhan Anda."
+    question: "Bisakah mengubah setting Picture Style?",
+    answer: "Tentu saja! Anda bebas menyesuaikan parameter seperti Contrast, Saturation, Color Tone, dan Sharpness sesuai kebutuhan."
   },
   {
-    question: "Apa yang saya dapatkan setelah membeli?",
-    answer: "Anda akan mendapatkan 57 file Picture Style (.pf3), panduan instalasi lengkap dalam Bahasa Indonesia, dan tips penggunaan untuk hasil maksimal."
+    question: "Apa yang didapat setelah pembelian?",
+    answer: "Anda akan mendapatkan 57 file Picture Style (.pf3) yang siap diinstall ke kamera."
   }
 ];
 
@@ -237,11 +237,11 @@ export default function CanonStylePage() {
           <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent leading-tight">
             Film Look Analog
             <br />
-            Langsung dari Kamera Canon
+            Langsung dari Kamera
           </h2>
           <p className="text-base md:text-xl text-white/60 mb-6 md:mb-8 max-w-3xl mx-auto px-4">
-            Transformasi foto digital Anda dengan warna dan karakter film analog legendaris. 
-            Hemat waktu editing dengan hasil SOOC yang memukau.
+            Berikan foto digital Anda warna dan karakter film analog legendaris langsung dari kamera. 
+            Hemat waktu editing dengan hasil langsung dari kamera.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center">
             <a 
@@ -449,7 +449,7 @@ export default function CanonStylePage() {
                 </div>
                 <div className="text-left">
                   <div className="text-base font-bold">Lihat Galeri Foto</div>
-                  <div className="text-xs text-white/60">Contoh hasil semua picture style</div>
+                  <div className="text-xs text-white/60">Contoh hasil dari semua picture style</div>
                 </div>
               </button>
             </div>
@@ -459,8 +459,8 @@ export default function CanonStylePage() {
           <div className="mt-8 p-4 bg-orange-500/10 border border-orange-500/30 rounded-xl flex items-start gap-3">
             <Info className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" />
             <p className="text-sm text-orange-200/80">
-              <strong>Catatan:</strong> Ini hanya menampilkan 5 dari 57 Picture Style yang tersedia. 
-              Setiap style memiliki karakteristik unik yang dapat disesuaikan dengan kebutuhan Anda.
+              <strong>Catatan:</strong> Ini hanya preview 5 dari 57 Picture Style yang tersedia. 
+              Setiap style memiliki karakter unik yang bisa disesuaikan.
             </p>
           </div>
         </div>
@@ -478,7 +478,7 @@ export default function CanonStylePage() {
           <div className="grid md:grid-cols-2 gap-6">
             {[
               "57 File Picture Style (.pf3)",
-              "Kompatibel dengan semua kamera Canon yang support custom PS"
+              "Kompatibel dengan semua kamera Canon yang support custom Picture Style"
             ].map((item, index) => (
               <div key={index} className="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
                 <div className="w-6 h-6 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center flex-shrink-0">
@@ -496,10 +496,10 @@ export default function CanonStylePage() {
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Kompatibilitas Kamera
+              Kamera yang Didukung
             </h2>
             <p className="text-xl text-white/60">
-              Mendukung hampir semua kamera Canon modern
+              Support hampir semua kamera Canon modern
             </p>
           </div>
 
@@ -519,7 +519,7 @@ export default function CanonStylePage() {
             <p className="text-center text-white/80">
               <strong>Tidak yakin kamera Anda kompatibel?</strong>
               <br />
-              Cek apakah kamera Anda memiliki menu <span className="text-orange-400">User Def. 1, 2, 3</span> di Picture Style settings.
+              Cek apakah ada menu <span className="text-orange-400">User Def. 1, 2, 3</span> di Picture Style settings.
             </p>
           </div>
         </div>
@@ -530,7 +530,7 @@ export default function CanonStylePage() {
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Pertanyaan yang Sering Ditanyakan
+              Yang Sering Ditanya
             </h2>
           </div>
 
@@ -578,13 +578,13 @@ export default function CanonStylePage() {
               <div className="text-5xl md:text-6xl font-bold text-orange-400 mb-2">
                 Rp 175.000
               </div>
-              <p className="text-white/60">Pembayaran satu kali, milik selamanya</p>
+              <p className="text-white/60">One Time Purchase</p>
             </div>
 
             <div className="space-y-3 mb-8 text-left max-w-md mx-auto">
               {[
                 "57 Picture Style premium (.pf3)",
-                "Kompatibel semua kamera Canon"
+                "Support semua kamera Canon"
               ].map((item, index) => (
                 <div key={index} className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-orange-400 flex-shrink-0" />
@@ -594,7 +594,7 @@ export default function CanonStylePage() {
             </div>
 
             <a
-              href="https://wa.me/6281234567890?text=Halo,%20saya%20ingin%20membeli%20Canon%20Picture%20Style%20Package"
+              href="https://wa.me/625183186370?text=Halo,%20saya%20ingin%20membeli%20Canon%20Picture%20Style%20Package"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-orange-500/50 transition-all hover:scale-105"
@@ -633,7 +633,7 @@ export default function CanonStylePage() {
                 Galeri Foto Picture Style
               </h2>
               <p className="text-white/60">
-                Contoh hasil foto menggunakan berbagai picture style
+                Contoh hasil foto pakai berbagai picture style
               </p>
             </div>
 
@@ -695,7 +695,7 @@ export default function CanonStylePage() {
       {/* Footer */}
       <footer className="py-12 px-4 border-t border-white/10">
         <div className="container mx-auto max-w-6xl text-center text-white/40">
-          <p className="mb-2">© 2024 Pixelas Studio. All rights reserved.</p>
+          <p className="mb-2">© 2025 Pixelas Studio. All rights reserved.</p>
           <p className="text-sm">
             Canon Picture Style Package - Transformasi foto digital Anda dengan film look analog
           </p>
