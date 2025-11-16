@@ -46,17 +46,14 @@ const pictureStyles = [
 
 const features = [
   {
-    icon: Camera,
     title: "57 Picture Style Premium",
     description: "Koleksi lengkap picture style yang dirancang khusus untuk fotografer profesional"
   },
   {
-    icon: Palette,
     title: "Film Look Authentic",
     description: "Hasil warna yang terinspirasi dari film analog legendaris"
   },
   {
-    icon: Zap,
     title: "Langsung dari Kamera",
     description: "Hemat waktu editing dengan hasil SOOC (Straight Out Of Camera) yang stunning"
   }
@@ -247,17 +244,14 @@ export default function CanonStylePage() {
       {/* Features */}
       <section className="py-12 md:py-20 px-4 bg-gradient-to-b from-black to-orange-950/20">
         <div className="container mx-auto max-w-6xl">
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {features.map((feature, index) => (
               <div 
                 key={index}
-                className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-orange-500/50 transition-all"
+                className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-orange-500/50 transition-all text-center"
               >
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center mb-4">
-                  <feature.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-white/60">{feature.description}</p>
+                <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
+                <p className="text-sm text-white/60">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -448,12 +442,8 @@ export default function CanonStylePage() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              "57 File Picture Style (.pf2 & .pf3)",
-              "Kompatibel dengan semua kamera Canon yang support custom PS",
-              "Panduan instalasi lengkap dalam Bahasa Indonesia",
-              "Tips penggunaan untuk hasil maksimal",
-              "Update gratis jika ada perbaikan",
-              "Support via WhatsApp untuk bantuan instalasi"
+              "57 File Picture Style (.pf3)",
+              "Kompatibel dengan semua kamera Canon yang support custom PS"
             ].map((item, index) => (
               <div key={index} className="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
                 <div className="w-6 h-6 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center flex-shrink-0">
@@ -558,10 +548,8 @@ export default function CanonStylePage() {
 
             <div className="space-y-3 mb-8 text-left max-w-md mx-auto">
               {[
-                "57 Picture Style premium",
-                "Panduan instalasi lengkap",
-                "Update gratis selamanya",
-                "Support via WhatsApp"
+                "57 Picture Style premium (.pf3)",
+                "Kompatibel semua kamera Canon"
               ].map((item, index) => (
                 <div key={index} className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-orange-400 flex-shrink-0" />
