@@ -109,6 +109,7 @@ export default function CanonStylePage() {
   const [isBeforeView, setIsBeforeView] = useState(true);
   const [sliderPosition, setSliderPosition] = useState(50);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const currentStyle = pictureStyles[currentStyleIndex];
 
@@ -124,6 +125,30 @@ export default function CanonStylePage() {
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSliderPosition(Number(e.target.value));
+  };
+
+  const handleMouseDown = () => {
+    setIsDragging(true);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = (x / rect.width) * 100;
+    setSliderPosition(Math.min(Math.max(percentage, 0), 100));
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.touches[0].clientX - rect.left;
+    const percentage = (x / rect.width) * 100;
+    setSliderPosition(Math.min(Math.max(percentage, 0), 100));
   };
 
   return (
@@ -214,16 +239,39 @@ export default function CanonStylePage() {
             </div>
 
             {/* Image Comparison Slider */}
-            <div className="relative aspect-[3/4] max-w-2xl mx-auto rounded-2xl overflow-hidden mb-6 bg-white/5">
+            <div 
+              className="relative aspect-[3/4] max-w-2xl mx-auto rounded-2xl overflow-hidden mb-6 bg-white/5 select-none"
+              onMouseDown={handleMouseDown}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseUp}
+              onTouchMove={handleTouchMove}
+            >
               {/* Before Image (Full) */}
               <div className="absolute inset-0">
-                <div className="relative w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                  <div className="text-center">
-                    <Camera className="w-16 h-16 text-white/20 mx-auto mb-4" />
-                    <p className="text-white/40">Before - Original</p>
-                    <p className="text-white/20 text-sm mt-2">Gambar contoh akan ditambahkan</p>
-                  </div>
-                </div>
+                <Image
+                  src={currentStyle.beforeImage}
+                  alt={`${currentStyle.name} - Before`}
+                  fill
+                  className="object-cover"
+                  priority
+                  onError={(e) => {
+                    // Fallback to placeholder if image not found
+                    const target = e.target as HTMLElement;
+                    target.style.display = 'none';
+                    const parent = target.parentElement;
+                    if (parent) {
+                      parent.innerHTML = `
+                        <div class="relative w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                          <div class="text-center">
+                            <p class="text-white/40">Before - Original</p>
+                            <p class="text-white/20 text-sm mt-2">Tambahkan: ${currentStyle.beforeImage.split('/').pop()}</p>
+                          </div>
+                        </div>
+                      `;
+                    }
+                  }}
+                />
               </div>
 
               {/* After Image (Clipped) */}
@@ -231,33 +279,49 @@ export default function CanonStylePage() {
                 className="absolute inset-0"
                 style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
               >
-                <div className="relative w-full h-full bg-gradient-to-br from-orange-900 to-red-900 flex items-center justify-center">
-                  <div className="text-center">
-                    <Palette className="w-16 h-16 text-white/40 mx-auto mb-4" />
-                    <p className="text-white/60">After - {currentStyle.name}</p>
-                    <p className="text-white/30 text-sm mt-2">Gambar contoh akan ditambahkan</p>
-                  </div>
-                </div>
+                <Image
+                  src={currentStyle.afterImage}
+                  alt={`${currentStyle.name} - After`}
+                  fill
+                  className="object-cover"
+                  priority
+                  onError={(e) => {
+                    // Fallback to placeholder if image not found
+                    const target = e.target as HTMLElement;
+                    target.style.display = 'none';
+                    const parent = target.parentElement;
+                    if (parent) {
+                      parent.innerHTML = `
+                        <div class="relative w-full h-full bg-gradient-to-br from-orange-900 to-red-900 flex items-center justify-center">
+                          <div class="text-center">
+                            <p class="text-white/60">After - ${currentStyle.name}</p>
+                            <p class="text-white/30 text-sm mt-2">Tambahkan: ${currentStyle.afterImage.split('/').pop()}</p>
+                          </div>
+                        </div>
+                      `;
+                    }
+                  }}
+                />
               </div>
 
               {/* Slider Handle */}
               <div 
-                className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize"
+                className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize pointer-events-none z-10"
                 style={{ left: `${sliderPosition}%` }}
               >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center pointer-events-auto cursor-grab active:cursor-grabbing">
                   <div className="flex gap-1">
-                    <div className="w-0.5 h-4 bg-black"></div>
-                    <div className="w-0.5 h-4 bg-black"></div>
+                    <div className="w-0.5 h-5 bg-black"></div>
+                    <div className="w-0.5 h-5 bg-black"></div>
                   </div>
                 </div>
               </div>
 
               {/* Labels */}
-              <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-sm">
+              <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-sm pointer-events-none z-10">
                 Before
               </div>
-              <div className="absolute top-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-sm">
+              <div className="absolute top-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-sm pointer-events-none z-10">
                 After
               </div>
             </div>
