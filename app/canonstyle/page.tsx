@@ -11,36 +11,36 @@ const pictureStyles = [
     id: 1,
     name: "Kodak Ektar",
     description: "Warna yang kaya dan saturasi tinggi, sempurna untuk landscape dan portrait",
-    beforeImage: "/canonstyle/kodak-ektar-before.jpg",
-    afterImage: "/canonstyle/kodak-ektar-after.jpg"
+    beforeImage: "/canonstyle/kodak-ektar-before.webp",
+    afterImage: "/canonstyle/kodak-ektar-after.webp"
   },
   {
     id: 2,
     name: "Kodak Alaris",
     description: "Tone hangat dengan karakter film klasik yang timeless",
-    beforeImage: "/canonstyle/kodak-alaris-before.jpg",
-    afterImage: "/canonstyle/kodak-alaris-after.jpg"
+    beforeImage: "/canonstyle/kodak-alaris-before.webp",
+    afterImage: "/canonstyle/kodak-alaris-after.webp"
   },
   {
     id: 3,
     name: "Kodak Satin",
     description: "Hasil lembut dengan kontras yang seimbang",
-    beforeImage: "/canonstyle/kodak-satin-before.jpg",
-    afterImage: "/canonstyle/kodak-satin-after.jpg"
+    beforeImage: "/canonstyle/kodak-satin-before.webp",
+    afterImage: "/canonstyle/kodak-satin-after.webp"
   },
   {
     id: 4,
     name: "Fuji Natura 1600",
-    description: "Grain halus dengan warna natural yang khas Fujifilm",
-    beforeImage: "/canonstyle/fuji-natura-before.jpg",
-    afterImage: "/canonstyle/fuji-natura-after.jpg"
+    description: "Warna natural yang khas Fujifilm",
+    beforeImage: "/canonstyle/fuji-natura-before.webp",
+    afterImage: "/canonstyle/fuji-natura-after.webp"
   },
   {
     id: 5,
     name: "Puretone 2",
     description: "Tone bersih dengan reproduksi warna yang akurat",
-    beforeImage: "/canonstyle/puretone-before.jpg",
-    afterImage: "/canonstyle/puretone-after.jpg"
+    beforeImage: "/canonstyle/puretone-before.webp",
+    afterImage: "/canonstyle/puretone-after.webp"
   }
 ];
 
@@ -84,7 +84,7 @@ const faqItems = [
   },
   {
     question: "Bagaimana cara menginstall Picture Style?",
-    answer: "Anda memerlukan kabel USB Canon dan software Canon EOS Utility. Hubungkan kamera ke komputer, buka EOS Utility, dan load file .pf2 atau .pf3 ke slot User Def 1, 2, atau 3 di kamera Anda."
+    answer: "Anda memerlukan kabel USB Canon dan software Canon EOS Utility. Hubungkan kamera ke komputer, buka EOS Utility, dan load file .pf3 ke slot User Def 1, 2, atau 3 di kamera Anda."
   },
   {
     question: "Apakah Picture Style bekerja untuk foto RAW?",
@@ -100,7 +100,7 @@ const faqItems = [
   },
   {
     question: "Apa yang saya dapatkan setelah membeli?",
-    answer: "Anda akan mendapatkan 57 file Picture Style (.pf2/.pf3), panduan instalasi lengkap dalam Bahasa Indonesia, dan tips penggunaan untuk hasil maksimal."
+    answer: "Anda akan mendapatkan 57 file Picture Style (.pf3), panduan instalasi lengkap dalam Bahasa Indonesia, dan tips penggunaan untuk hasil maksimal."
   }
 ];
 
@@ -214,7 +214,7 @@ export default function CanonStylePage() {
             </div>
 
             {/* Image Comparison Slider */}
-            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-6 bg-white/5">
+            <div className="relative aspect-[3/4] max-w-2xl mx-auto rounded-2xl overflow-hidden mb-6 bg-white/5">
               {/* Before Image (Full) */}
               <div className="absolute inset-0">
                 <div className="relative w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">

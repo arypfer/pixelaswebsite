@@ -6,32 +6,33 @@ Letakkan gambar before/after di folder ini dengan nama sebagai berikut:
 ### Gambar yang Dibutuhkan:
 
 1. **Kodak Ektar**
-   - `kodak-ektar-before.jpg` - Foto original tanpa picture style
-   - `kodak-ektar-after.jpg` - Foto dengan Kodak Ektar picture style
+   - `kodak-ektar-before.webp` - Foto original tanpa picture style
+   - `kodak-ektar-after.webp` - Foto dengan Kodak Ektar picture style
 
 2. **Kodak Alaris**
-   - `kodak-alaris-before.jpg` - Foto original tanpa picture style
-   - `kodak-alaris-after.jpg` - Foto dengan Kodak Alaris picture style
+   - `kodak-alaris-before.webp` - Foto original tanpa picture style
+   - `kodak-alaris-after.webp` - Foto dengan Kodak Alaris picture style
 
 3. **Kodak Satin**
-   - `kodak-satin-before.jpg` - Foto original tanpa picture style
-   - `kodak-satin-after.jpg` - Foto dengan Kodak Satin picture style
+   - `kodak-satin-before.webp` - Foto original tanpa picture style
+   - `kodak-satin-after.webp` - Foto dengan Kodak Satin picture style
 
 4. **Fuji Natura 1600**
-   - `fuji-natura-before.jpg` - Foto original tanpa picture style
-   - `fuji-natura-after.jpg` - Foto dengan Fuji Natura 1600 picture style
+   - `fuji-natura-before.webp` - Foto original tanpa picture style
+   - `fuji-natura-after.webp` - Foto dengan Fuji Natura 1600 picture style
 
 5. **Puretone 2**
-   - `puretone-before.jpg` - Foto original tanpa picture style
-   - `puretone-after.jpg` - Foto dengan Puretone 2 picture style
+   - `puretone-before.webp` - Foto original tanpa picture style
+   - `puretone-after.webp` - Foto dengan Puretone 2 picture style
 
 ## Rekomendasi Gambar:
 
 ### Spesifikasi Teknis:
-- **Resolusi**: Minimal 1920x1080px (Full HD)
-- **Aspect Ratio**: 16:9 (landscape)
-- **Format**: JPG atau PNG
-- **Ukuran File**: Maksimal 500KB per gambar (untuk loading cepat)
+- **Resolusi**: Minimal 1080x1440px atau 1200x1600px
+- **Aspect Ratio**: 3:4 (portrait/vertical)
+- **Orientasi**: Vertikal (portrait)
+- **Format**: WebP (lebih efisien dari JPG/PNG)
+- **Ukuran File**: Maksimal 300KB per gambar (WebP lebih kecil)
 - **Kualitas**: 80-85% compression
 
 ### Tips Memilih Foto:
@@ -57,10 +58,11 @@ Letakkan gambar before/after di folder ini dengan nama sebagai berikut:
 5. Rename file sesuai dengan naming convention di atas
 6. Letakkan semua gambar di folder `public/canonstyle/`
 
-## Tools untuk Resize & Compress:
-- **Online**: TinyPNG, Squoosh.app, Compressor.io
-- **Software**: Adobe Photoshop, GIMP, XnConvert
-- **Batch Processing**: ImageMagick, IrfanView
+## Tools untuk Convert ke WebP & Compress:
+- **Online**: Squoosh.app (recommended for WebP), CloudConvert, Online-Convert
+- **Software**: Adobe Photoshop (Save for Web), GIMP, XnConvert
+- **Batch Processing**: ImageMagick, IrfanView, cwebp (Google's WebP converter)
+- **Command Line**: `cwebp -q 80 input.jpg -o output.webp`
 
 ## Setelah Gambar Ditambahkan:
 Website akan otomatis menampilkan gambar-gambar tersebut dengan fitur before/after slider yang interaktif.
