@@ -9,38 +9,38 @@ import Link from "next/link";
 const pictureStyles = [
   {
     id: 1,
-    name: "Kodak Ektar",
-    description: "Warna yang kaya dan saturasi tinggi, sempurna untuk landscape dan portrait",
-    beforeImage: "/canonstyle/kodak-ektar-before.webp",
-    afterImage: "/canonstyle/kodak-ektar-after.webp"
-  },
-  {
-    id: 2,
-    name: "Kodak Alaris",
-    description: "Tone hangat dengan karakter film klasik yang timeless",
-    beforeImage: "/canonstyle/kodak-alaris-before.webp",
-    afterImage: "/canonstyle/kodak-alaris-after.webp"
-  },
-  {
-    id: 3,
-    name: "Kodak Satin",
-    description: "Hasil lembut dengan kontras yang seimbang",
-    beforeImage: "/canonstyle/kodak-satin-before.webp",
-    afterImage: "/canonstyle/kodak-satin-after.webp"
-  },
-  {
-    id: 4,
     name: "Fuji Natura 1600",
     description: "Warna natural yang khas Fujifilm",
     beforeImage: "/canonstyle/fuji-natura-before.webp",
     afterImage: "/canonstyle/fuji-natura-after.webp"
   },
   {
-    id: 5,
+    id: 2,
+    name: "Kodak Ektar",
+    description: "Warna yang kaya dan saturasi tinggi, sempurna untuk landscape dan portrait",
+    beforeImage: "/canonstyle/kodak-ektar-before.webp",
+    afterImage: "/canonstyle/kodak-ektar-after.webp"
+  },
+  {
+    id: 3,
     name: "Puretone 2",
     description: "Tone bersih dengan reproduksi warna yang akurat",
     beforeImage: "/canonstyle/puretone-before.webp",
     afterImage: "/canonstyle/puretone-after.webp"
+  },
+  {
+    id: 4,
+    name: "Kodak Satin",
+    description: "Hasil lembut dengan kontras yang seimbang",
+    beforeImage: "/canonstyle/kodak-satin-before.webp",
+    afterImage: "/canonstyle/kodak-satin-after.webp"
+  },
+  {
+    id: 5,
+    name: "Kodak Alaris",
+    description: "Tone hangat dengan karakter film klasik yang timeless",
+    beforeImage: "/canonstyle/kodak-alaris-before.webp",
+    afterImage: "/canonstyle/kodak-alaris-after.webp"
   }
 ];
 
@@ -176,8 +176,28 @@ export default function CanonStylePage() {
     };
   }, [isDragging]);
 
+  // Preload all images on mount
+  useEffect(() => {
+    pictureStyles.forEach((style) => {
+      const beforeImg = new window.Image();
+      const afterImg = new window.Image();
+      beforeImg.src = style.beforeImage;
+      afterImg.src = style.afterImage;
+    });
+  }, []);
+
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* Preload all images (hidden) */}
+      <div className="hidden">
+        {pictureStyles.map((style) => (
+          <div key={style.id}>
+            <Image src={style.beforeImage} alt="" width={1} height={1} priority />
+            <Image src={style.afterImage} alt="" width={1} height={1} priority />
+          </div>
+        ))}
+      </div>
+
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
@@ -370,10 +390,11 @@ export default function CanonStylePage() {
             <div className="flex items-center justify-between">
               <button
                 onClick={prevStyle}
-                className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 rounded-full transition-all border border-white/10"
+                className="flex items-center justify-center w-12 h-12 md:w-auto md:px-6 md:py-3 bg-white/5 hover:bg-white/10 rounded-full transition-all border border-white/10"
+                aria-label="Previous"
               >
                 <ChevronLeft className="w-5 h-5" />
-                <span>Sebelumnya</span>
+                <span className="hidden md:inline ml-2">Previous</span>
               </button>
 
               <div className="flex gap-2">
@@ -389,15 +410,17 @@ export default function CanonStylePage() {
                         ? 'bg-orange-500 w-8' 
                         : 'bg-white/20 hover:bg-white/40'
                     }`}
+                    aria-label={`Go to style ${index + 1}`}
                   />
                 ))}
               </div>
 
               <button
                 onClick={nextStyle}
-                className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 rounded-full transition-all border border-white/10"
+                className="flex items-center justify-center w-12 h-12 md:w-auto md:px-6 md:py-3 bg-white/5 hover:bg-white/10 rounded-full transition-all border border-white/10"
+                aria-label="Next"
               >
-                <span>Selanjutnya</span>
+                <span className="hidden md:inline mr-2">Next</span>
                 <ChevronRight className="w-5 h-5" />
               </button>
             </div>
