@@ -295,13 +295,78 @@ export default function CanonStylePage() {
               Lihat Contoh Hasil
             </a>
           </div>
-          <div className="mt-4 flex justify-center">
+          
+          {/* Gallery Thumbnails Preview */}
+          <div className="mt-8 md:mt-12 max-w-4xl mx-auto">
+            <div className="text-center mb-4">
+              <h3 className="text-lg md:text-xl font-semibold text-white/80 mb-1">Galeri Foto Picture Style</h3>
+              <p className="text-sm text-white/50">Klik untuk melihat lebih banyak contoh hasil</p>
+            </div>
             <button
               onClick={() => setShowGallery(true)}
-              className="group px-6 md:px-8 py-3 md:py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-orange-500/50 rounded-full font-semibold transition-all flex items-center gap-3 text-sm md:text-base"
+              className="group w-full relative overflow-hidden rounded-2xl border-2 border-white/10 hover:border-orange-500/50 transition-all bg-white/5 hover:bg-white/10 p-2"
             >
-              <Camera className="w-5 h-5 text-orange-400" />
-              <span>Lihat Galeri Foto</span>
+              <div className="grid grid-cols-4 gap-2">
+                {/* Thumbnail 1 */}
+                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-gradient-to-br from-orange-900/20 to-red-900/20">
+                  <Image
+                    src="/canonstyle/fuji-natura-after.webp"
+                    alt="Gallery preview 1"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      const target = e.target as HTMLElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                </div>
+                {/* Thumbnail 2 */}
+                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-gradient-to-br from-orange-900/20 to-red-900/20">
+                  <Image
+                    src="/canonstyle/kodak-ektar-after.webp"
+                    alt="Gallery preview 2"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      const target = e.target as HTMLElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                </div>
+                {/* Thumbnail 3 */}
+                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-gradient-to-br from-orange-900/20 to-red-900/20">
+                  <Image
+                    src="/canonstyle/puretone-after.webp"
+                    alt="Gallery preview 3"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      const target = e.target as HTMLElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                </div>
+                {/* Thumbnail 4 with overlay */}
+                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-gradient-to-br from-orange-900/20 to-red-900/20">
+                  <Image
+                    src="/canonstyle/kodak-satin-after.webp"
+                    alt="Gallery preview 4"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      const target = e.target as HTMLElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center">
+                    <Camera className="w-8 h-8 md:w-10 md:h-10 text-orange-400 mb-2" />
+                    <span className="text-white font-bold text-sm md:text-base">Lihat Semua</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Hover effect overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-orange-500/0 to-orange-500/0 group-hover:from-orange-500/10 group-hover:to-transparent transition-all pointer-events-none"></div>
             </button>
           </div>
         </div>
