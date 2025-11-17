@@ -295,6 +295,15 @@ export default function CanonStylePage() {
               Lihat Contoh Hasil
             </a>
           </div>
+          <div className="mt-4 flex justify-center">
+            <button
+              onClick={() => setShowGallery(true)}
+              className="group px-6 md:px-8 py-3 md:py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-orange-500/50 rounded-full font-semibold transition-all flex items-center gap-3 text-sm md:text-base"
+            >
+              <Camera className="w-5 h-5 text-orange-400" />
+              <span>Lihat Galeri Foto</span>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -473,22 +482,6 @@ export default function CanonStylePage() {
               >
                 <span className="hidden md:inline mr-2">Next</span>
                 <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Gallery Button - Better Placement */}
-            <div className="mt-8 flex justify-center">
-              <button
-                onClick={() => setShowGallery(true)}
-                className="group px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-orange-500/50 rounded-2xl font-semibold transition-all flex items-center gap-3"
-              >
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Camera className="w-5 h-5 text-white" />
-                </div>
-                <div className="text-left">
-                  <div className="text-base font-bold">Lihat Galeri Foto</div>
-                  <div className="text-xs text-white/60">Contoh hasil dari semua picture style</div>
-                </div>
               </button>
             </div>
           </div>
