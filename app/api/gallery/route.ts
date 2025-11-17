@@ -9,14 +9,14 @@ export async function GET(request: NextRequest) {
 
     // Map style IDs to folder names and display names
     const styleMap = [
-      { id: '1', folder: 'fuji-natura-1600', name: 'Fuji Natura 1600' },
-      { id: '2', folder: 'kodak-ektar', name: 'Kodak Ektar' },
-      { id: '3', folder: 'puretone-2', name: 'Puretone 2' },
-      { id: '4', folder: 'kodak-satin', name: 'Kodak Satin' },
-      { id: '5', folder: 'kodak-alaris', name: 'Kodak Alaris' },
-      { id: '6', folder: 'clean-film', name: 'Clean Film' },
-      { id: '7', folder: 'fuji-5', name: 'Fuji 5' },
-      { id: '8', folder: 'silvergreen', name: 'Silvergreen' }
+      { id: '1', folder: 'fuji-5', name: 'Fuji 5' },
+      { id: '2', folder: 'clean-film', name: 'Clean Film' },
+      { id: '3', folder: 'kodak-alaris', name: 'Kodak Alaris' },
+      { id: '4', folder: 'kodak-ektar', name: 'Kodak Ektar' },
+      { id: '5', folder: 'silvergreen', name: 'Silvergreen' },
+      { id: '6', folder: 'fuji-natura-1600', name: 'Fuji Natura 1600' },
+      { id: '7', folder: 'puretone-2', name: 'Puretone 2' },
+      { id: '8', folder: 'kodak-satin', name: 'Kodak Satin' }
     ];
 
     // If all=true, return all galleries

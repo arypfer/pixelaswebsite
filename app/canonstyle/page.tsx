@@ -9,59 +9,59 @@ import Link from "next/link";
 const pictureStyles = [
   {
     id: 1,
-    name: "Fuji Natura 1600",
-    description: "Warna natural khas Fujifilm",
-    beforeImage: "/canonstyle/fuji-natura-before.webp",
-    afterImage: "/canonstyle/fuji-natura-after.webp"
-  },
-  {
-    id: 2,
-    name: "Kodak Ektar",
-    description: "Warna yang kaya dan saturasi tinggi, sempurna untuk landscape dan portrait",
-    beforeImage: "/canonstyle/kodak-ektar-before.webp",
-    afterImage: "/canonstyle/kodak-ektar-after.webp"
-  },
-  {
-    id: 3,
-    name: "Puretone 2",
-    description: "Tone bersih dengan reproduksi warna yang akurat",
-    beforeImage: "/canonstyle/puretone-before.webp",
-    afterImage: "/canonstyle/puretone-after.webp"
-  },
-  {
-    id: 4,
-    name: "Kodak Satin",
-    description: "Hasil lembut dengan kontras yang seimbang",
-    beforeImage: "/canonstyle/kodak-satin-before.webp",
-    afterImage: "/canonstyle/kodak-satin-after.webp"
-  },
-  {
-    id: 5,
-    name: "Kodak Alaris",
-    description: "Tone hangat dengan karakter film klasik yang timeless",
-    beforeImage: "/canonstyle/kodak-alaris-before.webp",
-    afterImage: "/canonstyle/kodak-alaris-after.webp"
-  },
-  {
-    id: 6,
-    name: "Clean Film",
-    description: "Warna bersih dan natural dengan tone film yang elegan",
-    beforeImage: "/canonstyle/clean-film-before.webp",
-    afterImage: "/canonstyle/clean-film-after.webp"
-  },
-  {
-    id: 7,
     name: "Fuji 5",
     description: "Karakter warna Fujifilm dengan saturasi yang seimbang",
     beforeImage: "/canonstyle/fuji-5-before.webp",
     afterImage: "/canonstyle/fuji-5-after.webp"
   },
   {
-    id: 8,
+    id: 2,
+    name: "Clean Film",
+    description: "Warna bersih dan natural dengan tone film yang elegan",
+    beforeImage: "/canonstyle/clean-film-before.webp",
+    afterImage: "/canonstyle/clean-film-after.webp"
+  },
+  {
+    id: 3,
+    name: "Kodak Alaris",
+    description: "Tone hangat dengan karakter film klasik yang timeless",
+    beforeImage: "/canonstyle/kodak-alaris-before.webp",
+    afterImage: "/canonstyle/kodak-alaris-after.webp"
+  },
+  {
+    id: 4,
+    name: "Kodak Ektar",
+    description: "Warna yang kaya dan saturasi tinggi, sempurna untuk landscape dan portrait",
+    beforeImage: "/canonstyle/kodak-ektar-before.webp",
+    afterImage: "/canonstyle/kodak-ektar-after.webp"
+  },
+  {
+    id: 5,
     name: "Silvergreen",
     description: "Tone hijau silver yang unik dan artistik",
     beforeImage: "/canonstyle/silvergreen-before.webp",
     afterImage: "/canonstyle/silvergreen-after.webp"
+  },
+  {
+    id: 6,
+    name: "Fuji Natura 1600",
+    description: "Warna natural khas Fujifilm",
+    beforeImage: "/canonstyle/fuji-natura-before.webp",
+    afterImage: "/canonstyle/fuji-natura-after.webp"
+  },
+  {
+    id: 7,
+    name: "Puretone 2",
+    description: "Tone bersih dengan reproduksi warna yang akurat",
+    beforeImage: "/canonstyle/puretone-before.webp",
+    afterImage: "/canonstyle/puretone-after.webp"
+  },
+  {
+    id: 8,
+    name: "Kodak Satin",
+    description: "Hasil lembut dengan kontras yang seimbang",
+    beforeImage: "/canonstyle/kodak-satin-before.webp",
+    afterImage: "/canonstyle/kodak-satin-after.webp"
   }
 ];
 
@@ -281,13 +281,7 @@ export default function CanonStylePage() {
             Berikan foto digital Anda warna dan karakter film analog legendaris langsung dari kamera. 
             Hemat waktu editing dengan hasil langsung dari kamera.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center">
-            <a 
-              href="#beli" 
-              className="w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full font-semibold hover:shadow-lg hover:shadow-orange-500/50 transition-all text-center text-sm md:text-base"
-            >
-              Beli Sekarang - Rp 175.000
-            </a>
+          <div className="flex justify-center">
             <a 
               href="#showcase" 
               className="w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 bg-white/5 border border-white/10 rounded-full font-semibold hover:bg-white/10 transition-all text-center text-sm md:text-base"
@@ -722,7 +716,7 @@ export default function CanonStylePage() {
             
             <div className="mb-6">
               <div className="text-5xl md:text-6xl font-bold text-orange-400 mb-2">
-                Rp 175.000
+                Rp 135.000
               </div>
               <p className="text-white/60">One Time Purchase</p>
             </div>
@@ -797,7 +791,7 @@ export default function CanonStylePage() {
                     </div>
 
                     {/* Gallery Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                       {gallery.images.map((imageSrc, imageIndex) => (
                         <div 
                           key={imageIndex}
