@@ -13,7 +13,10 @@ export async function GET(request: NextRequest) {
       { id: '2', folder: 'kodak-ektar', name: 'Kodak Ektar' },
       { id: '3', folder: 'puretone-2', name: 'Puretone 2' },
       { id: '4', folder: 'kodak-satin', name: 'Kodak Satin' },
-      { id: '5', folder: 'kodak-alaris', name: 'Kodak Alaris' }
+      { id: '5', folder: 'kodak-alaris', name: 'Kodak Alaris' },
+      { id: '6', folder: 'clean-film', name: 'Clean Film' },
+      { id: '7', folder: 'fuji-5', name: 'Fuji 5' },
+      { id: '8', folder: 'silvergreen', name: 'Silvergreen' }
     ];
 
     // If all=true, return all galleries

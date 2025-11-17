@@ -41,6 +41,27 @@ const pictureStyles = [
     description: "Tone hangat dengan karakter film klasik yang timeless",
     beforeImage: "/canonstyle/kodak-alaris-before.webp",
     afterImage: "/canonstyle/kodak-alaris-after.webp"
+  },
+  {
+    id: 6,
+    name: "Clean Film",
+    description: "Warna bersih dan natural dengan tone film yang elegan",
+    beforeImage: "/canonstyle/clean-film-before.webp",
+    afterImage: "/canonstyle/clean-film-after.webp"
+  },
+  {
+    id: 7,
+    name: "Fuji 5",
+    description: "Karakter warna Fujifilm dengan saturasi yang seimbang",
+    beforeImage: "/canonstyle/fuji-5-before.webp",
+    afterImage: "/canonstyle/fuji-5-after.webp"
+  },
+  {
+    id: 8,
+    name: "Silvergreen",
+    description: "Tone hijau silver yang unik dan artistik",
+    beforeImage: "/canonstyle/silvergreen-before.webp",
+    afterImage: "/canonstyle/silvergreen-after.webp"
   }
 ];
 
@@ -459,7 +480,7 @@ export default function CanonStylePage() {
           <div className="mt-8 p-4 bg-orange-500/10 border border-orange-500/30 rounded-xl flex items-start gap-3">
             <Info className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" />
             <p className="text-sm text-orange-200/80">
-              <strong>Catatan:</strong> Ini hanya preview 5 dari 57 Picture Style yang tersedia. 
+              <strong>Catatan:</strong> Ini hanya preview 8 dari 57 Picture Style yang tersedia. 
               Setiap style memiliki karakter unik yang bisa disesuaikan.
             </p>
           </div>
