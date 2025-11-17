@@ -67,7 +67,7 @@ const pictureStyles = [
 
 const features = [
   {
-    title: "57 Picture Style Premium",
+    title: "48 Picture Style Premium",
     description: "Koleksi lengkap picture style untuk fotografer profesional"
   },
   {
@@ -78,6 +78,22 @@ const features = [
     title: "Langsung dari Kamera",
     description: "Hasil SOOC tanpa perlu editing panjang"
   }
+];
+
+const pictureStyleFiles = [
+  { category: "Agfa Series", files: ["Agfa", "Agfa 2", "Agfa 3"] },
+  { category: "Fuji Series", files: ["Fuji 1", "Fuji 2", "Fuji 3", "Fuji 4", "Fuji 5", "FUJI ASTIA 100F 5", "Fuji Natura 1600", "Fuji Superia"] },
+  { category: "Kodak Series", files: ["Kodak 1", "Kodak 2", "Kodak 3", "Kodak Alaris", "Kodak Ectar", "Kodak Gray", "Kodak Gray 2", "Kodak Satin"] },
+  { category: "Konica Series", files: ["Konica 1", "Konica 2", "Konica 3"] },
+  { category: "Green Series", files: ["GreenGrass", "GreenLand", "GreenStone"] },
+  { category: "SilverGreen Series", files: ["SilverGreen", "SilverGreen 2", "SilverGreen 3"] },
+  { category: "Flat Series", files: ["FlatColors", "FlatDark", "FlatExperimental", "SuperFlat"] },
+  { category: "FireCrack Series", files: ["FireCrack", "FireCrack2", "FireCrack3"] },
+  { category: "DeepMatte Series", files: ["DeepMatte", "DeepMatte 2"] },
+  { category: "PureTone Series", files: ["PureTone", "PureTone 2"] },
+  { category: "NeoPortra Series", files: ["NeoPortra", "NeoPortra 2"] },
+  { category: "Nikon Simulation", files: ["Nikon Simulation", "Nikon Simulation 2"] },
+  { category: "Other Styles", files: ["Cameroon", "CinematicFlat", "CleanFilm", "MoonBlood", "WarmShade"] }
 ];
 
 const compatibleCameras = [
@@ -118,7 +134,7 @@ const faqItems = [
   },
   {
     question: "Apa yang didapat setelah pembelian?",
-    answer: "Anda akan mendapatkan 57 file Picture Style (.pf3) yang siap diinstall ke kamera."
+    answer: "Anda akan mendapatkan 48 file Picture Style (.pf3) yang siap diinstall ke kamera."
   }
 ];
 
@@ -130,6 +146,7 @@ export default function CanonStylePage() {
   const [isDragging, setIsDragging] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [galleryImages, setGalleryImages] = useState<Array<{styleName: string, images: string[]}>>([]);
+  const [showFileList, setShowFileList] = useState(false);
 
   const currentStyle = pictureStyles[currentStyleIndex];
 
@@ -253,7 +270,7 @@ export default function CanonStylePage() {
       <section className="pt-24 md:pt-32 pb-12 md:pb-20 px-4">
         <div className="container mx-auto max-w-6xl text-center">
           <div className="inline-block mb-4 px-4 py-2 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-full border border-orange-500/30">
-            <span className="text-sm md:text-base text-orange-400 font-semibold">57 Picture Style Premium</span>
+            <span className="text-sm md:text-base text-orange-400 font-semibold">48 Picture Style Premium</span>
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent leading-tight">
             Film Look Analog
@@ -480,7 +497,7 @@ export default function CanonStylePage() {
           <div className="mt-8 p-4 bg-orange-500/10 border border-orange-500/30 rounded-xl flex items-start gap-3">
             <Info className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" />
             <p className="text-sm text-orange-200/80">
-              <strong>Catatan:</strong> Ini hanya preview 8 dari 57 Picture Style yang tersedia. 
+              <strong>Catatan:</strong> Ini hanya preview 8 dari 48 Picture Style yang tersedia. 
               Setiap style memiliki karakter unik yang bisa disesuaikan.
             </p>
           </div>
@@ -498,7 +515,7 @@ export default function CanonStylePage() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              "57 File Picture Style (.pf3)",
+              "48 File Picture Style (.pf3)",
               "Kompatibel dengan semua kamera Canon yang support custom Picture Style"
             ].map((item, index) => (
               <div key={index} className="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
@@ -508,6 +525,56 @@ export default function CanonStylePage() {
                 <span className="text-white/80">{item}</span>
               </div>
             ))}
+          </div>
+
+          {/* Complete File List Dropdown */}
+          <div className="mt-8">
+            <button
+              onClick={() => setShowFileList(!showFileList)}
+              className="w-full p-6 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-orange-500/50 rounded-2xl transition-all flex items-center justify-between group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+                  <Palette className="w-5 h-5 text-white" />
+                </div>
+                <div className="text-left">
+                  <div className="text-lg font-bold">Lihat Daftar Lengkap 48 Picture Style</div>
+                  <div className="text-sm text-white/60">Klik untuk melihat semua file yang termasuk</div>
+                </div>
+              </div>
+              <ChevronRight 
+                className={`w-6 h-6 transition-transform ${showFileList ? 'rotate-90' : ''}`}
+              />
+            </button>
+
+            {showFileList && (
+              <div className="mt-4 p-6 bg-white/5 border border-white/10 rounded-2xl">
+                <div className="grid md:grid-cols-2 gap-6">
+                  {pictureStyleFiles.map((category, index) => (
+                    <div key={index} className="space-y-2">
+                      <h4 className="font-bold text-orange-400 mb-3 flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-orange-400 rounded-full"></div>
+                        {category.category}
+                        <span className="text-white/40 text-sm font-normal">({category.files.length})</span>
+                      </h4>
+                      <ul className="space-y-1.5 pl-4">
+                        {category.files.map((file, fileIndex) => (
+                          <li key={fileIndex} className="text-sm text-white/70 flex items-start gap-2">
+                            <span className="text-orange-500/50 mt-1">•</span>
+                            <span>{file}.pf3</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-6 pt-6 border-t border-white/10 text-center">
+                  <p className="text-white/60 text-sm">
+                    <strong className="text-orange-400">Total: 48 files</strong> - Semua file dalam format .pf3 siap diinstall ke kamera Canon Anda
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -592,7 +659,7 @@ export default function CanonStylePage() {
             </div>
             
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Dapatkan 57 Picture Style
+              Dapatkan 48 Picture Style
             </h2>
             
             <div className="mb-6">
@@ -604,7 +671,7 @@ export default function CanonStylePage() {
 
             <div className="space-y-3 mb-8 text-left max-w-md mx-auto">
               {[
-                "57 Picture Style premium (.pf3)",
+                "48 Picture Style premium (.pf3)",
                 "Support semua kamera Canon"
               ].map((item, index) => (
                 <div key={index} className="flex items-center gap-3">

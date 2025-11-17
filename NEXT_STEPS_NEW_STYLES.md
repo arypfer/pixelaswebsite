@@ -6,7 +6,7 @@
 - Added **Clean Film**, **Fuji 5**, and **Silvergreen** to the slider
 - Updated gallery API to include the new styles
 - Created gallery folders for each new style
-- Updated preview count from "5 dari 57" to "8 dari 57"
+- Updated preview count from "5 dari 48" to "8 dari 48"
 
 ### 2. Folders Created ✅
 - `public/canonstyle/gallery/clean-film/`

@@ -63,4 +63,4 @@ Create these folders and add gallery images:
 - The slider will automatically include all 8 styles
 - Gallery categories will only show if the folder exists and contains images
 - If images are missing, placeholder text will be shown
-- The note text has been updated to say "8 dari 57 Picture Style"
+- The note text has been updated to say "8 dari 48 Picture Style"
