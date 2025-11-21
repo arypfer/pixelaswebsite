@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import Image from "next/image";
-import { ArrowLeft, Check, Download, Camera, Palette, Zap, ChevronLeft, ChevronRight, Info, X } from "lucide-react";
+import { ArrowLeft, Check, Download, Camera, Palette, Zap, ChevronLeft, ChevronRight, Info, X, Sparkles, Star } from "lucide-react";
 import Link from "next/link";
 
 // Picture Style showcase data
@@ -138,41 +138,93 @@ const faqItems = [
   }
 ];
 
+// Memoized Feature Card Component
+const FeatureCard = memo(({ feature, index }: { feature: { title: string; description: string }; index: number }) => (
+  <div 
+    className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-orange-500/50 transition-all text-center group hover:scale-105 duration-300"
+    style={{ animationDelay: `${index * 100}ms` }}
+  >
+    <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
+      {index === 0 && <Palette className="w-6 h-6 text-white" />}
+      {index === 1 && <Camera className="w-6 h-6 text-white" />}
+      {index === 2 && <Zap className="w-6 h-6 text-white" />}
+    </div>
+    <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
+    <p className="text-sm text-white/60">{feature.description}</p>
+  </div>
+));
+FeatureCard.displayName = 'FeatureCard';
+
+// Memoized FAQ Item Component
+const FAQItem = memo(({ faq, index, isExpanded, onToggle }: { 
+  faq: { question: string; answer: string }; 
+  index: number; 
+  isExpanded: boolean; 
+  onToggle: () => void 
+}) => (
+  <div 
+    className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden hover:border-orange-500/30 transition-all"
+  >
+    <button
+      onClick={onToggle}
+      className="w-full p-6 text-left flex items-center justify-between hover:bg-white/5 transition-all group"
+      aria-expanded={isExpanded}
+    >
+      <span className="font-semibold text-lg pr-4">{faq.question}</span>
+      <ChevronRight 
+        className={`w-5 h-5 transition-transform flex-shrink-0 group-hover:text-orange-400 ${
+          isExpanded ? 'rotate-90' : ''
+        }`}
+      />
+    </button>
+    <div 
+      className={`overflow-hidden transition-all duration-300 ${
+        isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+      }`}
+    >
+      <div className="px-6 pb-6">
+        <p className="text-white/60 leading-relaxed">{faq.answer}</p>
+      </div>
+    </div>
+  </div>
+));
+FAQItem.displayName = 'FAQItem';
+
 export default function CanonStylePage() {
   const [currentStyleIndex, setCurrentStyleIndex] = useState(0);
-  const [isBeforeView, setIsBeforeView] = useState(true);
   const [sliderPosition, setSliderPosition] = useState(50);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [galleryImages, setGalleryImages] = useState<Array<{styleName: string, images: string[]}>>([]);
   const [showFileList, setShowFileList] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const currentStyle = pictureStyles[currentStyleIndex];
+  const currentStyle = useMemo(() => pictureStyles[currentStyleIndex], [currentStyleIndex]);
 
-  const nextStyle = () => {
+  const nextStyle = useCallback(() => {
     setCurrentStyleIndex((prev) => (prev + 1) % pictureStyles.length);
     setSliderPosition(50);
-  };
+  }, []);
 
-  const prevStyle = () => {
+  const prevStyle = useCallback(() => {
     setCurrentStyleIndex((prev) => (prev - 1 + pictureStyles.length) % pictureStyles.length);
     setSliderPosition(50);
-  };
+  }, []);
 
-  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSliderChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSliderPosition(Number(e.target.value));
-  };
+  }, []);
 
-  const handleMouseDown = () => {
+  const handleMouseDown = useCallback(() => {
     setIsDragging(true);
-  };
+  }, []);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging) return;
     e.preventDefault();
     
@@ -180,23 +232,24 @@ export default function CanonStylePage() {
     const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
     const percentage = (x / rect.width) * 100;
     setSliderPosition(percentage);
-  };
+  }, [isDragging]);
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+  const handleTouchStart = useCallback(() => {
     setIsDragging(true);
-  };
+  }, []);
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
     e.preventDefault();
     const rect = e.currentTarget.getBoundingClientRect();
     const x = Math.max(0, Math.min(e.touches[0].clientX - rect.left, rect.width));
     const percentage = (x / rect.width) * 100;
     setSliderPosition(percentage);
-  };
+  }, [isDragging]);
 
   // Prevent body scroll when dragging or gallery open
   useEffect(() => {
@@ -213,15 +266,36 @@ export default function CanonStylePage() {
     };
   }, [isDragging, showGallery]);
 
-  // Preload all images on mount
+  // Initial load animation
   useEffect(() => {
-    pictureStyles.forEach((style) => {
+    setIsLoaded(true);
+  }, []);
+
+  // Preload all images on mount with priority
+  useEffect(() => {
+    pictureStyles.forEach((style, index) => {
       const beforeImg = new window.Image();
       const afterImg = new window.Image();
       beforeImg.src = style.beforeImage;
       afterImg.src = style.afterImage;
+      // Set loading priority for first 3 images
+      if (index < 3) {
+        beforeImg.loading = 'eager';
+        afterImg.loading = 'eager';
+      }
     });
   }, []);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (showGallery || showFileList) return;
+      if (e.key === 'ArrowLeft') prevStyle();
+      if (e.key === 'ArrowRight') nextStyle();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showGallery, showFileList, prevStyle, nextStyle]);
 
   // Load all gallery images from all styles
   useEffect(() => {
@@ -241,7 +315,9 @@ export default function CanonStylePage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className={`min-h-screen bg-black text-white transition-opacity duration-700 ${
+      isLoaded ? 'opacity-100' : 'opacity-0'
+    }`}>
       {/* Preload all images (hidden) */}
       <div className="hidden">
         {pictureStyles.map((style) => (
@@ -253,26 +329,35 @@ export default function CanonStylePage() {
       </div>
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10 transition-all duration-300">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
-              <ArrowLeft className="w-5 h-5" />
+            <Link href="/" className="flex items-center gap-2 text-white/60 hover:text-white transition-all hover:gap-3 group">
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
               <span>Kembali</span>
             </Link>
-            <h1 className="text-xl font-bold">Canon Picture Style</h1>
+            <h1 className="text-xl font-bold flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-orange-400" />
+              Canon Picture Style
+            </h1>
             <div className="w-24"></div>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="pt-24 md:pt-32 pb-12 md:pb-20 px-4">
-        <div className="container mx-auto max-w-6xl text-center">
-          <div className="inline-block mb-4 px-4 py-2 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-full border border-orange-500/30">
-            <span className="text-sm md:text-base text-orange-400 font-semibold">48 Picture Style Premium</span>
+      <section className="pt-24 md:pt-32 pb-12 md:pb-20 px-4 relative overflow-hidden">
+        {/* Animated background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-orange-500/5 via-transparent to-transparent animate-pulse" style={{ animationDuration: '3s' }}></div>
+        <div className="container mx-auto max-w-6xl text-center relative z-10">
+          <div className="inline-block mb-4 px-4 py-2 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-full border border-orange-500/30 animate-pulse hover:scale-105 transition-transform cursor-default">
+            <span className="text-sm md:text-base text-orange-400 font-semibold flex items-center gap-2">
+              <Star className="w-4 h-4 fill-orange-400" />
+              48 Picture Style Premium
+              <Star className="w-4 h-4 fill-orange-400" />
+            </span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent leading-tight animate-fade-in">
             Film Look Analog
             <br />
             Langsung dari Kamera
@@ -284,9 +369,12 @@ export default function CanonStylePage() {
           <div className="flex justify-center">
             <a 
               href="#showcase" 
-              className="w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 bg-white/5 border border-white/10 rounded-full font-semibold hover:bg-white/10 transition-all text-center text-sm md:text-base"
+              className="w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 bg-white/5 border border-white/10 rounded-full font-semibold hover:bg-white/10 hover:border-orange-500/50 transition-all text-center text-sm md:text-base group hover:scale-105 hover:shadow-lg hover:shadow-orange-500/20"
             >
-              Lihat Contoh Hasil
+              <span className="flex items-center justify-center gap-2">
+                Lihat Contoh Hasil
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </span>
             </a>
           </div>
           
@@ -371,13 +459,7 @@ export default function CanonStylePage() {
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-3 gap-6">
             {features.map((feature, index) => (
-              <div 
-                key={index}
-                className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-orange-500/50 transition-all text-center"
-              >
-                <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
-                <p className="text-sm text-white/60">{feature.description}</p>
-              </div>
+              <FeatureCard key={index} feature={feature} index={index} />
             ))}
           </div>
         </div>
@@ -472,10 +554,10 @@ export default function CanonStylePage() {
 
               {/* Slider Handle */}
               <div 
-                className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize pointer-events-none z-10"
+                className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize pointer-events-none z-10 transition-opacity"
                 style={{ left: `${sliderPosition}%` }}
               >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center pointer-events-auto cursor-grab active:cursor-grabbing">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center pointer-events-auto cursor-grab active:cursor-grabbing hover:scale-110 transition-transform active:scale-95">
                   <div className="flex gap-1">
                     <div className="w-0.5 h-5 bg-black"></div>
                     <div className="w-0.5 h-5 bg-black"></div>
@@ -509,10 +591,10 @@ export default function CanonStylePage() {
             <div className="flex items-center justify-between">
               <button
                 onClick={prevStyle}
-                className="flex items-center justify-center w-12 h-12 md:w-auto md:px-6 md:py-3 bg-white/5 hover:bg-white/10 rounded-full transition-all border border-white/10"
-                aria-label="Previous"
+                className="flex items-center justify-center w-12 h-12 md:w-auto md:px-6 md:py-3 bg-white/5 hover:bg-white/10 rounded-full transition-all border border-white/10 hover:border-orange-500/50 group hover:scale-105"
+                aria-label="Previous style"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
                 <span className="hidden md:inline ml-2">Previous</span>
               </button>
 
@@ -536,18 +618,18 @@ export default function CanonStylePage() {
 
               <button
                 onClick={nextStyle}
-                className="flex items-center justify-center w-12 h-12 md:w-auto md:px-6 md:py-3 bg-white/5 hover:bg-white/10 rounded-full transition-all border border-white/10"
-                aria-label="Next"
+                className="flex items-center justify-center w-12 h-12 md:w-auto md:px-6 md:py-3 bg-white/5 hover:bg-white/10 rounded-full transition-all border border-white/10 hover:border-orange-500/50 group hover:scale-105"
+                aria-label="Next style"
               >
                 <span className="hidden md:inline mr-2">Next</span>
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </div>
 
           {/* Note */}
-          <div className="mt-8 p-4 bg-orange-500/10 border border-orange-500/30 rounded-xl flex items-start gap-3">
-            <Info className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" />
+          <div className="mt-8 p-4 bg-orange-500/10 border border-orange-500/30 rounded-xl flex items-start gap-3 hover:bg-orange-500/15 transition-colors">
+            <Info className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5 animate-pulse" />
             <p className="text-sm text-orange-200/80">
               <strong>Catatan:</strong> Ini hanya preview 8 dari 48 Picture Style yang tersedia. 
               Setiap style memiliki karakter unik yang bisa disesuaikan.
@@ -676,27 +758,13 @@ export default function CanonStylePage() {
 
           <div className="space-y-4">
             {faqItems.map((faq, index) => (
-              <div 
-                key={index}
-                className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden"
-              >
-                <button
-                  onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
-                  className="w-full p-6 text-left flex items-center justify-between hover:bg-white/5 transition-all"
-                >
-                  <span className="font-semibold text-lg">{faq.question}</span>
-                  <ChevronRight 
-                    className={`w-5 h-5 transition-transform ${
-                      expandedFaq === index ? 'rotate-90' : ''
-                    }`}
-                  />
-                </button>
-                {expandedFaq === index && (
-                  <div className="px-6 pb-6">
-                    <p className="text-white/60 leading-relaxed">{faq.answer}</p>
-                  </div>
-                )}
-              </div>
+              <FAQItem 
+                key={index} 
+                faq={faq} 
+                index={index} 
+                isExpanded={expandedFaq === index}
+                onToggle={() => setExpandedFaq(expandedFaq === index ? null : index)}
+              />
             ))}
           </div>
         </div>
@@ -737,10 +805,11 @@ export default function CanonStylePage() {
               href="https://amlo-life.myr.id/pl/48-canon-picture-style-premium/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-orange-500/50 transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-orange-500/50 transition-all hover:scale-105 active:scale-95 group relative overflow-hidden"
             >
-              <Download className="w-5 h-5" />
-              Beli Sekarang
+              <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+              <Download className="w-5 h-5 relative z-10 group-hover:animate-bounce" />
+              <span className="relative z-10">Beli Sekarang</span>
             </a>
 
             <p className="mt-6 text-sm text-white/40">
