@@ -734,13 +734,13 @@ export default function CanonStylePage() {
             </div>
 
             <a
-              href="https://wa.me/6285811298052?text=Halo,%20saya%20ingin%20membeli%20Canon%20Picture%20Style%20Package"
+              href="https://amlo-life.myr.id/pl/48-canon-picture-style-premium/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-orange-500/50 transition-all hover:scale-105"
             >
               <Download className="w-5 h-5" />
-              Beli Sekarang via WhatsApp
+              Beli Sekarang
             </a>
 
             <p className="mt-6 text-sm text-white/40">
