@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import AnimatedBackground from "@/components/ui/background-animated";
-import { Star, Globe, Zap, Search, X, Link2, Check, ArrowRight, Sparkles, TrendingUp } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { allProducts, categories } from "@/lib/products";
-import { DownloadButton } from "@/components/ui/download-button";
+import ProductCard from "@/components/products/ProductCard";
+import ProductDetailModal from "@/components/products/ProductDetailModal";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -144,15 +144,73 @@ export default function Home() {
   });
 
   // Filter products based on search query and category
-  const filteredProducts = products.length > 0 ? products.filter(product => {
-    const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchQuery.toLowerCase());
+  // Optimized with useMemo
+  const filteredProducts = useMemo(() => {
+    if (products.length === 0) return [];
 
-    const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
+    return products.filter(product => {
+      const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return matchesSearch && matchesCategory;
-  }) : [];
+      const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [products, searchQuery, selectedCategory]);
+
+  // Event Handlers wrapped in useCallback
+  const handleProductDetailsClick = useCallback((product: any) => {
+    setSelectedProduct(product);
+    // Update URL with product ID
+    const url = new URL(window.location.href);
+    url.searchParams.set('product', product.id);
+    window.history.pushState({}, '', url.toString());
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setSelectedProduct(null);
+    // Clear URL parameter when closing
+    const url = new URL(window.location.href);
+    url.searchParams.delete('product');
+    window.history.replaceState({}, '', url.toString());
+  }, []);
+
+  const handleCopyLink = useCallback((product: any) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('product', product.id);
+    navigator.clipboard.writeText(url.toString());
+    setCopySuccess(true);
+    setTimeout(() => setCopySuccess(false), 2000);
+  }, []);
+
+  const handleCategoryChange = useCallback((category: string) => {
+    setSelectedCategory(category);
+  }, []);
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  }, []);
+
+  const handleClearSearch = useCallback(() => {
+    setSearchQuery("");
+  }, []);
+
+  const handleViewAllProducts = useCallback(() => {
+    setSelectedCategory("All");
+  }, []);
+
+  const handleContactClick = useCallback(() => {
+    window.open('mailto:amlolife.contact@gmail.com', '_self');
+  }, []);
+
+  const handleDismissTikTok = useCallback(() => {
+    setShowTikTokMessage(false);
+  }, []);
+
+  const handleCopyLinkTikTok = useCallback(() => {
+    navigator.clipboard.writeText(typeof window !== 'undefined' ? window.location.href : 'pixelas.store');
+  }, []);
 
   return (
     <div className="relative w-full min-h-screen bg-black overflow-hidden">
@@ -176,13 +234,13 @@ export default function Home() {
             </div>
             <div className="flex gap-3">
               <button
-                onClick={() => navigator.clipboard.writeText(typeof window !== 'undefined' ? window.location.href : 'pixelas.store')}
+                onClick={handleCopyLinkTikTok}
                 className="flex-1 px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Copy Link
               </button>
               <button
-                onClick={() => setShowTikTokMessage(false)}
+                onClick={handleDismissTikTok}
                 className="flex-1 px-4 py-3 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
               >
                 Dismiss
@@ -209,14 +267,14 @@ export default function Home() {
               type="text"
               placeholder="Search products..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               className="w-full pl-10 pr-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all"
             />
           </div>
           
           <button 
             className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-white/10 hover:bg-white/20 border border-white/30 rounded-lg text-white transition-all"
-            onClick={() => window.open('mailto:amlolife.contact@gmail.com', '_self')}
+            onClick={handleContactClick}
           >
             Contact
           </button>
@@ -232,7 +290,7 @@ export default function Home() {
             {categories.map((category) => (
               <button
                 key={category}
-                onClick={() => setSelectedCategory(category)}
+                onClick={() => handleCategoryChange(category)}
                 className={`
                   px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
                   ${selectedCategory === category
@@ -309,13 +367,7 @@ export default function Home() {
                     link={product.link}
                     image={product.image}
                     category={product.category}
-                    onDetailsClick={() => {
-                      setSelectedProduct(product);
-                      // Update URL with product ID
-                      const url = new URL(window.location.href);
-                      url.searchParams.set('product', product.id);
-                      window.history.pushState({}, '', url.toString());
-                    }}
+                    onDetailsClick={() => handleProductDetailsClick(product)}
                   />
                 ))
               ) : (
@@ -336,7 +388,7 @@ export default function Home() {
                   <div className="flex justify-center gap-3">
                     {searchQuery && (
                       <button
-                        onClick={() => setSearchQuery("")}
+                        onClick={handleClearSearch}
                         className="px-6 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-white text-sm font-medium transition-all"
                       >
                         Clear Search
@@ -344,7 +396,7 @@ export default function Home() {
                     )}
                     {selectedCategory !== "All" && (
                       <button
-                        onClick={() => setSelectedCategory("All")}
+                        onClick={handleViewAllProducts}
                         className="px-6 py-2.5 bg-white text-black hover:bg-gray-200 rounded-lg text-sm font-semibold transition-all"
                       >
                         View All Products
@@ -362,21 +414,9 @@ export default function Home() {
       {selectedProduct && (
         <ProductDetailModal
           product={selectedProduct}
-          onClose={() => {
-            setSelectedProduct(null);
-            // Clear URL parameter when closing
-            const url = new URL(window.location.href);
-            url.searchParams.delete('product');
-            window.history.replaceState({}, '', url.toString());
-          }}
+          onClose={handleCloseModal}
           copySuccess={copySuccess}
-          onCopyLink={() => {
-            const url = new URL(window.location.href);
-            url.searchParams.set('product', selectedProduct.id);
-            navigator.clipboard.writeText(url.toString());
-            setCopySuccess(true);
-            setTimeout(() => setCopySuccess(false), 2000);
-          }}
+          onCopyLink={() => handleCopyLink(selectedProduct)}
         />
       )}
 
@@ -391,7 +431,7 @@ export default function Home() {
               </p>
             </div>
             <button
-              onClick={() => window.open('mailto:amlolife.contact@gmail.com', '_self')}
+              onClick={handleContactClick}
               className="px-5 py-3 rounded-xl border border-white/20 bg-white/10 text-sm font-semibold text-white hover:bg-white/20 transition-colors"
             >
               Contact Us
@@ -404,326 +444,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-    </div>
-  );
-}
-
-interface ProductCardProps {
-  title: string;
-  subtitle: string;
-  description: string;
-  featured?: boolean;
-  link?: string;
-  image?: string;
-  category?: string;
-  onDetailsClick?: () => void;
-}
-
-function ProductCard({ title, subtitle, description, featured, link, image, category, onDetailsClick }: ProductCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleCardClick = () => {
-    if (onDetailsClick) {
-      onDetailsClick();
-    }
-  };
-
-  const getIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'Star': return <Star className="w-5 h-5" />;
-      case 'Globe': return <Globe className="w-5 h-5" />;
-      case 'Zap': return <Zap className="w-5 h-5" />;
-      default: return <Star className="w-5 h-5" />;
-    }
-  };
-
-  return (
-    <div
-      className={`
-        group relative isolation overflow-hidden rounded-2xl border backdrop-blur-xl
-        bg-gradient-to-br from-white/12 via-black/40 to-black/70 
-        flex flex-col h-full cursor-pointer transition-all duration-500
-        ${featured ? 
-          'border-orange-400/70 ring-2 ring-orange-400/40 shadow-2xl shadow-orange-500/30 hover:shadow-orange-500/50' : 
-          'border-white/20 ring-1 ring-inset ring-white/12 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8)] hover:border-white/50 hover:ring-white/30 hover:shadow-[0_25px_60px_-15px_rgba(255,255,255,0.15)]'
-        }
-        hover:scale-[1.02] hover:-translate-y-1
-      `}
-      onClick={handleCardClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Background Image with Enhanced Overlay */}
-      {image && (
-        <div className="absolute inset-0 z-0">
-          <Image 
-            src={image} 
-            alt={title}
-            fill
-            className="w-full h-full object-cover opacity-25 group-hover:opacity-35 group-hover:scale-105 transition-all duration-700"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-          {/* Enhanced gradient overlays */}
-          <div 
-            className="absolute inset-0" 
-            style={{
-              background: 'radial-gradient(ellipse 120% 100% at top right, transparent 0%, transparent 25%, black 75%)'
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/98 via-black/60 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
-          
-          {/* Animated shine effect on hover */}
-          <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000`} />
-        </div>
-      )}
-
-      {/* Content Layer */}
-      <div className={`relative z-10 p-6 flex flex-col h-full transition-all duration-300`}>
-        {/* Top Section: Badges */}
-        <div className="flex items-start justify-between mb-4 gap-2">
-          {/* Category Badge */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 group-hover:bg-white/15 transition-all">
-            <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-            <span className="text-[10px] font-semibold text-white/90 uppercase tracking-wider">{category}</span>
-          </div>
-          
-          {/* Featured Badge */}
-          {featured && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg shadow-lg shadow-orange-500/50 border border-orange-400/50">
-              <Sparkles className="w-3 h-3 text-white" />
-              <span className="text-[10px] font-bold text-white uppercase tracking-wide">Best Seller</span>
-            </div>
-          )}
-        </div>
-
-        {/* Title & Subtitle */}
-        <div className="mb-3">
-          <h3 className="text-white font-bold text-xl mb-2 line-clamp-2 drop-shadow-lg tracking-tight leading-tight group-hover:text-white transition-all duration-300">
-            {title}
-          </h3>
-          <div className="flex items-center gap-2 mb-1">
-            <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent" />
-          </div>
-          <p className="text-gray-300 text-xs font-medium opacity-90 group-hover:opacity-100 transition-opacity line-clamp-1">
-            {subtitle}
-          </p>
-        </div>
-        
-        {/* Description */}
-        <div className="flex-grow overflow-hidden mb-4">
-          <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-300 line-clamp-3">
-            {description}
-          </p>
-        </div>
-
-        {/* Trust Indicators */}
-        <div className="flex items-center gap-4 mb-4 pb-4 border-b border-white/10">
-          <div className="flex items-center gap-1.5">
-            <div className="p-1 bg-green-500/20 rounded">
-              <svg className="w-3 h-3 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <span className="text-[11px] text-gray-400 font-medium">Lifetime Access</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <TrendingUp className="w-3 h-3 text-blue-400" />
-            <span className="text-[11px] text-gray-400 font-medium">Pro Quality</span>
-          </div>
-        </div>
-        
-        {/* CTA Section */}
-        <div className="mt-auto space-y-2">
-          {/* Primary CTA */}
-          <button 
-            onClick={handleCardClick}
-            className={`
-              w-full px-4 py-3.5 rounded-xl text-sm font-bold transition-all duration-300
-              flex items-center justify-center gap-2 group/btn
-              ${featured 
-                ? 'bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50' 
-                : 'bg-white text-black hover:bg-gray-100 shadow-lg shadow-white/10 hover:shadow-white/20'
-              }
-              hover:scale-[1.02] active:scale-[0.98]
-            `}
-          >
-            <span>View Full Details</span>
-            <ArrowRight className={`w-4 h-4 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
-          </button>
-
-          {/* Secondary Info */}
-          <div className="flex items-center justify-center gap-2 text-[11px] text-white/50">
-            <span>•</span>
-            <span>One-time payment</span>
-            <span>•</span>
-            <span>Instant download</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Premium corner accent */}
-      <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-    </div>
-  );
-}
-
-interface ProductDetailModalProps {
-  product: any;
-  onClose: () => void;
-  copySuccess?: boolean;
-  onCopyLink?: () => void;
-}
-
-function ProductDetailModal({ product, onClose, copySuccess, onCopyLink }: ProductDetailModalProps) {
-  const getIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'Star': return <Star className="w-5 h-5" />;
-      case 'Globe': return <Globe className="w-5 h-5" />;
-      case 'Zap': return <Zap className="w-5 h-5" />;
-      default: return <Star className="w-5 h-5" />;
-    }
-  };
-
-  return (
-    <div
-      className="fixed inset-0 z-[100] overflow-y-auto p-4 sm:p-8 bg-black/60 backdrop-blur-md animate-in fade-in duration-300"
-      onClick={onClose}
-    >
-      <div
-        className={`relative mx-auto max-w-4xl bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 border border-white/20 rounded-3xl shadow-2xl shadow-white/20 animate-in zoom-in-95 slide-in-from-bottom-4 duration-500 ${
-          product.featured ? 'border-orange-500/50 shadow-orange-500/20 ring-2 ring-orange-500/30' : ''
-        }`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Action Buttons - Enhanced */}
-        <div className="absolute top-6 right-6 z-20 flex gap-2">
-          {/* Copy Link Button */}
-          <button
-            onClick={onCopyLink}
-            className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 border border-white/20 hover:border-white/30 shadow-lg hover:shadow-xl hover:shadow-white/20 transform hover:scale-110 active:scale-95 group"
-            title="Copy link to this product"
-          >
-            {copySuccess ? (
-              <Check className="w-6 h-6 text-green-400" />
-            ) : (
-              <Link2 className="w-6 h-6 text-white group-hover:text-blue-400 transition-colors" />
-            )}
-          </button>
-          
-          {/* Close Button */}
-          <button
-            onClick={onClose}
-            className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 border border-white/20 hover:border-white/30 shadow-lg hover:shadow-xl hover:shadow-white/20 transform hover:scale-110 active:scale-95"
-          >
-            <X className="w-6 h-6 text-white" />
-          </button>
-        </div>
-
-        {/* Product Image */}
-        {product.detailedImage && (
-          <div className="relative h-64 sm:h-80 overflow-hidden rounded-t-2xl">
-            <Image 
-              src={product.detailedImage} 
-              alt={product.title}
-              fill
-              className="w-full h-full object-cover"
-              sizes="(max-width: 768px) 100vw, 100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-            
-            {/* Title Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-              <div className="flex items-start gap-3 mb-2">
-                <div className="p-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
-                  {getIcon(product.icon)}
-                </div>
-                {product.featured && (
-                  <span className="px-3 py-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs font-bold rounded-full">
-                    ⭐ Featured
-                  </span>
-                )}
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2 drop-shadow-lg">{product.title}</h2>
-              <p className="text-white/80 text-sm sm:text-base drop-shadow">{product.subtitle}</p>
-            </div>
-          </div>
-        )}
-
-        {/* Content */}
-        <div className="p-6 sm:p-8">
-          {/* Download Buttons - Moved to top */}
-          <div className="mb-8">
-            {product.downloadButtons && product.downloadButtons.length >= 1 && (
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                {product.downloadButtons[0]?.url && product.downloadButtons[0]?.text && (
-                  <DownloadButton
-                    text={product.downloadButtons[0].text}
-                    variant="primary"
-                    onClick={() => window.open(product.downloadButtons[0].url, '_blank')}
-                  />
-                )}
-                {product.downloadButtons[1]?.url && product.downloadButtons[1]?.text && (
-                  <DownloadButton
-                    text={product.downloadButtons[1].text}
-                    variant="secondary"
-                    onClick={() => window.open(product.downloadButtons[1].url, '_blank')}
-                  />
-                )}
-                {product.downloadButtons[2]?.url && product.downloadButtons[2]?.text && (
-                  <DownloadButton
-                    text={product.downloadButtons[2].text}
-                    variant="tertiary"
-                    onClick={() => window.open(product.downloadButtons[2].url, '_blank')}
-                  />
-                )}
-              </div>
-            )}
-
-            {/* Fallback download link */}
-            {!product.downloadButtons?.[0]?.url && product.link && (
-              <DownloadButton
-                text="Download"
-                variant="primary"
-                onClick={() => window.open(product.link, '_blank')}
-              />
-            )}
-          </div>
-
-          {/* Description */}
-          <div className="mb-6">
-            <h3 className="text-xl font-bold text-white mb-4">About This Product</h3>
-            <p className="text-white/80 leading-relaxed text-base whitespace-pre-line">
-              {product.detailedDescription || product.description}
-            </p>
-          </div>
-
-          {/* Features */}
-          {product.features && product.features.length > 0 && (
-            <div>
-              <h3 className="text-xl font-bold text-white mb-4">Key Features</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {product.features.map((feature: string, index: number) => (
-                  <div 
-                    key={index}
-                    className="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all"
-                  >
-                    <div className="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full" />
-                    <span className="text-white/80 text-sm">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Category Badge */}
-          <div className="mt-6 pt-6 border-t border-white/10">
-            <span className="inline-block px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/60 text-sm">
-              {product.category}
-            </span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

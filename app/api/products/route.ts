@@ -33,12 +33,14 @@ if (!supabaseUrl || !supabaseServiceKey) {
 }
 
 // Create Supabase client
-const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
-  }
-});
+const supabase = (supabaseUrl && supabaseServiceKey)
+  ? createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    })
+  : null;
 
 function mapDbProductToApp(product: any): Product {
   return {
@@ -66,6 +68,9 @@ async function getProductsFromSupabase(): Promise<Product[]> {
     if (!supabaseUrl || !supabaseServiceKey) {
       return allProducts as unknown as Product[]; // Fallback if no credentials
     }
+
+    // This check is already done above, but TypeScript needs to know supabase is not null
+    if (!supabase) return allProducts as unknown as Product[];
 
     const { data, error } = await supabase
       .from('products')
@@ -99,6 +104,9 @@ async function saveProductsToSupabase(products: any[]) {
 
     // Clear existing products
     console.log('Clearing existing products...');
+
+    if (!supabase) return false;
+
     const { error: deleteError } = await supabase
       .from('products')
       .delete()
@@ -133,6 +141,8 @@ async function saveProductsToSupabase(products: any[]) {
       updated_at: new Date().toISOString()
     }));
     console.log('Inserting products:', productsWithTimestamps.length);
+
+    if (!supabase) return false;
 
     const { error: insertError } = await supabase
       .from('products')
