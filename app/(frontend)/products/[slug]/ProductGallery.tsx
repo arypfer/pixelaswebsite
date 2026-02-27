@@ -20,7 +20,7 @@ export function ProductGallery({ images }: { images: GalleryImage[] }) {
           <button
             key={index}
             onClick={() => setLightboxIndex(index)}
-            className="relative aspect-video rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-colors cursor-zoom-in group"
+            className="relative aspect-video rounded-xl overflow-hidden border border-white/[0.06] hover:border-white/[0.12] hover:scale-[1.02] transition-all duration-300 cursor-zoom-in group"
           >
             <Image
               src={image.url}
