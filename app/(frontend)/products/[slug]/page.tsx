@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { ProductGallery } from './ProductGallery'
@@ -37,8 +37,8 @@ function formatPrice(price: number): string {
 function getLucideIcon(name: string) {
   const icons = LucideIcons as Record<string, React.ComponentType<{ className?: string }>>
   const Icon = icons[name]
-  if (Icon) return <Icon className="w-6 h-6 text-orange-400" />
-  return <LucideIcons.Star className="w-6 h-6 text-orange-400" />
+  if (Icon) return <Icon className="w-5 h-5 text-orange-400" />
+  return <LucideIcons.Star className="w-5 h-5 text-orange-400" />
 }
 
 export default async function ProductPage({ params }: Props) {
@@ -71,86 +71,66 @@ export default async function ProductPage({ params }: Props) {
       .filter(Boolean) as { url: string; alt: string }[] || []
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* SECTION 1: HERO */}
-      <section className="relative overflow-hidden">
-        {/* Background cover image */}
-        {coverImageUrl && (
-          <div className="absolute inset-0 z-0">
-            <Image
-              src={coverImageUrl}
-              alt={product.name}
-              fill
-              className="object-cover opacity-20"
-              priority
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black" />
-          </div>
-        )}
-
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-16">
-          {/* Back button */}
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm mb-12 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to products
-          </Link>
+      <section>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-16">
+          {/* Breadcrumb */}
+          <nav className="text-xs text-white/[0.3] mb-12">
+            <Link href="/" className="hover:text-white/60 transition-colors">Products</Link>
+            <span className="mx-2">/</span>
+            <span>{product.name}</span>
+          </nav>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             {/* Text side */}
             <div>
               {product.badge && (
-                <span className="inline-block px-3 py-1 mb-4 bg-orange-500/20 border border-orange-500/40 rounded-full text-xs font-semibold text-orange-400 uppercase tracking-wider">
+                <span className="inline-block px-3 py-1 mb-4 bg-orange-500/10 rounded-full text-xs font-medium text-orange-400">
                   {product.badge}
                 </span>
               )}
-              <h1 className="text-4xl sm:text-5xl font-bold mb-3 tracking-tight">{product.name}</h1>
+              <h1 className="text-4xl font-bold mb-3 tracking-tight">{product.name}</h1>
               {product.tagline && (
-                <p className="text-xl text-white/70 mb-6">{product.tagline}</p>
+                <p className="text-xl text-white/50 mb-6">{product.tagline}</p>
               )}
               {product.shortDescription && (
-                <p className="text-white/50 leading-relaxed mb-8">{product.shortDescription}</p>
+                <p className="text-sm text-white/40 leading-relaxed mb-8">{product.shortDescription}</p>
               )}
 
               {/* Price + CTA */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4">
-                {product.price && product.price > 0 && (
-                  <div>
-                    <span className="text-3xl font-bold">{formatPrice(product.price)}</span>
-                    {product.priceLabel && (
-                      <p className="text-white/40 text-sm mt-1">{product.priceLabel}</p>
-                    )}
-                  </div>
-                )}
-                <a
-                  href={product.buyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold rounded-xl text-lg shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 transition-all flex items-center gap-2"
-                >
-                  Buy Now <ArrowRight className="w-5 h-5" />
-                </a>
-              </div>
-              <div className="flex items-center gap-2 text-white/40 text-sm">
-                <ShieldCheck className="w-4 h-4" />
-                <span>One-time payment &middot; No subscription &middot; Lifetime access</span>
-              </div>
+              {product.price && product.price > 0 && (
+                <div className="mb-4">
+                  <span className="text-2xl font-bold">{formatPrice(product.price)}</span>
+                  {product.priceLabel && (
+                    <p className="text-sm text-white/40 mt-1">{product.priceLabel}</p>
+                  )}
+                </div>
+              )}
+              <a
+                href={product.buyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold rounded-xl shadow-lg shadow-orange-500/20 transition-all"
+              >
+                Buy Now <ArrowRight className="w-5 h-5" />
+              </a>
+              <p className="text-xs text-white/[0.3] mt-3">Lifetime access &middot; Instant delivery</p>
             </div>
 
             {/* Image side */}
             {coverImageUrl && (
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
-                <Image
-                  src={coverImageUrl}
-                  alt={product.name}
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
+              <div className="rounded-2xl overflow-hidden bg-white/[0.03] border border-white/[0.06]">
+                <div className="relative aspect-[4/3]">
+                  <Image
+                    src={coverImageUrl}
+                    alt={product.name}
+                    fill
+                    className="object-cover"
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
               </div>
             )}
           </div>
@@ -159,19 +139,22 @@ export default async function ProductPage({ params }: Props) {
 
       {/* SECTION 2: FEATURES GRID */}
       {product.features && product.features.length > 0 && (
-        <section className="py-20 border-t border-white/10">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6">
-            <h2 className="text-3xl font-bold mb-12 text-center">Features</h2>
+        <section className="py-20 border-t border-white/[0.06]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-12">
+              <p className="text-xs uppercase tracking-widest text-white/[0.3] mb-2">What&apos;s included</p>
+              <h2 className="text-2xl font-semibold">Features</h2>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {product.features.map((feature, index) => (
                 <div
                   key={index}
-                  className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-colors"
+                  className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5 hover:border-white/[0.12] transition-colors"
                 >
                   <div className="mb-4">{getLucideIcon(feature.icon || 'Star')}</div>
-                  <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+                  <h3 className="text-sm font-semibold mb-2">{feature.title}</h3>
                   {feature.description && (
-                    <p className="text-white/50 text-sm leading-relaxed">{feature.description}</p>
+                    <p className="text-sm text-white/40 leading-relaxed">{feature.description}</p>
                   )}
                 </div>
               ))}
@@ -182,8 +165,8 @@ export default async function ProductPage({ params }: Props) {
 
       {/* SECTION 2.5: RICH TEXT DESCRIPTION */}
       {product.description && (
-        <section className="py-16 border-t border-white/10">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 prose prose-invert prose-lg">
+        <section className="py-16 border-t border-white/[0.06]">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 prose prose-invert prose-sm">
             <RichText data={product.description} />
           </div>
         </section>
@@ -191,29 +174,32 @@ export default async function ProductPage({ params }: Props) {
 
       {/* SECTION 3: SCREENSHOT GALLERY */}
       {galleryImages.length > 0 && (
-        <section className="py-20 border-t border-white/10">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6">
-            <h2 className="text-3xl font-bold mb-12 text-center">Screenshots</h2>
+        <section className="py-20 border-t border-white/[0.06]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-12">
+              <p className="text-xs uppercase tracking-widest text-white/[0.3] mb-2">Screenshots</p>
+              <h2 className="text-2xl font-semibold">Gallery</h2>
+            </div>
             <ProductGallery images={galleryImages} />
           </div>
         </section>
       )}
 
       {/* SECTION 4: FINAL CTA */}
-      <section className="py-20 border-t border-white/10">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+      <section className="border-t border-white/[0.06]">
+        <div className="py-20 text-center max-w-7xl mx-auto px-4 sm:px-6">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">
             Get {product.name} today
           </h2>
           {product.price && product.price > 0 && (
-            <p className="text-2xl font-semibold text-orange-400 mb-2">{formatPrice(product.price)}</p>
+            <p className="text-xl font-semibold text-orange-400 mb-2">{formatPrice(product.price)}</p>
           )}
-          <p className="text-white/50 mb-8">One-time payment. No subscription. Lifetime access.</p>
+          <p className="text-sm text-white/[0.3] mb-8">One-time payment. No subscription. Lifetime access.</p>
           <a
             href={product.buyUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold rounded-xl text-lg shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 transition-all"
+            className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold rounded-xl text-lg shadow-lg shadow-orange-500/20 transition-all"
           >
             Buy Now <ArrowRight className="w-5 h-5" />
           </a>
@@ -221,10 +207,9 @@ export default async function ProductPage({ params }: Props) {
       </section>
 
       {/* Footer back link */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 border-t border-white/10">
-        <Link href="/" className="inline-flex items-center gap-2 text-white/40 hover:text-white text-sm transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          Back to all products
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 border-t border-white/[0.06]">
+        <Link href="/" className="inline-flex items-center gap-2 text-white/[0.3] hover:text-white/60 text-sm transition-colors">
+          &larr; Back to all products
         </Link>
       </div>
     </div>
