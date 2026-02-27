@@ -34,6 +34,12 @@ function formatPrice(price: number): string {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
 }
 
+function ensureUrl(url: string): string {
+  if (!url) return '#'
+  if (url.startsWith('http://') || url.startsWith('https://')) return url
+  return `https://${url}`
+}
+
 function getLucideIcon(name: string) {
   const icons = LucideIcons as Record<string, React.ComponentType<{ className?: string }>>
   const Icon = icons[name]
@@ -84,7 +90,7 @@ export default async function ProductPage({ params }: Props) {
             <span className="text-white/60 truncate max-w-[200px]">{product.name}</span>
           </div>
           <a
-            href={product.buyUrl}
+            href={ensureUrl(product.buyUrl)}
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-1.5 text-[12px] font-semibold bg-amber-500 hover:bg-amber-400 text-black rounded-md transition-colors"
@@ -132,7 +138,7 @@ export default async function ProductPage({ params }: Props) {
                   </div>
                 )}
                 <a
-                  href={product.buyUrl}
+                  href={ensureUrl(product.buyUrl)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-7 py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-[15px] shadow-[0_0_30px_-5px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_-5px_rgba(245,158,11,0.5)] transition-all"
@@ -228,7 +234,7 @@ export default async function ProductPage({ params }: Props) {
           )}
           <p className="text-[14px] text-white/25 mb-10">One-time payment. No subscription. Lifetime access.</p>
           <a
-            href={product.buyUrl}
+            href={ensureUrl(product.buyUrl)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-10 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-lg shadow-[0_0_40px_-8px_rgba(245,158,11,0.4)] hover:shadow-[0_0_50px_-8px_rgba(245,158,11,0.5)] transition-all"
