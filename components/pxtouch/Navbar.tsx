@@ -1,34 +1,33 @@
 import React from 'react';
-import { Sparkles } from 'lucide-react';
-import { NAV_LINKS } from '@/app/pxtouch/constants';
+import { NAV_LINKS } from '@/app/(frontend)/pxtouch/constants';
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 mix-blend-difference text-white w-full max-w-md px-4">
-       <div className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-3 rounded-full flex items-center justify-between gap-4 shadow-2xl w-full">
-          <div className="font-black tracking-tighter text-xl shrink-0">PX</div>
-          
-          <div className="hidden md:flex gap-4 text-xs font-medium font-mono">
-             {NAV_LINKS.map((link) => (
-               <a 
-                 key={link.label} 
-                 href={link.href} 
-                 className="hover:text-gray-300 transition-colors uppercase"
-               >
-                 {link.label}
-               </a>
-             ))}
-          </div>
-          
-          <div className="w-px h-4 bg-white/30 hidden md:block shrink-0"></div>
-          
-          <a
-            href="#download"
-            className="bg-white text-black text-xs font-bold px-4 py-2 rounded-full hover:bg-gray-200 transition-colors uppercase tracking-widest shrink-0 whitespace-nowrap"
-          >
-             Download
-          </a>
-       </div>
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-black/60 border-b border-white/[0.05]">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 py-4 px-6">
+        <a href="/" className="text-lg font-bold text-white flex-shrink-0">
+          Pixelas
+        </a>
+
+        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className="text-white/60 hover:text-white transition-colors duration-200"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        <a
+          href="#download"
+          className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 transition-all duration-300"
+        >
+          Download
+        </a>
+      </div>
     </nav>
   );
 };
