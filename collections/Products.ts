@@ -66,7 +66,39 @@ export const Products: CollectionConfig = {
     {
       name: 'buyUrl',
       type: 'text',
-      required: true,
+      admin: {
+        description: 'Primary buy link (used if no platform-specific links are set)',
+      },
+    },
+    {
+      name: 'buyLinks',
+      type: 'array',
+      admin: {
+        description: 'Platform-specific buy links (e.g. Windows, Mac Apple Silicon, Mac Intel)',
+      },
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+          admin: {
+            description: 'Button text (e.g. "Windows", "Mac Apple Silicon", "Mac Intel")',
+          },
+        },
+        {
+          name: 'url',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'primary',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            description: 'Highlight this as the primary/recommended option',
+          },
+        },
+      ],
     },
     {
       name: 'coverImage',

@@ -68,7 +68,7 @@ const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full overflow-hidden cursor-col-resize select-none bg-[#0a0a0a] rounded-xl border border-white/[0.06] group touch-none"
+      className="relative w-full h-full overflow-hidden cursor-col-resize select-none bg-[#060606] rounded-xl border border-white/[0.07] group touch-none"
       onMouseMove={onMouseMove}
       onTouchMove={onTouchMove}
       onMouseDown={(e) => { handleMove(e.clientX); isDragging.current = true; }}
@@ -82,7 +82,7 @@ const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
           style={enhancedFilterStyle}
           draggable={false}
         />
-        <div className="absolute bottom-6 right-6 bg-white/[0.03] backdrop-blur-xl text-white/60 px-3 py-1.5 text-xs font-medium border border-white/[0.06] rounded-xl z-10 pointer-events-none">
+        <div className="absolute bottom-4 sm:bottom-6 right-4 sm:right-6 bg-[#0c0c0c]/80 backdrop-blur-xl text-amber-400/60 px-3 py-1.5 text-[10px] sm:text-xs font-medium border border-white/[0.07] rounded-xl z-10 pointer-events-none">
           Enhanced
         </div>
       </div>
@@ -106,7 +106,7 @@ const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
           <div className="absolute inset-0 bg-white/5 mix-blend-overlay pointer-events-none opacity-50"></div>
         )}
 
-        <div className="absolute bottom-6 left-6 bg-white/[0.03] backdrop-blur-xl text-white/40 px-3 py-1.5 text-xs font-medium border border-white/[0.06] rounded-xl z-10 pointer-events-none">
+        <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 bg-[#0c0c0c]/80 backdrop-blur-xl text-white/30 px-3 py-1.5 text-[10px] sm:text-xs font-medium border border-white/[0.07] rounded-xl z-10 pointer-events-none">
           Original
         </div>
       </div>
@@ -116,7 +116,7 @@ const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
         className="absolute top-0 bottom-0 w-0.5 bg-white/60 cursor-col-resize z-30"
         style={{ left: `${sliderPosition}%` }}
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white/[0.06] backdrop-blur-xl border border-white/[0.12] rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-[#0c0c0c]/80 backdrop-blur-xl border border-white/[0.12] rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
           <ArrowLeftRight size={16} className="text-white" />
         </div>
       </div>

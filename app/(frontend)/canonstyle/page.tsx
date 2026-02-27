@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import Image from "next/image";
-import { ArrowLeft, Check, Download, Camera, Palette, Zap, ChevronLeft, ChevronRight, Info, X, Sparkles, Star } from "lucide-react";
 import Link from "next/link";
+import { ArrowLeft, Check, Download, Camera, Palette, Zap, ChevronLeft, ChevronRight, Info, X, Star } from "lucide-react";
 
 // Picture Style showcase data
 const pictureStyles = [
@@ -141,38 +141,37 @@ const faqItems = [
 // Memoized Feature Card Component
 const FeatureCard = memo(({ feature, index }: { feature: { title: string; description: string }; index: number }) => (
   <div
-    className="p-6 bg-white/[0.03] rounded-xl border border-white/[0.06] hover:border-white/[0.12] transition-all text-center group hover:scale-[1.02] duration-300"
-    style={{ animationDelay: `${index * 100}ms` }}
+    className="p-5 sm:p-6 bg-[#0c0c0c] rounded-xl border border-white/[0.07] hover:border-white/[0.15] transition-all text-center group hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)] duration-300"
   >
-    <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300 shadow-lg shadow-orange-500/20">
-      {index === 0 && <Palette className="w-6 h-6 text-white" />}
-      {index === 1 && <Camera className="w-6 h-6 text-white" />}
-      {index === 2 && <Zap className="w-6 h-6 text-white" />}
+    <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 bg-amber-500/10 rounded-xl flex items-center justify-center group-hover:bg-amber-500/15 transition-colors duration-300">
+      {index === 0 && <Palette className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />}
+      {index === 1 && <Camera className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />}
+      {index === 2 && <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />}
     </div>
-    <h3 className="text-lg font-semibold mb-2 text-white">{feature.title}</h3>
-    <p className="text-sm text-white/60">{feature.description}</p>
+    <h3 className="text-[15px] sm:text-base font-semibold mb-1.5 text-white">{feature.title}</h3>
+    <p className="text-[13px] text-white/30 leading-relaxed">{feature.description}</p>
   </div>
 ));
 FeatureCard.displayName = 'FeatureCard';
 
 // Memoized FAQ Item Component
-const FAQItem = memo(({ faq, index, isExpanded, onToggle }: {
+const FAQItem = memo(({ faq, isExpanded, onToggle }: {
   faq: { question: string; answer: string };
   index: number;
   isExpanded: boolean;
   onToggle: () => void
 }) => (
   <div
-    className="bg-white/[0.03] rounded-xl border border-white/[0.06] overflow-hidden hover:border-white/[0.12] transition-all"
+    className="bg-[#0c0c0c] rounded-xl border border-white/[0.07] overflow-hidden hover:border-white/[0.15] transition-all"
   >
     <button
       onClick={onToggle}
-      className="w-full p-6 text-left flex items-center justify-between hover:bg-white/[0.03] transition-all group"
+      className="w-full p-4 sm:p-5 text-left flex items-center justify-between hover:bg-white/[0.02] transition-all group"
       aria-expanded={isExpanded}
     >
-      <span className="font-semibold text-lg pr-4 text-white">{faq.question}</span>
+      <span className="font-semibold text-[15px] sm:text-base pr-4 text-white">{faq.question}</span>
       <ChevronRight
-        className={`w-5 h-5 text-white/40 transition-transform flex-shrink-0 group-hover:text-orange-400 ${
+        className={`w-4 h-4 sm:w-5 sm:h-5 text-white/25 transition-transform flex-shrink-0 group-hover:text-amber-400 ${
           isExpanded ? 'rotate-90' : ''
         }`}
       />
@@ -182,8 +181,8 @@ const FAQItem = memo(({ faq, index, isExpanded, onToggle }: {
         isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
       }`}
     >
-      <div className="px-6 pb-6">
-        <p className="text-white/60 leading-relaxed">{faq.answer}</p>
+      <div className="px-4 sm:px-5 pb-4 sm:pb-5">
+        <p className="text-[13px] sm:text-sm text-white/35 leading-relaxed">{faq.answer}</p>
       </div>
     </div>
   </div>
@@ -278,7 +277,6 @@ export default function CanonStylePage() {
       const afterImg = new window.Image();
       beforeImg.src = style.beforeImage;
       afterImg.src = style.afterImage;
-      // Set loading priority for first 3 images
       if (index < 3) {
         beforeImg.loading = 'eager';
         afterImg.loading = 'eager';
@@ -315,7 +313,7 @@ export default function CanonStylePage() {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-[#0a0a0a] text-white transition-opacity duration-700 ${
+    <div className={`min-h-screen bg-[#060606] text-white noise transition-opacity duration-700 ${
       isLoaded ? 'opacity-100' : 'opacity-0'
     }`}>
       {/* Preload all images (hidden) */}
@@ -329,68 +327,62 @@ export default function CanonStylePage() {
       </div>
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/60 border-b border-white/[0.05] transition-all duration-300">
-        <div className="container mx-auto px-4 py-4">
+      <header className="sticky top-0 z-50 backdrop-blur-2xl bg-[#060606]/80 border-b border-white/[0.06]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 text-white/60 hover:text-white transition-all hover:gap-3 group">
-              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-              <span>Kembali</span>
+            <Link href="/" className="flex items-center gap-2 text-white/40 hover:text-white transition-colors group">
+              <ArrowLeft className="w-4 h-4" />
+              <span className="hidden sm:inline text-[13px]">Back</span>
             </Link>
-            <h1 className="text-xl font-bold flex items-center gap-2 text-white">
-              <Sparkles className="w-5 h-5 text-orange-400" />
+            <h1 className="text-sm sm:text-base font-bold flex items-center gap-2 text-white">
               Canon Picture Style
             </h1>
-            <div className="w-24"></div>
+            <a
+              href="#beli"
+              className="px-3 sm:px-4 py-1.5 text-[12px] font-semibold bg-amber-500 hover:bg-amber-400 text-black rounded-md transition-colors flex-shrink-0"
+            >
+              Buy Now
+            </a>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="pt-24 md:pt-32 pb-12 md:pb-20 px-4 relative overflow-hidden">
-        {/* Subtle background glow */}
-        <div className="absolute inset-0 bg-gradient-to-b from-orange-500/[0.03] via-transparent to-transparent"></div>
-        <div className="container mx-auto max-w-6xl text-center relative z-10">
-          <div className="inline-block mb-4 px-4 py-2 bg-white/[0.03] rounded-full border border-white/[0.06] hover:scale-105 transition-transform cursor-default">
-            <span className="text-sm md:text-base text-orange-400 font-semibold flex items-center gap-2">
-              <Star className="w-4 h-4 fill-orange-400" />
-              48 Picture Style Premium
-              <Star className="w-4 h-4 fill-orange-400" />
-            </span>
-          </div>
-          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent leading-tight animate-fade-in">
+      <section className="relative overflow-hidden ambient-glow">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 sm:pt-16 md:pt-20 pb-8 sm:pb-12 text-center relative z-10">
+          <span className="inline-block px-3 py-1.5 mb-4 sm:mb-5 bg-amber-500/15 rounded-md text-[11px] font-semibold text-amber-400 uppercase tracking-wider">
+            <Star className="w-3 h-3 inline -mt-0.5 mr-1" />
+            48 Picture Style Premium
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] mb-4 sm:mb-6">
             Film Look Analog
             <br />
-            Langsung dari Kamera
+            <span className="font-display text-amber-300">Langsung dari Kamera</span>
           </h2>
-          <p className="text-base md:text-xl text-white/60 mb-6 md:mb-8 max-w-3xl mx-auto px-4">
+          <p className="text-sm sm:text-base md:text-lg text-white/35 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
             Berikan foto digital Anda warna dan karakter film analog legendaris langsung dari kamera.
             Hemat waktu editing dengan hasil langsung dari kamera.
           </p>
-          <div className="flex justify-center">
-            <a
-              href="#showcase"
-              className="w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.08] rounded-xl font-semibold transition-all text-center text-sm md:text-base text-white group hover:scale-105"
-            >
-              <span className="flex items-center justify-center gap-2">
-                Lihat Contoh Hasil
-                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </span>
-            </a>
-          </div>
+          <a
+            href="#showcase"
+            className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 bg-[#0c0c0c] hover:bg-white/[0.06] border border-white/[0.07] hover:border-white/[0.15] rounded-xl text-[13px] sm:text-sm font-semibold text-white transition-all group"
+          >
+            Lihat Contoh Hasil
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </a>
 
           {/* Gallery Thumbnails Preview */}
-          <div className="mt-8 md:mt-12 max-w-4xl mx-auto">
+          <div className="mt-8 sm:mt-12 max-w-4xl mx-auto">
             <div className="text-center mb-4">
-              <h3 className="text-lg md:text-xl font-semibold text-white mb-1">Galeri Foto Picture Style</h3>
-              <p className="text-sm text-white/40">Klik untuk melihat lebih banyak contoh hasil</p>
+              <h3 className="text-base sm:text-lg font-semibold text-white mb-1">Galeri Foto Picture Style</h3>
+              <p className="text-[12px] sm:text-sm text-white/25">Klik untuk melihat lebih banyak contoh hasil</p>
             </div>
             <button
               onClick={() => setShowGallery(true)}
-              className="group w-full relative overflow-hidden rounded-xl border border-white/[0.06] hover:border-white/[0.12] transition-all bg-white/[0.03] hover:bg-white/[0.06] p-2"
+              className="group w-full relative overflow-hidden rounded-xl border border-white/[0.07] hover:border-white/[0.15] transition-all bg-[#0c0c0c] hover:bg-white/[0.04] p-1.5 sm:p-2"
             >
-              <div className="grid grid-cols-4 gap-2">
-                {/* Thumbnail 1 */}
-                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-white/[0.03]">
+              <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
+                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-[#111]">
                   <Image
                     src="/canonstyle/fuji-natura-after.webp"
                     alt="Gallery preview 1"
@@ -402,8 +394,7 @@ export default function CanonStylePage() {
                     }}
                   />
                 </div>
-                {/* Thumbnail 2 */}
-                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-white/[0.03]">
+                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-[#111]">
                   <Image
                     src="/canonstyle/kodak-ektar-after.webp"
                     alt="Gallery preview 2"
@@ -415,8 +406,7 @@ export default function CanonStylePage() {
                     }}
                   />
                 </div>
-                {/* Thumbnail 3 */}
-                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-white/[0.03]">
+                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-[#111]">
                   <Image
                     src="/canonstyle/puretone-after.webp"
                     alt="Gallery preview 3"
@@ -428,8 +418,7 @@ export default function CanonStylePage() {
                     }}
                   />
                 </div>
-                {/* Thumbnail 4 with overlay */}
-                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-white/[0.03]">
+                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-[#111]">
                   <Image
                     src="/canonstyle/kodak-satin-after.webp"
                     alt="Gallery preview 4"
@@ -441,27 +430,24 @@ export default function CanonStylePage() {
                     }}
                   />
                   <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center">
-                    <Camera className="w-8 h-8 md:w-10 md:h-10 text-orange-400 mb-2" />
-                    <span className="text-white font-semibold text-sm md:text-base">Lihat Semua</span>
+                    <Camera className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400 mb-1 sm:mb-2" />
+                    <span className="text-white font-semibold text-xs sm:text-sm">Lihat Semua</span>
                   </div>
                 </div>
               </div>
-
-              {/* Hover effect overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-orange-500/0 to-orange-500/0 group-hover:from-orange-500/[0.05] group-hover:to-transparent transition-all pointer-events-none rounded-xl"></div>
             </button>
           </div>
         </div>
       </section>
 
       {/* Features */}
-      <section className="py-12 md:py-20 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-8">
-            <p className="text-xs uppercase tracking-widest text-white/[0.3] mb-3">Keunggulan</p>
-            <h2 className="text-2xl font-semibold text-white">Kenapa Picture Style Ini Spesial</h2>
+      <section className="py-14 sm:py-20 px-4 sm:px-6 border-t border-white/[0.06]">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8 sm:mb-10">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-semibold">Keunggulan</span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-2">Kenapa Picture Style Ini Spesial</h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             {features.map((feature, index) => (
               <FeatureCard key={index} feature={feature} index={index} />
             ))}
@@ -470,28 +456,28 @@ export default function CanonStylePage() {
       </section>
 
       {/* Before/After Showcase */}
-      <section id="showcase" className="py-12 md:py-20 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-8 md:mb-12">
-            <p className="text-xs uppercase tracking-widest text-white/[0.3] mb-3">Before & After</p>
-            <h2 className="text-2xl md:text-4xl font-semibold mb-3 md:mb-4 text-white">
+      <section id="showcase" className="py-14 sm:py-20 px-4 sm:px-6 border-t border-white/[0.06]">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8 sm:mb-12">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-semibold">Before & After</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mt-2 mb-3">
               Lihat Perbedaannya
             </h2>
-            <p className="text-base md:text-lg text-white/60">
+            <p className="text-sm sm:text-base text-white/30">
               Geser untuk membandingkan Before & After
             </p>
           </div>
 
-          <div className="bg-white/[0.03] rounded-xl border border-white/[0.06] p-4 md:p-8">
+          <div className="bg-[#0c0c0c] rounded-xl border border-white/[0.07] p-3 sm:p-4 md:p-8">
             {/* Style Name */}
-            <div className="text-center mb-4 md:mb-6">
-              <h3 className="text-2xl md:text-3xl font-semibold mb-2 text-white">{currentStyle.name}</h3>
-              <p className="text-sm md:text-base text-white/60">{currentStyle.description}</p>
+            <div className="text-center mb-4 sm:mb-6">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight mb-1.5 sm:mb-2 text-white">{currentStyle.name}</h3>
+              <p className="text-[13px] sm:text-sm text-white/30">{currentStyle.description}</p>
             </div>
 
             {/* Image Comparison Slider */}
             <div
-              className="relative aspect-[3/4] max-w-2xl mx-auto rounded-xl overflow-hidden mb-6 bg-white/[0.03] select-none touch-none"
+              className="relative aspect-[3/4] max-w-2xl mx-auto rounded-xl overflow-hidden mb-5 sm:mb-6 bg-[#111] select-none touch-none"
               onMouseDown={handleMouseDown}
               onMouseUp={handleMouseUp}
               onMouseMove={handleMouseMove}
@@ -509,16 +495,15 @@ export default function CanonStylePage() {
                   className="object-cover"
                   priority
                   onError={(e) => {
-                    // Fallback to placeholder if image not found
                     const target = e.target as HTMLElement;
                     target.style.display = 'none';
                     const parent = target.parentElement;
                     if (parent) {
                       parent.innerHTML = `
-                        <div class="relative w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                        <div class="relative w-full h-full bg-[#111] flex items-center justify-center">
                           <div class="text-center">
-                            <p class="text-white/40">Before - Original</p>
-                            <p class="text-white/20 text-sm mt-2">Tambahkan: ${currentStyle.beforeImage.split('/').pop()}</p>
+                            <p class="text-white/30">Before - Original</p>
+                            <p class="text-white/15 text-sm mt-2">Tambahkan: ${currentStyle.beforeImage.split('/').pop()}</p>
                           </div>
                         </div>
                       `;
@@ -539,16 +524,15 @@ export default function CanonStylePage() {
                   className="object-cover"
                   priority
                   onError={(e) => {
-                    // Fallback to placeholder if image not found
                     const target = e.target as HTMLElement;
                     target.style.display = 'none';
                     const parent = target.parentElement;
                     if (parent) {
                       parent.innerHTML = `
-                        <div class="relative w-full h-full bg-gradient-to-br from-orange-900 to-red-900 flex items-center justify-center">
+                        <div class="relative w-full h-full bg-[#111] flex items-center justify-center">
                           <div class="text-center">
-                            <p class="text-white/60">After - ${currentStyle.name}</p>
-                            <p class="text-white/[0.3] text-sm mt-2">Tambahkan: ${currentStyle.afterImage.split('/').pop()}</p>
+                            <p class="text-white/40">After - ${currentStyle.name}</p>
+                            <p class="text-white/20 text-sm mt-2">Tambahkan: ${currentStyle.afterImage.split('/').pop()}</p>
                           </div>
                         </div>
                       `;
@@ -559,22 +543,22 @@ export default function CanonStylePage() {
 
               {/* Slider Handle */}
               <div
-                className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize pointer-events-none z-10 transition-opacity"
+                className="absolute top-0 bottom-0 w-0.5 bg-white cursor-ew-resize pointer-events-none z-10"
                 style={{ left: `${sliderPosition}%` }}
               >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center pointer-events-auto cursor-grab active:cursor-grabbing hover:scale-110 transition-transform active:scale-95">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-2xl flex items-center justify-center pointer-events-auto cursor-grab active:cursor-grabbing hover:scale-110 transition-transform active:scale-95">
                   <div className="flex gap-1">
-                    <div className="w-0.5 h-5 bg-black"></div>
-                    <div className="w-0.5 h-5 bg-black"></div>
+                    <div className="w-0.5 h-4 sm:h-5 bg-black"></div>
+                    <div className="w-0.5 h-4 sm:h-5 bg-black"></div>
                   </div>
                 </div>
               </div>
 
               {/* Labels */}
-              <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-sm pointer-events-none z-10 text-white/60">
+              <div className="absolute top-3 sm:top-4 left-3 sm:left-4 px-2.5 py-1 bg-black/60 backdrop-blur-sm rounded-full text-[11px] sm:text-sm pointer-events-none z-10 text-white/40">
                 Before
               </div>
-              <div className="absolute top-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-sm pointer-events-none z-10 text-white/60">
+              <div className="absolute top-3 sm:top-4 right-3 sm:right-4 px-2.5 py-1 bg-black/60 backdrop-blur-sm rounded-full text-[11px] sm:text-sm pointer-events-none z-10 text-white/40">
                 After
               </div>
             </div>
@@ -586,9 +570,9 @@ export default function CanonStylePage() {
               max="100"
               value={sliderPosition}
               onChange={handleSliderChange}
-              className="w-full h-2 bg-white/[0.06] rounded-lg appearance-none cursor-pointer mb-6"
+              className="w-full h-1.5 sm:h-2 bg-white/[0.06] rounded-lg appearance-none cursor-pointer mb-5 sm:mb-6"
               style={{
-                background: `linear-gradient(to right, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.06) ${sliderPosition}%, rgba(249,115,22,0.3) ${sliderPosition}%, rgba(249,115,22,0.3) 100%)`
+                background: `linear-gradient(to right, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.06) ${sliderPosition}%, rgba(245,158,11,0.3) ${sliderPosition}%, rgba(245,158,11,0.3) 100%)`
               }}
             />
 
@@ -596,14 +580,14 @@ export default function CanonStylePage() {
             <div className="flex items-center justify-between">
               <button
                 onClick={prevStyle}
-                className="flex items-center justify-center w-12 h-12 md:w-auto md:px-6 md:py-3 bg-white/[0.06] hover:bg-white/[0.1] rounded-xl transition-all border border-white/[0.08] group hover:scale-105"
+                className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-auto md:px-6 md:py-3 bg-[#060606] hover:bg-white/[0.04] rounded-xl transition-all border border-white/[0.07] group hover:border-white/[0.15]"
                 aria-label="Previous style"
               >
-                <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                <span className="hidden md:inline ml-2">Previous</span>
+                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 group-hover:-translate-x-1 transition-transform" />
+                <span className="hidden md:inline ml-2 text-[13px]">Previous</span>
               </button>
 
-              <div className="flex gap-2">
+              <div className="flex gap-1.5 sm:gap-2">
                 {pictureStyles.map((_, index) => (
                   <button
                     key={index}
@@ -611,10 +595,10 @@ export default function CanonStylePage() {
                       setCurrentStyleIndex(index);
                       setSliderPosition(50);
                     }}
-                    className={`w-2 h-2 rounded-full transition-all ${
+                    className={`h-1.5 sm:h-2 rounded-full transition-all ${
                       index === currentStyleIndex
-                        ? 'bg-orange-500 w-8'
-                        : 'bg-white/[0.12] hover:bg-white/[0.25]'
+                        ? 'bg-amber-500 w-6 sm:w-8'
+                        : 'w-1.5 sm:w-2 bg-white/[0.1] hover:bg-white/[0.2]'
                     }`}
                     aria-label={`Go to style ${index + 1}`}
                   />
@@ -623,20 +607,20 @@ export default function CanonStylePage() {
 
               <button
                 onClick={nextStyle}
-                className="flex items-center justify-center w-12 h-12 md:w-auto md:px-6 md:py-3 bg-white/[0.06] hover:bg-white/[0.1] rounded-xl transition-all border border-white/[0.08] group hover:scale-105"
+                className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-auto md:px-6 md:py-3 bg-[#060606] hover:bg-white/[0.04] rounded-xl transition-all border border-white/[0.07] group hover:border-white/[0.15]"
                 aria-label="Next style"
               >
-                <span className="hidden md:inline mr-2">Next</span>
-                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <span className="hidden md:inline mr-2 text-[13px]">Next</span>
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </div>
 
           {/* Note */}
-          <div className="mt-8 p-4 bg-white/[0.03] border border-white/[0.06] rounded-xl flex items-start gap-3 hover:border-white/[0.12] transition-colors">
-            <Info className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-white/60">
-              <strong className="text-white/80">Catatan:</strong> Ini hanya preview 8 dari 48 Picture Style yang tersedia.
+          <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-[#0c0c0c] border border-white/[0.07] rounded-xl flex items-start gap-3 hover:border-white/[0.15] transition-colors">
+            <Info className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+            <p className="text-[12px] sm:text-sm text-white/30">
+              <strong className="text-white/50">Catatan:</strong> Ini hanya preview 8 dari 48 Picture Style yang tersedia.
               Setiap style memiliki karakter unik yang bisa disesuaikan.
             </p>
           </div>
@@ -644,63 +628,63 @@ export default function CanonStylePage() {
       </section>
 
       {/* What's Included */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-12">
-            <p className="text-xs uppercase tracking-widest text-white/[0.3] mb-3">Paket Lengkap</p>
-            <h2 className="text-2xl md:text-4xl font-semibold mb-4 text-white">
+      <section className="py-14 sm:py-20 px-4 sm:px-6 border-t border-white/[0.06]">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8 sm:mb-12">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-semibold">Paket Lengkap</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mt-2 mb-3 sm:mb-4">
               Apa yang Anda Dapatkan?
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
             {[
               "48 File Picture Style (.pf3)",
               "Kompatibel dengan semua kamera Canon yang support custom Picture Style"
             ].map((item, index) => (
-              <div key={index} className="flex items-start gap-3 p-4 bg-white/[0.03] rounded-xl border border-white/[0.06]">
-                <div className="w-6 h-6 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg shadow-orange-500/20">
-                  <Check className="w-4 h-4 text-white" />
+              <div key={index} className="flex items-start gap-3 p-4 bg-[#0c0c0c] rounded-xl border border-white/[0.07]">
+                <div className="w-5 h-5 sm:w-6 sm:h-6 bg-amber-500/15 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Check className="w-3 h-3 sm:w-4 sm:h-4 text-amber-400" />
                 </div>
-                <span className="text-white/60">{item}</span>
+                <span className="text-[13px] sm:text-sm text-white/35">{item}</span>
               </div>
             ))}
           </div>
 
           {/* Complete File List Dropdown */}
-          <div className="mt-8">
+          <div className="mt-6 sm:mt-8">
             <button
               onClick={() => setShowFileList(!showFileList)}
-              className="w-full p-6 bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.06] hover:border-white/[0.12] rounded-xl transition-all flex items-center justify-between group"
+              className="w-full p-4 sm:p-6 bg-[#0c0c0c] hover:bg-white/[0.04] border border-white/[0.07] hover:border-white/[0.15] rounded-xl transition-all flex items-center justify-between group"
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
-                  <Palette className="w-5 h-5 text-white" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-amber-500/10 rounded-xl flex items-center justify-center">
+                  <Palette className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
                 </div>
                 <div className="text-left">
-                  <div className="text-lg font-semibold text-white">Lihat Daftar Lengkap 48 Picture Style</div>
-                  <div className="text-sm text-white/40">Klik untuk melihat semua file yang termasuk</div>
+                  <div className="text-sm sm:text-base font-semibold text-white">Lihat Daftar Lengkap 48 Picture Style</div>
+                  <div className="text-[11px] sm:text-sm text-white/25">Klik untuk melihat semua file yang termasuk</div>
                 </div>
               </div>
               <ChevronRight
-                className={`w-6 h-6 text-white/40 transition-transform ${showFileList ? 'rotate-90' : ''}`}
+                className={`w-5 h-5 text-white/25 transition-transform ${showFileList ? 'rotate-90' : ''}`}
               />
             </button>
 
             {showFileList && (
-              <div className="mt-4 p-6 bg-white/[0.03] border border-white/[0.06] rounded-xl">
-                <div className="grid md:grid-cols-2 gap-6">
+              <div className="mt-3 sm:mt-4 p-4 sm:p-6 bg-[#0c0c0c] border border-white/[0.07] rounded-xl">
+                <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                   {pictureStyleFiles.map((category, index) => (
                     <div key={index} className="space-y-2">
-                      <h4 className="font-semibold text-orange-400 mb-3 flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-orange-400 rounded-full"></div>
+                      <h4 className="font-semibold text-amber-400 text-[13px] sm:text-sm mb-2 sm:mb-3 flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-amber-400 rounded-full"></div>
                         {category.category}
-                        <span className="text-white/[0.3] text-sm font-normal">({category.files.length})</span>
+                        <span className="text-white/15 text-[11px] sm:text-sm font-normal">({category.files.length})</span>
                       </h4>
-                      <ul className="space-y-1.5 pl-4">
+                      <ul className="space-y-1 sm:space-y-1.5 pl-4">
                         {category.files.map((file, fileIndex) => (
-                          <li key={fileIndex} className="text-sm text-white/60 flex items-start gap-2">
-                            <span className="text-orange-500/50 mt-1">•</span>
+                          <li key={fileIndex} className="text-[12px] sm:text-sm text-white/30 flex items-start gap-2">
+                            <span className="text-amber-500/30 mt-1">•</span>
                             <span>{file}.pf3</span>
                           </li>
                         ))}
@@ -708,9 +692,9 @@ export default function CanonStylePage() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 pt-6 border-t border-white/[0.06] text-center">
-                  <p className="text-white/60 text-sm">
-                    <strong className="text-orange-400">Total: 48 files</strong> - Semua file dalam format .pf3 siap diinstall ke kamera Canon Anda
+                <div className="mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-white/[0.06] text-center">
+                  <p className="text-white/35 text-[12px] sm:text-sm">
+                    <strong className="text-amber-400">Total: 48 files</strong> - Semua file dalam format .pf3 siap diinstall ke kamera Canon Anda
                   </p>
                 </div>
               </div>
@@ -720,51 +704,51 @@ export default function CanonStylePage() {
       </section>
 
       {/* Camera Compatibility */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-12">
-            <p className="text-xs uppercase tracking-widest text-white/[0.3] mb-3">Kompatibilitas</p>
-            <h2 className="text-2xl md:text-4xl font-semibold mb-4 text-white">
+      <section className="py-14 sm:py-20 px-4 sm:px-6 border-t border-white/[0.06]">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8 sm:mb-12">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-semibold">Kompatibilitas</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mt-2 mb-3 sm:mb-4">
               Kamera yang Didukung
             </h2>
-            <p className="text-lg text-white/60">
+            <p className="text-sm sm:text-base text-white/30">
               Support hampir semua kamera Canon modern
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {compatibleCameras.map((camera, index) => (
               <div
                 key={index}
-                className="p-6 bg-white/[0.03] rounded-xl border border-white/[0.06] hover:border-white/[0.12] transition-all"
+                className="p-4 sm:p-6 bg-[#0c0c0c] rounded-xl border border-white/[0.07] hover:border-white/[0.15] transition-all"
               >
-                <h3 className="text-xl font-semibold mb-2 text-orange-400">{camera.series}</h3>
-                <p className="text-white/60">{camera.models}</p>
+                <h3 className="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 text-amber-400">{camera.series}</h3>
+                <p className="text-[13px] sm:text-sm text-white/30">{camera.models}</p>
               </div>
             ))}
           </div>
 
-          <div className="mt-8 p-6 bg-white/[0.03] border border-white/[0.06] rounded-xl">
-            <p className="text-center text-white/60">
-              <strong className="text-white">Tidak yakin kamera Anda kompatibel?</strong>
+          <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-[#0c0c0c] border border-white/[0.07] rounded-xl">
+            <p className="text-center text-[13px] sm:text-sm text-white/30">
+              <strong className="text-white/50">Tidak yakin kamera Anda kompatibel?</strong>
               <br />
-              Cek apakah ada menu <span className="text-orange-400">User Def. 1, 2, 3</span> di Picture Style settings.
+              Cek apakah ada menu <span className="text-amber-400">User Def. 1, 2, 3</span> di Picture Style settings.
             </p>
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-12">
-            <p className="text-xs uppercase tracking-widest text-white/[0.3] mb-3">FAQ</p>
-            <h2 className="text-2xl md:text-4xl font-semibold mb-4 text-white">
+      <section className="py-14 sm:py-20 px-4 sm:px-6 border-t border-white/[0.06]">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8 sm:mb-12">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-semibold">FAQ</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mt-2 mb-3 sm:mb-4">
               Yang Sering Ditanya
             </h2>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {faqItems.map((faq, index) => (
               <FAQItem
                 key={index}
@@ -779,50 +763,52 @@ export default function CanonStylePage() {
       </section>
 
       {/* Purchase Section */}
-      <section id="beli" className="py-20 px-4">
-        <div className="container mx-auto max-w-2xl">
-          <div className="bg-white/[0.03] rounded-xl border border-white/[0.06] p-8 md:p-12 text-center">
-            <div className="inline-block mb-6 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl shadow-lg shadow-orange-500/20">
-              <span className="font-semibold text-white">Penawaran Terbatas</span>
-            </div>
+      <section id="beli" className="relative border-t border-white/[0.06]">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/[0.02] to-transparent pointer-events-none" />
+        <div className="relative py-16 sm:py-20 px-4 sm:px-6">
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-[#0c0c0c] rounded-xl border border-white/[0.07] p-6 sm:p-8 md:p-12 text-center">
+              <span className="inline-block mb-5 sm:mb-6 px-3 py-1.5 bg-amber-500/15 rounded-md text-[11px] font-semibold text-amber-400 uppercase tracking-wider">
+                Penawaran Terbatas
+              </span>
 
-            <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-white">
-              Dapatkan 48 Picture Style
-            </h2>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
+                Dapatkan 48 Picture Style
+              </h2>
 
-            <div className="mb-6">
-              <div className="text-5xl md:text-6xl font-bold text-orange-400 mb-2">
-                Rp 135.000
-              </div>
-              <p className="text-white/40">One Time Purchase</p>
-            </div>
-
-            <div className="space-y-3 mb-8 text-left max-w-md mx-auto">
-              {[
-                "48 Picture Style premium (.pf3)",
-                "Support semua kamera Canon"
-              ].map((item, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-orange-400 flex-shrink-0" />
-                  <span className="text-white/60">{item}</span>
+              <div className="mb-5 sm:mb-6">
+                <div className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-amber-400 mb-2">
+                  Rp 135.000
                 </div>
-              ))}
+                <p className="text-[13px] text-white/25">One Time Purchase</p>
+              </div>
+
+              <div className="space-y-2.5 sm:space-y-3 mb-6 sm:mb-8 text-left max-w-md mx-auto">
+                {[
+                  "48 Picture Style premium (.pf3)",
+                  "Support semua kamera Canon"
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <Check className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 flex-shrink-0" />
+                    <span className="text-[13px] sm:text-sm text-white/35">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <a
+                href="https://amlo-life.myr.id/pl/48-canon-picture-style-premium/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 sm:py-4 bg-amber-500 hover:bg-amber-400 rounded-xl font-bold text-base sm:text-lg text-black shadow-[0_0_30px_-5px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_-5px_rgba(245,158,11,0.5)] transition-all"
+              >
+                <Download className="w-5 h-5" />
+                Beli Sekarang
+              </a>
+
+              <p className="mt-5 sm:mt-6 text-[11px] sm:text-[12px] text-white/15">
+                Pembayaran aman melalui transfer bank atau e-wallet
+              </p>
             </div>
-
-            <a
-              href="https://amlo-life.myr.id/pl/48-canon-picture-style-premium/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl font-semibold text-lg text-white shadow-lg shadow-orange-500/20 hover:shadow-xl hover:shadow-orange-500/30 transition-all hover:scale-105 active:scale-95 group relative overflow-hidden"
-            >
-              <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
-              <Download className="w-5 h-5 relative z-10 group-hover:animate-bounce" />
-              <span className="relative z-10">Beli Sekarang</span>
-            </a>
-
-            <p className="mt-6 text-sm text-white/[0.3]">
-              Pembayaran aman melalui transfer bank atau e-wallet
-            </p>
           </div>
         </div>
       </section>
@@ -830,50 +816,48 @@ export default function CanonStylePage() {
       {/* Gallery Modal */}
       {showGallery && (
         <div
-          className="fixed inset-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-xl overflow-y-auto overscroll-contain"
+          className="fixed inset-0 z-50 bg-[#060606]/95 backdrop-blur-xl overflow-y-auto overscroll-contain"
           onClick={() => setShowGallery(false)}
           onTouchMove={(e) => e.stopPropagation()}
         >
-          <div className="container mx-auto px-4 py-20" onClick={(e) => e.stopPropagation()}>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20" onClick={(e) => e.stopPropagation()}>
             {/* Close Button */}
             <button
               onClick={() => setShowGallery(false)}
-              className="fixed top-4 right-4 w-12 h-12 bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.08] rounded-xl flex items-center justify-center transition-all z-50"
+              className="fixed top-3 right-3 sm:top-4 sm:right-4 w-10 h-10 sm:w-12 sm:h-12 bg-[#0c0c0c] hover:bg-white/[0.06] border border-white/[0.07] rounded-xl flex items-center justify-center transition-all z-50"
               aria-label="Close gallery"
             >
-              <X className="w-6 h-6 text-white" />
+              <X className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </button>
 
             {/* Gallery Header */}
-            <div className="text-center mb-12">
-              <p className="text-xs uppercase tracking-widest text-white/[0.3] mb-3">Galeri</p>
-              <h2 className="text-2xl md:text-4xl font-semibold mb-2 text-white">
+            <div className="text-center mb-8 sm:mb-12">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-semibold">Galeri</span>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight mt-2 mb-2">
                 Galeri Foto Picture Style
               </h2>
-              <p className="text-white/60">
+              <p className="text-[13px] sm:text-sm text-white/30">
                 Contoh hasil foto pakai berbagai picture style
               </p>
             </div>
 
             {/* Gallery by Category */}
-            <div className="max-w-7xl mx-auto space-y-16">
+            <div className="space-y-12 sm:space-y-16">
               {galleryImages.map((gallery, galleryIndex) => (
                 gallery.images.length > 0 && (
                   <div key={galleryIndex}>
-                    {/* Category Title */}
-                    <div className="mb-6">
-                      <h3 className="text-2xl md:text-3xl font-semibold text-orange-400 mb-2">
+                    <div className="mb-4 sm:mb-6">
+                      <h3 className="text-xl sm:text-2xl font-extrabold text-amber-400 mb-2 tracking-tight">
                         {gallery.styleName}
                       </h3>
-                      <div className="h-0.5 w-20 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"></div>
+                      <div className="h-0.5 w-16 sm:w-20 bg-amber-500/30 rounded-full"></div>
                     </div>
 
-                    {/* Gallery Grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
                       {gallery.images.map((imageSrc, imageIndex) => (
                         <div
                           key={imageIndex}
-                          className="relative aspect-[3/4] rounded-xl overflow-hidden bg-white/[0.03] border border-white/[0.06] group cursor-pointer hover:border-white/[0.12] transition-all"
+                          className="relative aspect-[3/4] rounded-xl overflow-hidden bg-[#0c0c0c] border border-white/[0.07] group cursor-pointer hover:border-white/[0.15] transition-all"
                           onClick={(e) => e.stopPropagation()}
                         >
                           <Image
@@ -896,12 +880,12 @@ export default function CanonStylePage() {
 
             {/* Empty State */}
             {galleryImages.length === 0 && (
-              <div className="text-center py-20">
-                <Camera className="w-16 h-16 text-white/[0.12] mx-auto mb-4" />
-                <p className="text-white/40 text-lg">
+              <div className="text-center py-16 sm:py-20">
+                <Camera className="w-12 h-12 sm:w-16 sm:h-16 text-white/10 mx-auto mb-4" />
+                <p className="text-white/30 text-base sm:text-lg">
                   Belum ada foto di galeri
                 </p>
-                <p className="text-white/[0.3] text-sm mt-2">
+                <p className="text-white/15 text-[12px] sm:text-sm mt-2">
                   Tambahkan foto ke folder: /canonstyle/gallery/[nama-picture-style]/
                 </p>
               </div>
@@ -911,12 +895,27 @@ export default function CanonStylePage() {
       )}
 
       {/* Footer */}
-      <footer className="py-12 px-4 border-t border-white/[0.06]">
-        <div className="container mx-auto max-w-6xl text-center text-white/40">
-          <p className="mb-2">&copy; 2025 Pixelas Studio. All rights reserved.</p>
-          <p className="text-sm text-white/[0.3]">
-            Canon Picture Style Package - Transformasi foto digital Anda dengan film look analog
-          </p>
+      <footer className="border-t border-white/[0.06]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div>
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-6 h-6 rounded-md bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center">
+                  <span className="text-black text-[10px] font-extrabold">P</span>
+                </div>
+                <span className="text-sm font-bold text-white">Pixelas</span>
+              </div>
+              <p className="text-[13px] text-white/25 max-w-md leading-relaxed">
+                Canon Picture Style Package - Transformasi foto digital Anda dengan film look analog
+              </p>
+            </div>
+            <Link href="/" className="text-[13px] text-white/30 hover:text-amber-400/80 transition-colors">
+              Back to Store
+            </Link>
+          </div>
+          <div className="border-t border-white/[0.04] mt-8 sm:mt-10 pt-6 sm:pt-8">
+            <p className="text-[11px] text-white/15">&copy; {new Date().getFullYear()} Pixelas. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </div>

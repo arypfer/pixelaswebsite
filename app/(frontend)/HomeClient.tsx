@@ -91,11 +91,8 @@ export function HomeClient({ products }: { products: Product[] }) {
       {/* ═══════════════════ HEADER ═══════════════════ */}
       <header className="sticky top-0 z-50 backdrop-blur-2xl bg-[#060606]/80 border-b border-white/[0.06]">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-3 sm:gap-6 py-3 sm:py-4 px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center">
-              <span className="text-black text-xs font-extrabold">P</span>
-            </div>
-            <span className="hidden sm:inline text-[15px] font-bold text-white tracking-tight">Pixelas</span>
+          <Link href="/" className="flex items-center flex-shrink-0">
+            <span className="text-[15px] font-bold text-white tracking-tight">Pixelas</span>
           </Link>
 
           {/* Search */}
@@ -130,8 +127,8 @@ export function HomeClient({ products }: { products: Product[] }) {
           <div className="max-w-2xl">
             <p className="text-amber-400/80 text-xs sm:text-sm font-medium tracking-wide mb-3 sm:mb-4">Creative Software Studio</p>
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] sm:leading-[1.05] mb-4 sm:mb-6">
-              Tools that make<br />
-              <span className="font-display text-amber-300">beautiful things</span>
+              Pixelas Store<br />
+              <span className="font-display text-amber-300">by Amlolife</span>
             </h1>
             <p className="text-sm sm:text-lg text-white/40 leading-relaxed max-w-lg">
               Professional AI-powered plugins and standalone apps for photographers, designers, and digital artists.
