@@ -8,8 +8,8 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Amlolife - Premium Software Studio",
-  description: "World-class AI-powered software for creative professionals",
+  title: "Pixelas — Creative Software Tools",
+  description: "Premium AI-powered software tools for creative professionals",
 };
 
 export default function RootLayout({
