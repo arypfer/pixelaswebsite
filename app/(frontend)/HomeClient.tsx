@@ -90,23 +90,23 @@ export function HomeClient({ products }: { products: Product[] }) {
 
       {/* ═══════════════════ HEADER ═══════════════════ */}
       <header className="sticky top-0 z-50 backdrop-blur-2xl bg-[#060606]/80 border-b border-white/[0.06]">
-        <div className="max-w-6xl mx-auto flex items-center justify-between gap-6 py-4 px-6">
-          <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-3 sm:gap-6 py-3 sm:py-4 px-4 sm:px-6">
+          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center">
               <span className="text-black text-xs font-extrabold">P</span>
             </div>
-            <span className="text-[15px] font-bold text-white tracking-tight">Pixelas</span>
+            <span className="hidden sm:inline text-[15px] font-bold text-white tracking-tight">Pixelas</span>
           </Link>
 
           {/* Search */}
           <div className="flex-1 max-w-md relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
+            <Search className="absolute left-3 sm:left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-10 py-2 text-[13px] bg-white/[0.05] border border-white/[0.08] rounded-lg text-white placeholder:text-white/25 focus:outline-none focus:border-amber-500/40 focus:bg-white/[0.07] transition-all"
+              className="w-full pl-9 sm:pl-10 pr-8 py-2 text-[13px] bg-white/[0.05] border border-white/[0.08] rounded-lg text-white placeholder:text-white/25 focus:outline-none focus:border-amber-500/40 focus:bg-white/[0.07] transition-all"
             />
             {searchQuery && (
               <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors">
@@ -116,7 +116,7 @@ export function HomeClient({ products }: { products: Product[] }) {
           </div>
 
           <button
-            className="px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white border border-white/[0.08] hover:border-white/[0.15] rounded-lg transition-all flex-shrink-0"
+            className="px-3 sm:px-4 py-2 text-[12px] sm:text-[13px] font-medium text-white/60 hover:text-white border border-white/[0.08] hover:border-white/[0.15] rounded-lg transition-all flex-shrink-0"
             onClick={() => window.open('mailto:amlolife.contact@gmail.com', '_self')}
           >
             Contact
@@ -126,14 +126,14 @@ export function HomeClient({ products }: { products: Product[] }) {
 
       {/* ═══════════════════ HERO SECTION ═══════════════════ */}
       <section className="relative ambient-glow">
-        <div className="relative z-10 max-w-6xl mx-auto px-6 pt-20 pb-12">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-8 sm:pb-12">
           <div className="max-w-2xl">
-            <p className="text-amber-400/80 text-sm font-medium tracking-wide mb-4">Creative Software Studio</p>
-            <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-[1.05] mb-6">
+            <p className="text-amber-400/80 text-xs sm:text-sm font-medium tracking-wide mb-3 sm:mb-4">Creative Software Studio</p>
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] sm:leading-[1.05] mb-4 sm:mb-6">
               Tools that make<br />
               <span className="font-display text-amber-300">beautiful things</span>
             </h1>
-            <p className="text-lg text-white/40 leading-relaxed max-w-lg">
+            <p className="text-sm sm:text-lg text-white/40 leading-relaxed max-w-lg">
               Professional AI-powered plugins and standalone apps for photographers, designers, and digital artists.
             </p>
           </div>
@@ -142,7 +142,7 @@ export function HomeClient({ products }: { products: Product[] }) {
 
       {/* ═══════════════════ FEATURED ═══════════════════ */}
       {featuredProducts.length > 0 && !searchQuery && selectedCategory === 'All' && (
-        <section className="px-6 pb-16">
+        <section className="px-4 sm:px-6 pb-12 sm:pb-16">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-8">
               <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-semibold">Featured</span>
@@ -171,7 +171,7 @@ export function HomeClient({ products }: { products: Product[] }) {
                     </div>
                   )}
 
-                  <div className="relative z-10 p-8 sm:p-10">
+                  <div className="relative z-10 p-5 sm:p-8 md:p-10">
                     <div className="flex items-center gap-3 mb-5">
                       <span className="px-2.5 py-1 bg-amber-500/15 rounded-md text-[11px] font-semibold text-amber-400 uppercase tracking-wider">
                         {product.badge || 'Featured'}
@@ -179,9 +179,9 @@ export function HomeClient({ products }: { products: Product[] }) {
                       <span className="text-[11px] text-white/30 tracking-wide">{product.category}</span>
                     </div>
 
-                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">{product.name}</h3>
-                    <p className="text-white/50 text-base mb-2">{product.tagline}</p>
-                    <p className="text-white/30 text-sm line-clamp-2 mb-8 max-w-lg">{product.shortDescription}</p>
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 tracking-tight">{product.name}</h3>
+                    <p className="text-white/50 text-sm sm:text-base mb-2">{product.tagline}</p>
+                    <p className="text-white/30 text-xs sm:text-sm line-clamp-2 mb-5 sm:mb-8 max-w-lg">{product.shortDescription}</p>
 
                     <div className="flex items-center gap-6">
                       {product.price > 0 && (
@@ -203,7 +203,7 @@ export function HomeClient({ products }: { products: Product[] }) {
       )}
 
       {/* ═══════════════════ PRODUCTS GRID ═══════════════════ */}
-      <section className={`px-6 pb-24 ${featuredProducts.length > 0 && !searchQuery && selectedCategory === 'All' ? '' : 'pt-4'}`}>
+      <section className={`px-4 sm:px-6 pb-16 sm:pb-24 ${featuredProducts.length > 0 && !searchQuery && selectedCategory === 'All' ? '' : 'pt-4'}`}>
         <div className="max-w-6xl mx-auto">
           {/* Section header + filters */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
@@ -239,7 +239,7 @@ export function HomeClient({ products }: { products: Product[] }) {
           )}
 
           {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product, i) => (
                 <ProductCard key={product.id} product={product} index={i} />
