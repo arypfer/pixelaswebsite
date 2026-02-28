@@ -296,13 +296,33 @@ export function HomeClient({ products }: { products: Product[] }) {
       {/* ═══════════════════ FOOTER ═══════════════════ */}
       <footer className="border-t border-white/[0.06]">
         <div className="max-w-6xl mx-auto px-6 py-16">
+          {/* Quick links */}
+          <div className="flex items-center gap-4 mb-10">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-amber-400/40 font-semibold">Browse</span>
+            <div className="flex-1 h-px bg-gradient-to-r from-amber-500/10 to-transparent" />
+          </div>
+          <div className="flex flex-wrap gap-2 mb-12">
+            {categories.filter(c => c !== 'All').map((category) => (
+              <button
+                key={category}
+                onClick={() => {
+                  setSelectedCategory(category)
+                  document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })
+                }}
+                className="px-4 py-2 text-[13px] font-medium text-white/30 hover:text-white/60 border border-white/[0.06] hover:border-white/[0.12] rounded-lg transition-all"
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-8">
             <div>
               <div className="flex items-center gap-2.5 mb-4">
                 <PixelasLogo size={24} />
                 <span className="text-sm font-bold text-white">Pixelas</span>
               </div>
-              <p className="text-[13px] text-white/25 max-w-sm leading-relaxed">
+              <p className="text-sm text-white/40 max-w-sm leading-relaxed">
                 Professional AI-powered tools for creative professionals.<br />One-time payment, lifetime access.
               </p>
             </div>
