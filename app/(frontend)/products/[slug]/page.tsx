@@ -9,6 +9,8 @@ import * as LucideIcons from 'lucide-react'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { ProductGallery } from './ProductGallery'
 
+export const revalidate = 60 // re-fetch from DB at most every 60 seconds
+
 type Props = {
   params: Promise<{ slug: string }>
 }

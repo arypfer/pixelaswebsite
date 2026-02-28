@@ -18,9 +18,13 @@
   }
 }
 
-/* ── Smooth scrolling ── */
+/* ── Smooth scrolling + prevent horizontal overflow ── */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+body {
+  overflow-x: hidden;
 }
 
 /* ── Scrollbar ── */
@@ -57,7 +61,7 @@ html {
   top: -200px;
   left: 50%;
   transform: translateX(-50%);
-  width: 800px;
+  width: min(800px, 100vw);
   height: 600px;
   background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
   pointer-events: none;

@@ -2,7 +2,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { HomeClient } from './HomeClient'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 60 // re-fetch from DB at most every 60 seconds
 
 export default async function Home() {
   const payload = await getPayload({ config })
