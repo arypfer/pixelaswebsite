@@ -163,7 +163,7 @@ export function HomeClient({ products }: { products: Product[] }) {
                 <Link
                   key={product.id}
                   href={`/products/${product.slug}`}
-                  className="group relative block rounded-2xl overflow-hidden border border-white/[0.08] bg-[#0c0c0c] transition-all duration-500 hover:border-amber-500/30 hover:shadow-[0_0_60px_-15px_rgba(245,158,11,0.2)]"
+                  className="group relative block rounded-2xl overflow-hidden border border-white/[0.08] bg-[#0c0c0c] transition-all duration-500 hover:border-amber-500/30 hover:shadow-[0_0_60px_-15px_rgba(245,158,11,0.2)] featured-accent"
                 >
                   {/* Background image */}
                   {product.coverImage && (
@@ -194,10 +194,10 @@ export function HomeClient({ products }: { products: Product[] }) {
 
                     <div className="flex items-center gap-6">
                       {product.price > 0 && (
-                        <span className="text-xl font-bold text-white">{formatPrice(product.price)}</span>
+                        <span className="text-xl font-bold text-amber-400">{formatPrice(product.price)}</span>
                       )}
-                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-amber-400 group-hover:gap-3 transition-all duration-300">
-                        Explore <ArrowRight className="w-4 h-4" />
+                      <span className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/15 hover:bg-amber-500/25 text-sm font-semibold text-amber-400 rounded-lg group-hover:gap-3 transition-all duration-300">
+                        View Product <ArrowRight className="w-4 h-4" />
                       </span>
                     </div>
                   </div>
