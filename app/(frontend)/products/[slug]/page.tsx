@@ -46,8 +46,8 @@ function ensureUrl(url: string): string {
 function getLucideIcon(name: string) {
   const icons = LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string }>>
   const Icon = icons[name]
-  if (Icon) return <Icon className="w-5 h-5 text-white/40" />
-  return <LucideIcons.Star className="w-5 h-5 text-white/40" />
+  if (Icon) return <Icon className="w-5 h-5 text-amber-400" />
+  return <LucideIcons.Star className="w-5 h-5 text-amber-400" />
 }
 
 export default async function ProductPage({ params }: Props) {
@@ -102,7 +102,7 @@ export default async function ProductPage({ params }: Props) {
           </div>
           <a
             href="#buy"
-            className="px-4 sm:px-5 py-2 text-[13px] font-semibold bg-amber-500 hover:bg-amber-400 text-black rounded-md transition-colors flex-shrink-0"
+            className="px-3 sm:px-4 py-1.5 text-[12px] font-semibold bg-amber-500 hover:bg-amber-400 text-black rounded-md transition-colors flex-shrink-0"
           >
             Buy Now
           </a>
@@ -119,8 +119,8 @@ export default async function ProductPage({ params }: Props) {
           </div>
         )}
 
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-20 sm:pb-28">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-10 sm:pt-16 pb-14 sm:pb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
             {/* Image — shown first on mobile */}
             {coverImageUrl && (
               <div className="relative group order-first lg:order-last">
@@ -143,16 +143,21 @@ export default async function ProductPage({ params }: Props) {
 
             {/* Text */}
             <div className="order-last lg:order-first">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] mb-3 sm:mb-5">{product.name}</h1>
+              {product.badge && (
+                <span className="inline-block px-2.5 py-1 mb-4 sm:mb-6 bg-amber-500/15 rounded-md text-[11px] font-semibold text-amber-400 uppercase tracking-wider">
+                  {product.badge}
+                </span>
+              )}
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.1] mb-3 sm:mb-4">{product.name}</h1>
               {product.tagline && (
-                <p className="text-base sm:text-xl font-light text-white/35 mb-4 sm:mb-6 leading-relaxed">{product.tagline}</p>
+                <p className="text-base sm:text-xl text-white/45 mb-4 sm:mb-6 leading-relaxed">{product.tagline}</p>
               )}
               {product.shortDescription && (
-                <p className="text-[14px] sm:text-[15px] font-light text-white/25 leading-relaxed mb-8 sm:mb-12 max-w-lg">{product.shortDescription}</p>
+                <p className="text-[14px] sm:text-[15px] text-white/30 leading-relaxed mb-6 sm:mb-10 max-w-lg">{product.shortDescription}</p>
               )}
 
               {/* Price + CTA */}
-              <div className="flex flex-col gap-4 sm:gap-5 mb-4">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-4 sm:gap-5 mb-4">
                 {product.price && product.price > 0 && (
                   <div>
                     <span className="text-2xl sm:text-3xl font-extrabold">{formatPrice(product.price)}</span>
@@ -190,7 +195,7 @@ export default async function ProductPage({ params }: Props) {
                   </div>
                 )}
               </div>
-              <p className="text-[11px] sm:text-[12px] text-white/30">One-time payment &middot; Lifetime access &middot; Instant delivery</p>
+              <p className="text-[11px] sm:text-[12px] text-white/20">One-time payment &middot; Lifetime access &middot; Instant delivery</p>
             </div>
           </div>
         </div>
@@ -198,18 +203,19 @@ export default async function ProductPage({ params }: Props) {
 
       {/* ═══ FEATURES ═══ */}
       {product.features && product.features.length > 0 && (
-        <section className="py-20 sm:py-32 border-t border-white/[0.06]">
+        <section className="py-14 sm:py-24 border-t border-white/[0.06]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="mb-10 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Features</h2>
+            <div className="mb-8 sm:mb-14">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold">What&apos;s included</span>
+              <h2 className="text-2xl sm:text-3xl font-bold mt-2 tracking-tight">Features</h2>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {product.features.map((feature: { icon?: string; title: string; description?: string }, index: number) => (
                 <div
                   key={index}
-                  className="p-5 sm:p-6 rounded-xl bg-[#0c0c0c] border border-white/[0.06] hover:border-white/[0.1] transition-all duration-300 group"
+                  className="p-5 rounded-xl bg-[#0c0c0c] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300 group"
                 >
-                  <div className="mb-3 w-10 h-10 rounded-lg bg-white/[0.04] flex items-center justify-center">
+                  <div className="mb-3 w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center">
                     {getLucideIcon(feature.icon || 'Star')}
                   </div>
                   <h3 className="text-[14px] font-semibold mb-1.5">{feature.title}</h3>
@@ -225,7 +231,7 @@ export default async function ProductPage({ params }: Props) {
 
       {/* ═══ RICH TEXT ═══ */}
       {product.description && (
-        <section className="py-20 sm:py-32 border-t border-white/[0.06]">
+        <section className="py-14 sm:py-20 border-t border-white/[0.06]">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 prose prose-invert prose-sm prose-p:text-white/40 prose-headings:font-bold prose-strong:text-white/70 prose-a:text-amber-400">
             <RichText data={product.description} />
           </div>
@@ -234,10 +240,11 @@ export default async function ProductPage({ params }: Props) {
 
       {/* ═══ GALLERY ═══ */}
       {galleryImages.length > 0 && (
-        <section className="py-20 sm:py-32 border-t border-white/[0.06]">
+        <section className="py-14 sm:py-24 border-t border-white/[0.06]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="mb-10 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Gallery</h2>
+            <div className="mb-8 sm:mb-14">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold">Screenshots</span>
+              <h2 className="text-2xl sm:text-3xl font-bold mt-2 tracking-tight">Gallery</h2>
             </div>
             <ProductGallery images={galleryImages} />
           </div>
@@ -246,14 +253,15 @@ export default async function ProductPage({ params }: Props) {
 
       {/* ═══ FINAL CTA ═══ */}
       <section id="buy" className="border-t border-white/[0.06] relative scroll-mt-16">
-        <div className="relative py-24 sm:py-32 text-center max-w-2xl mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 sm:mb-5">
-            Get {product.name} today
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/[0.02] to-transparent pointer-events-none" />
+        <div className="relative py-16 sm:py-24 text-center max-w-2xl mx-auto px-4 sm:px-6">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight mb-3 sm:mb-4">
+            Ready to get started?
           </h2>
           {product.price && product.price > 0 && (
-            <p className="text-xl sm:text-2xl font-bold text-white mb-2">{formatPrice(product.price)}</p>
+            <p className="text-xl sm:text-2xl font-bold text-amber-400 mb-2">{formatPrice(product.price)}</p>
           )}
-          <p className="text-[13px] sm:text-[14px] text-white/25 mb-10 sm:mb-12">One-time payment. No subscription. Lifetime access.</p>
+          <p className="text-[13px] sm:text-[14px] text-white/25 mb-8 sm:mb-10">One-time payment. No subscription. Lifetime access.</p>
           {buyLinks.length === 1 ? (
             <a
               href={ensureUrl(buyLinks[0].url)}
