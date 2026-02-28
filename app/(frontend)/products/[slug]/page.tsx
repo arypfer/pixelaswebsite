@@ -213,9 +213,11 @@ export default async function ProductPage({ params }: Props) {
               {product.features.map((feature: { icon?: string; title: string; description?: string }, index: number) => (
                 <div
                   key={index}
-                  className="p-5 rounded-xl bg-[#0c0c0c] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300 group"
+                  className={`p-5 rounded-xl bg-[#0c0c0c] border hover:border-white/[0.12] transition-all duration-300 group ${
+  index === 0 ? 'border-amber-500/20 hover:border-amber-500/30' : 'border-white/[0.06]'
+}`}
                 >
-                  <div className="mb-3 w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                  <div className="mb-3 w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
                     {getLucideIcon(feature.icon || 'Star')}
                   </div>
                   <h3 className="text-[14px] font-semibold mb-1.5">{feature.title}</h3>
