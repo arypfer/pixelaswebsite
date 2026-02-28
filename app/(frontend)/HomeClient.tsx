@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Search, X, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { Search, X, ArrowRight, ArrowUpRight, ChevronDown } from 'lucide-react'
 import { PixelasLogo } from '@/components/PixelasLogo'
 
 interface Product {
@@ -132,10 +132,20 @@ export function HomeClient({ products }: { products: Product[] }) {
               Pixelas Store<br />
               <span className="font-display text-amber-300">by Amlolife</span>
             </h1>
-            <p className="text-sm sm:text-lg text-white/40 leading-relaxed max-w-lg">
+            <p className="text-sm sm:text-lg text-white/40 leading-relaxed max-w-lg mb-8 sm:mb-10">
               Professional AI-powered plugins and standalone apps for photographers, designers, and digital artists.
             </p>
+            <a
+              href="#products"
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-[15px] shadow-[0_0_30px_-5px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_-5px_rgba(245,158,11,0.5)] transition-all"
+            >
+              Browse Products <ArrowRight className="w-4 h-4" />
+            </a>
           </div>
+        </div>
+        {/* Scroll indicator */}
+        <div className="flex justify-center pb-6 sm:pb-8">
+          <ChevronDown className="w-5 h-5 text-white/20 animate-bounce-subtle" />
         </div>
       </section>
 
@@ -202,7 +212,7 @@ export function HomeClient({ products }: { products: Product[] }) {
       )}
 
       {/* ═══════════════════ PRODUCTS GRID ═══════════════════ */}
-      <section className={`px-4 sm:px-6 pb-16 sm:pb-24 ${featuredProducts.length > 0 && !searchQuery && selectedCategory === 'All' ? '' : 'pt-4'}`}>
+      <section id="products" className={`px-4 sm:px-6 pb-16 sm:pb-24 ${featuredProducts.length > 0 && !searchQuery && selectedCategory === 'All' ? '' : 'pt-4'}`}>
         <div className="max-w-6xl mx-auto">
           {/* Section header + filters */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
