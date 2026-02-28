@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Search, X, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { Search, X, ArrowRight, ArrowUpRight, ChevronDown } from 'lucide-react'
 import { PixelasLogo } from '@/components/PixelasLogo'
 
 interface Product {
@@ -50,6 +50,10 @@ export function HomeClient({ products }: { products: Product[] }) {
   })
 
   const featuredProducts = products.filter((p) => p.featured)
+  const categoryCounts = categories.reduce((acc, cat) => {
+    acc[cat] = cat === 'All' ? products.length : products.filter((p) => p.category === cat).length
+    return acc
+  }, {} as Record<string, number>)
 
   return (
     <div className="relative w-full min-h-screen noise">
@@ -132,10 +136,20 @@ export function HomeClient({ products }: { products: Product[] }) {
               Pixelas Store<br />
               <span className="font-display text-amber-300">by Amlolife</span>
             </h1>
-            <p className="text-sm sm:text-lg text-white/40 leading-relaxed max-w-lg">
+            <p className="text-sm sm:text-lg text-white/40 leading-relaxed max-w-lg mb-8 sm:mb-10">
               Professional AI-powered plugins and standalone apps for photographers, designers, and digital artists.
             </p>
+            <a
+              href="#products"
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-[15px] shadow-[0_0_30px_-5px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_-5px_rgba(245,158,11,0.5)] transition-all"
+            >
+              Browse Products <ArrowRight className="w-4 h-4" />
+            </a>
           </div>
+        </div>
+        {/* Scroll indicator */}
+        <div className="flex justify-center pb-6 sm:pb-8">
+          <ChevronDown className="w-5 h-5 text-white/20 animate-bounce-subtle" />
         </div>
       </section>
 
@@ -153,7 +167,7 @@ export function HomeClient({ products }: { products: Product[] }) {
                 <Link
                   key={product.id}
                   href={`/products/${product.slug}`}
-                  className="group relative block rounded-2xl overflow-hidden border border-white/[0.08] bg-[#0c0c0c] transition-all duration-500 hover:border-amber-500/30 hover:shadow-[0_0_60px_-15px_rgba(245,158,11,0.2)]"
+                  className="group relative block rounded-2xl overflow-hidden border border-white/[0.08] bg-[#0c0c0c] transition-all duration-500 hover:border-amber-500/30 hover:shadow-[0_0_60px_-15px_rgba(245,158,11,0.2)] featured-accent"
                 >
                   {/* Background image */}
                   {product.coverImage && (
@@ -184,10 +198,10 @@ export function HomeClient({ products }: { products: Product[] }) {
 
                     <div className="flex items-center gap-6">
                       {product.price > 0 && (
-                        <span className="text-xl font-bold text-white">{formatPrice(product.price)}</span>
+                        <span className="text-xl font-bold text-amber-400">{formatPrice(product.price)}</span>
                       )}
-                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-amber-400 group-hover:gap-3 transition-all duration-300">
-                        Explore <ArrowRight className="w-4 h-4" />
+                      <span className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/15 hover:bg-amber-500/25 text-sm font-semibold text-amber-400 rounded-lg group-hover:gap-3 transition-all duration-300">
+                        View Product <ArrowRight className="w-4 h-4" />
                       </span>
                     </div>
                   </div>
@@ -202,7 +216,7 @@ export function HomeClient({ products }: { products: Product[] }) {
       )}
 
       {/* ═══════════════════ PRODUCTS GRID ═══════════════════ */}
-      <section className={`px-4 sm:px-6 pb-16 sm:pb-24 ${featuredProducts.length > 0 && !searchQuery && selectedCategory === 'All' ? '' : 'pt-4'}`}>
+      <section id="products" className={`px-4 sm:px-6 pb-16 sm:pb-24 ${featuredProducts.length > 0 && !searchQuery && selectedCategory === 'All' ? '' : 'pt-4'}`}>
         <div className="max-w-6xl mx-auto">
           {/* Section header + filters */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
@@ -223,6 +237,11 @@ export function HomeClient({ products }: { products: Product[] }) {
                   }`}
                 >
                   {category}
+                  {categoryCounts[category] > 0 && (
+                    <span className={`ml-1.5 text-[10px] ${selectedCategory === category ? 'text-black/50' : 'text-white/20'}`}>
+                      {categoryCounts[category]}
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
@@ -277,13 +296,33 @@ export function HomeClient({ products }: { products: Product[] }) {
       {/* ═══════════════════ FOOTER ═══════════════════ */}
       <footer className="border-t border-white/[0.06]">
         <div className="max-w-6xl mx-auto px-6 py-16">
+          {/* Quick links */}
+          <div className="flex items-center gap-4 mb-10">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-amber-400/40 font-semibold">Browse</span>
+            <div className="flex-1 h-px bg-gradient-to-r from-amber-500/10 to-transparent" />
+          </div>
+          <div className="flex flex-wrap gap-2 mb-12">
+            {categories.filter(c => c !== 'All').map((category) => (
+              <button
+                key={category}
+                onClick={() => {
+                  setSelectedCategory(category)
+                  document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })
+                }}
+                className="px-4 py-2 text-[13px] font-medium text-white/30 hover:text-white/60 border border-white/[0.06] hover:border-white/[0.12] rounded-lg transition-all"
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-8">
             <div>
               <div className="flex items-center gap-2.5 mb-4">
                 <PixelasLogo size={24} />
                 <span className="text-sm font-bold text-white">Pixelas</span>
               </div>
-              <p className="text-[13px] text-white/25 max-w-sm leading-relaxed">
+              <p className="text-sm text-white/40 max-w-sm leading-relaxed">
                 Professional AI-powered tools for creative professionals.<br />One-time payment, lifetime access.
               </p>
             </div>
@@ -309,7 +348,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group animate-rise block rounded-xl overflow-hidden bg-[#0c0c0c] border border-white/[0.07] transition-all duration-400 hover:border-white/[0.15] hover:-translate-y-1 hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)]"
+      className="group scroll-reveal block rounded-xl overflow-hidden bg-[#0c0c0c] border border-white/[0.07] transition-all duration-400 hover:border-white/[0.15] hover:-translate-y-1 hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)]"
       style={{ animationDelay: `${index * 80}ms` }}
     >
       {/* Image */}
@@ -350,7 +389,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           )}
         </div>
 
-        <h3 className="text-[15px] font-semibold text-white mb-1 line-clamp-1 group-hover:text-amber-50 transition-colors">
+        <h3 className="text-base font-bold text-white mb-1 line-clamp-1 group-hover:text-amber-50 transition-colors">
           {product.name}
         </h3>
         <p className="text-[13px] text-white/30 line-clamp-2 mb-5 leading-relaxed">{product.tagline}</p>
@@ -361,7 +400,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           ) : (
             <span className="text-[13px] text-white/30">Free</span>
           )}
-          <span className="flex items-center gap-1 text-[12px] font-medium text-white/30 group-hover:text-amber-400 transition-colors duration-300">
+          <span className="flex items-center gap-1 px-2.5 py-1 text-[12px] font-medium text-white/30 border border-transparent group-hover:border-amber-500/30 group-hover:text-amber-400 rounded-md transition-all duration-300">
             View <ArrowUpRight className="w-3.5 h-3.5" />
           </span>
         </div>
