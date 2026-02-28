@@ -26,8 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = docs[0]
   if (!product) return { title: 'Product Not Found' }
   return {
-    title: `${product.name} — Pixelas`,
-    description: product.shortDescription || product.tagline || '',
+    title: (product.metaTitle as string) || `${product.name} — Pixelas`,
+    description: (product.metaDescription as string) || product.shortDescription || product.tagline || '',
   }
 }
 
