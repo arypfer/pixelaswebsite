@@ -165,11 +165,3 @@ body {
     animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 }
-
-/* ── Featured card amber accent ── */
-.featured-accent {
-  border-left: 2px solid rgba(245, 158, 11, 0.3);
-}
-.featured-accent:hover {
-  border-left-color: rgba(245, 158, 11, 0.6);
-}
