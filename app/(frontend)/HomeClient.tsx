@@ -319,7 +319,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group animate-rise block rounded-xl overflow-hidden bg-[#0c0c0c] border border-white/[0.07] transition-all duration-400 hover:border-white/[0.15] hover:-translate-y-1 hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)]"
+      className="group scroll-reveal block rounded-xl overflow-hidden bg-[#0c0c0c] border border-white/[0.07] transition-all duration-400 hover:border-white/[0.15] hover:-translate-y-1 hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)]"
       style={{ animationDelay: `${index * 80}ms` }}
     >
       {/* Image */}
@@ -360,7 +360,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           )}
         </div>
 
-        <h3 className="text-[15px] font-semibold text-white mb-1 line-clamp-1 group-hover:text-amber-50 transition-colors">
+        <h3 className="text-base font-bold text-white mb-1 line-clamp-1 group-hover:text-amber-50 transition-colors">
           {product.name}
         </h3>
         <p className="text-[13px] text-white/30 line-clamp-2 mb-5 leading-relaxed">{product.tagline}</p>
@@ -371,7 +371,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           ) : (
             <span className="text-[13px] text-white/30">Free</span>
           )}
-          <span className="flex items-center gap-1 text-[12px] font-medium text-white/30 group-hover:text-amber-400 transition-colors duration-300">
+          <span className="flex items-center gap-1 px-2.5 py-1 text-[12px] font-medium text-white/30 border border-transparent group-hover:border-amber-500/30 group-hover:text-amber-400 rounded-md transition-all duration-300">
             View <ArrowUpRight className="w-3.5 h-3.5" />
           </span>
         </div>
