@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Search, X, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { PixelasLogo } from '@/components/PixelasLogo'
 
 interface Product {
   id: string | number
@@ -91,7 +92,8 @@ export function HomeClient({ products }: { products: Product[] }) {
       {/* ═══════════════════ HEADER ═══════════════════ */}
       <header className="sticky top-0 z-50 backdrop-blur-2xl bg-[#060606]/80 border-b border-white/[0.06]">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-3 sm:gap-6 py-3 sm:py-4 px-4 sm:px-6">
-          <Link href="/" className="flex items-center flex-shrink-0">
+          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
+            <PixelasLogo size={22} />
             <span className="text-[15px] font-bold text-white tracking-tight">Pixelas</span>
           </Link>
 
@@ -278,9 +280,7 @@ export function HomeClient({ products }: { products: Product[] }) {
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-8">
             <div>
               <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-6 h-6 rounded-md bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center">
-                  <span className="text-black text-[10px] font-extrabold">P</span>
-                </div>
+                <PixelasLogo size={24} />
                 <span className="text-sm font-bold text-white">Pixelas</span>
               </div>
               <p className="text-[13px] text-white/25 max-w-sm leading-relaxed">

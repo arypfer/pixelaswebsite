@@ -21,8 +21,18 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://pixelas.store'),
   title: "Pixelas — Creative Software Tools",
   description: "Premium AI-powered software tools for creative professionals",
+  openGraph: {
+    title: "Pixelas — Creative Software Tools",
+    description: "Premium AI-powered software tools for creative professionals",
+    siteName: "Pixelas",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

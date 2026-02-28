@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Check, Download, Camera, Palette, Zap, ChevronLeft, ChevronRight, Info, X, Star } from "lucide-react";
+import { PixelasLogo } from '@/components/PixelasLogo';
 
 // Picture Style showcase data
 const pictureStyles = [
@@ -330,9 +331,9 @@ export default function CanonStylePage() {
       <header className="sticky top-0 z-50 backdrop-blur-2xl bg-[#060606]/80 border-b border-white/[0.06]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 text-white/40 hover:text-white transition-colors group">
-              <ArrowLeft className="w-4 h-4" />
-              <span className="hidden sm:inline text-[13px]">Back</span>
+            <Link href="/" className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors">
+              <PixelasLogo size={18} />
+              <span className="text-[13px] font-bold hidden sm:inline">Pixelas</span>
             </Link>
             <h1 className="text-sm sm:text-base font-bold flex items-center gap-2 text-white">
               Canon Picture Style
@@ -900,9 +901,7 @@ export default function CanonStylePage() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
               <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-6 h-6 rounded-md bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center">
-                  <span className="text-black text-[10px] font-extrabold">P</span>
-                </div>
+                <PixelasLogo size={24} />
                 <span className="text-sm font-bold text-white">Pixelas</span>
               </div>
               <p className="text-[13px] text-white/25 max-w-md leading-relaxed">

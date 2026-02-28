@@ -1,10 +1,15 @@
+import { PixelasLogo } from '@/components/PixelasLogo'
+
 export default function Loading() {
   return (
     <div className="relative w-full min-h-screen noise">
-      {/* Header skeleton */}
+      {/* Header with real brand */}
       <header className="sticky top-0 z-50 backdrop-blur-2xl bg-[#060606]/80 border-b border-white/[0.06]">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-6 py-4 px-4 sm:px-6">
-          <div className="h-4 w-16 bg-white/[0.06] rounded animate-pulse" />
+          <div className="flex items-center gap-2">
+            <PixelasLogo size={22} />
+            <span className="text-[15px] font-bold text-white tracking-tight">Pixelas</span>
+          </div>
           <div className="flex-1 max-w-md h-9 bg-white/[0.04] rounded-lg animate-pulse" />
           <div className="h-9 w-20 bg-white/[0.04] rounded-lg animate-pulse" />
         </div>

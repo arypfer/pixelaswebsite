@@ -5,6 +5,7 @@ import Navbar from '@/components/pxtouch/Navbar';
 import ComparisonSlider from '@/components/pxtouch/ComparisonSlider';
 import { WORKFLOW_STEPS } from './constants';
 import { Download, Monitor, ArrowRight, Activity, Cpu, FileText } from 'lucide-react';
+import { PixelasLogo } from '@/components/PixelasLogo';
 
 const heroBefore = '/pxtouch/hero-before.webp';
 const heroAfter = '/pxtouch/hero-after.webp';
@@ -413,9 +414,7 @@ export default function PXTouchPage() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
               <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-6 h-6 rounded-md bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center">
-                  <span className="text-black text-[10px] font-extrabold">P</span>
-                </div>
+                <PixelasLogo size={24} />
                 <span className="text-sm font-bold text-white">Pixelas</span>
               </div>
               <p className="text-[13px] text-white/25 max-w-md leading-relaxed">

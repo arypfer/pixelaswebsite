@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, ArrowLeft, ChevronRight } from 'lucide-react'
+import { PixelasLogo } from '@/components/PixelasLogo'
 import * as LucideIcons from 'lucide-react'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { ProductGallery } from './ProductGallery'
@@ -92,9 +93,9 @@ export default async function ProductPage({ params }: Props) {
       <nav className="sticky top-0 z-50 backdrop-blur-2xl bg-[#060606]/80 border-b border-white/[0.06]">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 py-3 sm:py-3.5">
           <div className="flex items-center gap-2 sm:gap-3 text-[13px] min-w-0">
-            <Link href="/" className="flex items-center gap-2 text-white/40 hover:text-white transition-colors flex-shrink-0">
-              <ArrowLeft className="w-4 h-4" />
-              <span className="hidden sm:inline">Back</span>
+            <Link href="/" className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors flex-shrink-0">
+              <PixelasLogo size={18} />
+              <span className="hidden sm:inline font-bold">Pixelas</span>
             </Link>
             <ChevronRight className="w-3 h-3 text-white/15 flex-shrink-0" />
             <span className="text-white/60 truncate max-w-[140px] sm:max-w-[200px]">{product.name}</span>
