@@ -102,7 +102,7 @@ export default async function ProductPage({ params }: Props) {
           </div>
           <a
             href="#buy"
-            className="px-3 sm:px-4 py-1.5 text-[12px] font-semibold bg-amber-500 hover:bg-amber-400 text-black rounded-md transition-colors flex-shrink-0"
+            className="px-4 sm:px-5 py-2 text-[13px] font-semibold bg-amber-500 hover:bg-amber-400 text-black rounded-md transition-colors flex-shrink-0"
           >
             Buy Now
           </a>
@@ -157,7 +157,7 @@ export default async function ProductPage({ params }: Props) {
               )}
 
               {/* Price + CTA */}
-              <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-4 sm:gap-5 mb-4">
+              <div className="flex flex-col gap-4 sm:gap-5 mb-4">
                 {product.price && product.price > 0 && (
                   <div>
                     <span className="text-2xl sm:text-3xl font-extrabold">{formatPrice(product.price)}</span>
@@ -195,7 +195,7 @@ export default async function ProductPage({ params }: Props) {
                   </div>
                 )}
               </div>
-              <p className="text-[11px] sm:text-[12px] text-white/20">One-time payment &middot; Lifetime access &middot; Instant delivery</p>
+              <p className="text-[11px] sm:text-[12px] text-white/30">One-time payment &middot; Lifetime access &middot; Instant delivery</p>
             </div>
           </div>
         </div>
@@ -256,7 +256,7 @@ export default async function ProductPage({ params }: Props) {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/[0.02] to-transparent pointer-events-none" />
         <div className="relative py-16 sm:py-24 text-center max-w-2xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight mb-3 sm:mb-4">
-            Ready to get started?
+            Get {product.name} today
           </h2>
           {product.price && product.price > 0 && (
             <p className="text-xl sm:text-2xl font-bold text-amber-400 mb-2">{formatPrice(product.price)}</p>
