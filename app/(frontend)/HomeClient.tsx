@@ -50,6 +50,10 @@ export function HomeClient({ products }: { products: Product[] }) {
   })
 
   const featuredProducts = products.filter((p) => p.featured)
+  const categoryCounts = categories.reduce((acc, cat) => {
+    acc[cat] = cat === 'All' ? products.length : products.filter((p) => p.category === cat).length
+    return acc
+  }, {} as Record<string, number>)
 
   return (
     <div className="relative w-full min-h-screen noise">
@@ -233,6 +237,11 @@ export function HomeClient({ products }: { products: Product[] }) {
                   }`}
                 >
                   {category}
+                  {categoryCounts[category] > 0 && (
+                    <span className={`ml-1.5 text-[10px] ${selectedCategory === category ? 'text-black/50' : 'text-white/20'}`}>
+                      {categoryCounts[category]}
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
