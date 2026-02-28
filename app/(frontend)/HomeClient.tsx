@@ -129,14 +129,13 @@ export function HomeClient({ products }: { products: Product[] }) {
 
       {/* ═══════════════════ HERO SECTION ═══════════════════ */}
       <section className="relative ambient-glow">
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-8 sm:pb-12">
-          <div className="max-w-2xl">
-            <p className="text-amber-400/80 text-xs sm:text-sm font-medium tracking-wide mb-3 sm:mb-4">Creative Software Studio</p>
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] sm:leading-[1.05] mb-4 sm:mb-6">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-20 sm:pt-32 pb-16 sm:pb-24">
+          <div className="max-w-3xl">
+            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-extrabold tracking-tight leading-[1.05] mb-4 sm:mb-6">
               Pixelas Store<br />
-              <span className="font-display text-amber-300">by Amlolife</span>
+              <span className="font-display text-white/25">by Amlolife</span>
             </h1>
-            <p className="text-sm sm:text-lg text-white/40 leading-relaxed max-w-lg mb-8 sm:mb-10">
+            <p className="text-base sm:text-xl font-light text-white/35 leading-relaxed max-w-lg mb-10 sm:mb-14">
               Professional AI-powered plugins and standalone apps for photographers, designers, and digital artists.
             </p>
             <a
@@ -148,8 +147,8 @@ export function HomeClient({ products }: { products: Product[] }) {
           </div>
         </div>
         {/* Scroll indicator */}
-        <div className="flex justify-center pb-6 sm:pb-8">
-          <ChevronDown className="w-5 h-5 text-white/20 animate-bounce-subtle" />
+        <div className="flex justify-center pb-8 sm:pb-10">
+          <ChevronDown className="w-5 h-5 text-white/15 animate-bounce-subtle" />
         </div>
       </section>
 
