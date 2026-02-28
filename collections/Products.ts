@@ -2,44 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated } from './access'
 import { revalidateProduct } from './hooks/revalidateProduct'
 
-const lucideIconOptions = [
-  { label: 'Zap', value: 'Zap' },
-  { label: 'Star', value: 'Star' },
-  { label: 'Globe', value: 'Globe' },
-  { label: 'Shield', value: 'Shield' },
-  { label: 'Palette', value: 'Palette' },
-  { label: 'Layers', value: 'Layers' },
-  { label: 'Camera', value: 'Camera' },
-  { label: 'Image', value: 'Image' },
-  { label: 'Wand2', value: 'Wand2' },
-  { label: 'Sparkles', value: 'Sparkles' },
-  { label: 'Cpu', value: 'Cpu' },
-  { label: 'Monitor', value: 'Monitor' },
-  { label: 'Smartphone', value: 'Smartphone' },
-  { label: 'Download', value: 'Download' },
-  { label: 'Upload', value: 'Upload' },
-  { label: 'Settings', value: 'Settings' },
-  { label: 'Sliders', value: 'Sliders' },
-  { label: 'Paintbrush', value: 'Paintbrush' },
-  { label: 'Pen', value: 'Pen' },
-  { label: 'Type', value: 'Type' },
-  { label: 'Layout', value: 'Layout' },
-  { label: 'Grid', value: 'Grid' },
-  { label: 'Box', value: 'Box' },
-  { label: 'Crop', value: 'Crop' },
-  { label: 'Maximize', value: 'Maximize' },
-  { label: 'Eye', value: 'Eye' },
-  { label: 'Droplet', value: 'Droplet' },
-  { label: 'Sun', value: 'Sun' },
-  { label: 'Moon', value: 'Moon' },
-  { label: 'Rocket', value: 'Rocket' },
-  { label: 'Target', value: 'Target' },
-  { label: 'Award', value: 'Award' },
-  { label: 'Heart', value: 'Heart' },
-  { label: 'Clock', value: 'Clock' },
-  { label: 'Check', value: 'Check' },
-]
-
 export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
@@ -152,11 +114,10 @@ export const Products: CollectionConfig = {
               fields: [
                 {
                   name: 'icon',
-                  type: 'select',
-                  options: lucideIconOptions,
+                  type: 'text',
                   defaultValue: 'Star',
                   admin: {
-                    description: 'Lucide icon to display',
+                    description: 'Lucide icon name (e.g. Zap, Star, Camera, Sparkles)',
                   },
                 },
                 {

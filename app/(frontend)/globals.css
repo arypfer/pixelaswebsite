@@ -136,3 +136,32 @@ body {
 .animate-slide-in-left { animation: slide-in-left 0.6s ease-out forwards; }
 .animate-slide-in-right { animation: slide-in-right 0.6s ease-out forwards; }
 .animate-scale-in { animation: scale-in 0.5s ease-out forwards; }
+
+/* ── Scroll indicator bounce ── */
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(6px); opacity: 0.7; }
+}
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
+}
+
+/* ── Scroll-triggered fade-rise ── */
+@keyframes fade-rise-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@supports (animation-timeline: view()) {
+  .scroll-reveal {
+    animation: fade-rise-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+}
+
+@supports not (animation-timeline: view()) {
+  .scroll-reveal {
+    animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
