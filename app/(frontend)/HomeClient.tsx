@@ -273,7 +273,7 @@ export function HomeClient({ products }: { products: Product[] }) {
           )}
 
           {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product, i) => (
                 <ProductCard key={product.id} product={product} index={i} />
@@ -364,59 +364,40 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group scroll-reveal block rounded-xl overflow-hidden bg-[#0c0c0c] border border-white/[0.07] transition-all duration-400 hover:border-white/[0.15] hover:-translate-y-1 hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)]"
+      className="group scroll-reveal block rounded-xl overflow-hidden bg-[#0c0c0c] border border-transparent hover:border-white/[0.06] transition-all duration-300"
       style={{ animationDelay: `${index * 80}ms` }}
     >
       {/* Image */}
       {product.coverImage ? (
-        <div className="relative aspect-[16/10] overflow-hidden bg-[#111]">
+        <div className="relative aspect-[4/3] overflow-hidden bg-[#0a0a0a]">
           <Image
             src={product.coverImage.url}
             alt={product.coverImage.alt}
             fill
-            className="object-cover group-hover:scale-[1.04] transition-transform duration-700 ease-out"
+            className="object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-transparent to-transparent opacity-60" />
-
-          {/* Badge overlay */}
-          {product.badge && (
-            <div className="absolute top-3 left-3">
-              <span className="px-2 py-0.5 bg-amber-500/90 text-black text-[10px] font-bold uppercase tracking-wider rounded">
-                {product.badge}
-              </span>
-            </div>
-          )}
         </div>
       ) : (
-        <div className="aspect-[16/10] bg-gradient-to-br from-[#111] to-[#0a0a0a] flex items-center justify-center">
-          <div className="w-10 h-10 rounded-lg bg-white/[0.05] flex items-center justify-center">
-            <span className="text-white/20 text-lg font-bold">{product.name[0]}</span>
-          </div>
+        <div className="aspect-[4/3] bg-[#0a0a0a] flex items-center justify-center">
+          <span className="text-white/10 text-2xl font-bold">{product.name[0]}</span>
         </div>
       )}
 
       {/* Content */}
-      <div className="p-5">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-[11px] text-white/25 uppercase tracking-wider font-medium">{product.category}</span>
-          {product.featured && (
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-          )}
-        </div>
-
-        <h3 className="text-base font-bold text-white mb-1 line-clamp-1 group-hover:text-amber-50 transition-colors">
+      <div className="p-5 sm:p-6">
+        <h3 className="text-base font-bold text-white mb-1.5 line-clamp-1 group-hover:text-white/80 transition-colors">
           {product.name}
         </h3>
-        <p className="text-[13px] text-white/30 line-clamp-2 mb-5 leading-relaxed">{product.tagline}</p>
+        <p className="text-[13px] font-light text-white/30 line-clamp-2 mb-5 leading-relaxed">{product.tagline}</p>
 
         <div className="flex items-center justify-between">
           {product.price > 0 ? (
             <span className="text-[15px] font-bold text-white">{formatPrice(product.price)}</span>
           ) : (
-            <span className="text-[13px] text-white/30">Free</span>
+            <span className="text-[13px] text-white/25 font-light">Free</span>
           )}
-          <span className="flex items-center gap-1 px-2.5 py-1 text-[12px] font-medium text-white/30 border border-transparent group-hover:border-amber-500/30 group-hover:text-amber-400 rounded-md transition-all duration-300">
+          <span className="flex items-center gap-1 px-2.5 py-1 text-[12px] font-medium text-white/25 border border-transparent group-hover:border-white/[0.1] group-hover:text-white/50 rounded-md transition-all duration-300">
             View <ArrowUpRight className="w-3.5 h-3.5" />
           </span>
         </div>
