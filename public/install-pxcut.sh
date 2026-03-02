@@ -1,8 +1,10 @@
 #!/bin/bash
-# PXCut Installer for macOS
-# Usage: bash install.sh
+# PXCut Remote Installer for macOS
+# Usage: bash -c "$(curl -fsSL https://raw.githubusercontent.com/arypfer/pixelaswebsite/main/public/install-pxcut.sh)"
 
 set -e
+
+PLUGIN_ZIP_URL="https://github.com/arypfer/pxcut/releases/latest/download/pxcut-mac.zip"
 
 echo ""
 echo "  ============================================="
@@ -11,18 +13,7 @@ echo "    Silence Cutter untuk Premiere Pro"
 echo "  ============================================="
 echo ""
 
-# --- 1. Determine source folder (same folder as this script) ---
-SRC="$(cd "$(dirname "$0")" && pwd)"
-
-# --- 2. CEP extension install path ---
-EXT_ROOT="$HOME/Library/Application Support/Adobe/CEP/extensions"
-DEST="$EXT_ROOT/pxcut"
-
-echo "  [INFO] Sumber plugin    : $SRC"
-echo "  [INFO] Tujuan instalasi : $DEST"
-echo ""
-
-# --- 3. Detect architecture ---
+# --- 1. Detect architecture ---
 ARCH="$(uname -m)"
 if [ "$ARCH" = "arm64" ]; then
     echo "  [INFO] Arsitektur: Apple Silicon (arm64)"
@@ -34,6 +25,48 @@ else
     echo "  [ERROR] Arsitektur tidak dikenal: $ARCH"
     exit 1
 fi
+
+# --- 2. Download plugin zip to temp dir ---
+TMPDIR_PXCUT="$(mktemp -d)"
+PLUGIN_ZIP="$TMPDIR_PXCUT/pxcut-mac.zip"
+
+echo "  [INFO] Mengunduh plugin dari GitHub..."
+curl -L -# -o "$PLUGIN_ZIP" "$PLUGIN_ZIP_URL"
+
+if [ ! -f "$PLUGIN_ZIP" ] || [ ! -s "$PLUGIN_ZIP" ]; then
+    echo "  [ERROR] Gagal mengunduh plugin."
+    rm -rf "$TMPDIR_PXCUT"
+    exit 1
+fi
+
+echo "  [INFO] Mengekstrak plugin..."
+unzip -o -q "$PLUGIN_ZIP" -d "$TMPDIR_PXCUT/plugin"
+
+# Find the actual plugin root (might be nested in a folder)
+if [ -f "$TMPDIR_PXCUT/plugin/index.html" ]; then
+    SRC="$TMPDIR_PXCUT/plugin"
+elif [ -d "$TMPDIR_PXCUT/plugin/pxcut-mac" ] && [ -f "$TMPDIR_PXCUT/plugin/pxcut-mac/index.html" ]; then
+    SRC="$TMPDIR_PXCUT/plugin/pxcut-mac"
+else
+    # Find wherever index.html ended up
+    FOUND="$(find "$TMPDIR_PXCUT/plugin" -name "index.html" -maxdepth 3 | head -1)"
+    if [ -n "$FOUND" ]; then
+        SRC="$(dirname "$FOUND")"
+    else
+        echo "  [ERROR] Plugin zip tidak valid — index.html tidak ditemukan."
+        rm -rf "$TMPDIR_PXCUT"
+        exit 1
+    fi
+fi
+
+echo "  [INFO] Sumber plugin: $SRC"
+
+# --- 3. CEP extension install path ---
+EXT_ROOT="$HOME/Library/Application Support/Adobe/CEP/extensions"
+DEST="$EXT_ROOT/pxcut"
+
+echo "  [INFO] Tujuan instalasi: $DEST"
+echo ""
 
 # --- 4. Create extension directory ---
 if [ ! -d "$EXT_ROOT" ]; then
@@ -51,7 +84,6 @@ fi
 echo "  [INFO] Menyalin file plugin..."
 mkdir -p "$DEST"
 
-# Copy all plugin directories and files, excluding installer and Windows-specific files
 for item in CSXS css js jsx node_modules index.html; do
     if [ -e "$SRC/$item" ]; then
         cp -R "$SRC/$item" "$DEST/"
@@ -86,7 +118,7 @@ else
     fi
 fi
 
-# --- 8. Set PlayerDebugMode registry (defaults write) ---
+# --- 8. Set PlayerDebugMode ---
 echo "  [INFO] Mengaktifkan izin plugin (PlayerDebugMode)..."
 
 for V in 9 10 11 12 13; do
@@ -95,10 +127,12 @@ done
 
 echo "  [INFO] PlayerDebugMode berhasil diatur."
 
-# Kill cfprefsd to ensure plist changes take effect immediately
 killall cfprefsd 2>/dev/null || true
 
-# --- 9. Verify installation ---
+# --- 9. Cleanup temp files ---
+rm -rf "$TMPDIR_PXCUT"
+
+# --- 10. Verify installation ---
 echo ""
 OK=1
 for F in "CSXS/manifest.xml" "index.html" "js/main.js" "js/fix.js" "js/CSInterface.js" "jsx/hostscript.jsx"; do
@@ -108,7 +142,6 @@ for F in "CSXS/manifest.xml" "index.html" "js/main.js" "js/fix.js" "js/CSInterfa
     fi
 done
 
-# Check ffmpeg
 if [ -x "$FFMPEG_BIN" ]; then
     FFMPEG_SIZE=$(du -h "$FFMPEG_BIN" | cut -f1)
     echo "  [OK]   ffmpeg ($FFMPEG_SIZE) di $FFMPEG_BIN"
@@ -131,7 +164,7 @@ if [ "$OK" = "1" ]; then
     echo "  ============================================="
 else
     echo "  [WARN] Instalasi selesai tapi beberapa file mungkin hilang."
-    echo "         Coba ekstrak ulang dan jalankan installer lagi."
+    echo "         Coba jalankan installer lagi."
 fi
 
 echo ""
