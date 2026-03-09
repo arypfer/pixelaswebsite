@@ -9,6 +9,7 @@ import { PixelasLogo } from '@/components/PixelasLogo'
 import * as LucideIcons from 'lucide-react'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { ProductGallery } from './ProductGallery'
+import { BuyButton } from './BuyButton'
 
 export const revalidate = 60 // re-fetch from DB at most every 60 seconds
 
@@ -217,30 +218,25 @@ export default async function ProductPage({ params }: Props) {
                   </div>
                 )}
                 {buyLinks.length === 1 ? (
-                  <a
-                    href={ensureUrl(buyLinks[0].url)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-[15px] shadow-[0_0_30px_-5px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_-5px_rgba(245,158,11,0.5)] transition-all"
-                  >
-                    {buyLinks[0].label} <ArrowRight className="w-4 h-4" />
-                  </a>
+                  <BuyButton
+                    productSlug={product.slug}
+                    productName={product.name}
+                    price={formatPrice(product.price || 0)}
+                    label={buyLinks[0].label}
+                    className="w-full sm:w-auto px-7 py-3.5 text-[15px]"
+                  />
                 ) : (
                   <div className="flex flex-col sm:flex-row gap-2.5 w-full sm:w-auto">
                     {buyLinks.map((link, i) => (
-                      <a
+                      <BuyButton
                         key={i}
-                        href={ensureUrl(link.url)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-xl text-[14px] font-bold transition-all ${
-                          link.primary
-                            ? 'bg-amber-500 hover:bg-amber-400 text-black shadow-[0_0_30px_-5px_rgba(245,158,11,0.4)]'
-                            : 'bg-[#0c0c0c] hover:bg-white/[0.06] text-white border border-white/[0.07] hover:border-white/[0.15]'
-                        }`}
-                      >
-                        {link.label}
-                      </a>
+                        productSlug={product.slug}
+                        productName={product.name}
+                        price={formatPrice(product.price || 0)}
+                        label={link.label}
+                        primary={!!link.primary}
+                        className="w-full sm:w-auto"
+                      />
                     ))}
                   </div>
                 )}
@@ -368,30 +364,26 @@ export default async function ProductPage({ params }: Props) {
           )}
           <p className="text-[13px] sm:text-[14px] text-white/25 mb-8 sm:mb-10">One-time payment. No subscription. Lifetime access.</p>
           {buyLinks.length === 1 ? (
-            <a
-              href={ensureUrl(buyLinks[0].url)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-base sm:text-lg shadow-[0_0_40px_-8px_rgba(245,158,11,0.4)] hover:shadow-[0_0_50px_-8px_rgba(245,158,11,0.5)] transition-all"
-            >
-              {buyLinks[0].label} <ArrowRight className="w-5 h-5" />
-            </a>
+            <BuyButton
+              productSlug={product.slug}
+              productName={product.name}
+              price={formatPrice(product.price || 0)}
+              label={buyLinks[0].label}
+              size="large"
+              className="w-full sm:w-auto"
+            />
           ) : (
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               {buyLinks.map((link, i) => (
-                <a
+                <BuyButton
                   key={i}
-                  href={ensureUrl(link.url)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-xl font-bold transition-all ${
-                    link.primary
-                      ? 'bg-amber-500 hover:bg-amber-400 text-black shadow-[0_0_40px_-8px_rgba(245,158,11,0.4)]'
-                      : 'bg-[#0c0c0c] hover:bg-white/[0.06] text-white border border-white/[0.07] hover:border-white/[0.15]'
-                  }`}
-                >
-                  {link.label}
-                </a>
+                  productSlug={product.slug}
+                  productName={product.name}
+                  price={formatPrice(product.price || 0)}
+                  label={link.label}
+                  primary={!!link.primary}
+                  className="w-full sm:w-auto"
+                />
               ))}
             </div>
           )}
