@@ -4,11 +4,13 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, ArrowLeft, ChevronRight } from 'lucide-react'
+import { ArrowRight, ArrowLeft, ChevronRight, Shield, Download, RefreshCw } from 'lucide-react'
 import { PixelasLogo } from '@/components/PixelasLogo'
 import * as LucideIcons from 'lucide-react'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { ProductGallery } from './ProductGallery'
+import { StickyBuyBar } from './StickyBuyBar'
+import { FAQSection } from './FAQSection'
 
 export const revalidate = 60 // re-fetch from DB at most every 60 seconds
 
@@ -93,7 +95,7 @@ export default async function ProductPage({ params }: Props) {
   const buyLinks = (product.buyLinks as { label: string; url: string; primary?: boolean }[] | undefined)?.length
     ? (product.buyLinks as { label: string; url: string; primary?: boolean }[])
     : product.buyUrl
-      ? [{ label: 'Buy Now', url: product.buyUrl as string, primary: true }]
+      ? [{ label: 'Beli Sekarang', url: product.buyUrl as string, primary: true }]
       : []
 
   const primaryLink = buyLinks.find((l) => l.primary) || buyLinks[0]
@@ -130,7 +132,7 @@ export default async function ProductPage({ params }: Props) {
             href="#buy"
             className="px-4 sm:px-5 py-2 text-[13px] font-semibold bg-amber-500 hover:bg-amber-400 text-black rounded-md transition-colors flex-shrink-0"
           >
-            Buy Now
+            Beli Sekarang
           </a>
         </div>
       </nav>
@@ -177,7 +179,7 @@ export default async function ProductPage({ params }: Props) {
                   </span>
                   {promo.endDate && new Date(promo.endDate) > new Date() && (
                     <span className="text-[12px] text-red-300/80 font-medium">
-                      Ends {new Date(promo.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      Berakhir {new Date(promo.endDate).toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                   )}
                 </div>
@@ -197,7 +199,7 @@ export default async function ProductPage({ params }: Props) {
               )}
 
               {/* Price + CTA */}
-              <div className="flex flex-col gap-4 sm:gap-5 mb-4">
+              <div id="hero-buy" className="flex flex-col gap-4 sm:gap-5 mb-4">
                 {product.price && product.price > 0 && (
                   <div>
                     <div className="flex items-center gap-3">
@@ -211,6 +213,11 @@ export default async function ProductPage({ params }: Props) {
                         </span>
                       )}
                     </div>
+                    {promo && promo.originalPrice && promo.originalPrice > 0 && product.price && (
+                      <p className="text-[12px] sm:text-[13px] text-emerald-400/70 font-medium mt-1.5">
+                        Kamu hemat {formatPrice(promo.originalPrice - product.price)}
+                      </p>
+                    )}
                     {product.priceLabel && (
                       <p className="text-[12px] sm:text-[13px] text-white/30 mt-1">{product.priceLabel}</p>
                     )}
@@ -223,7 +230,7 @@ export default async function ProductPage({ params }: Props) {
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-[15px] shadow-[0_0_30px_-5px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_-5px_rgba(245,158,11,0.5)] transition-all"
                   >
-                    {buyLinks[0].label} <ArrowRight className="w-4 h-4" />
+                    Beli Sekarang — {formatPrice(product.price)} <ArrowRight className="w-4 h-4" />
                   </a>
                 ) : (
                   <div className="flex flex-col sm:flex-row gap-2.5 w-full sm:w-auto">
@@ -239,13 +246,13 @@ export default async function ProductPage({ params }: Props) {
                             : 'bg-[#0c0c0c] hover:bg-white/[0.06] text-white border border-white/[0.07] hover:border-white/[0.15]'
                         }`}
                       >
-                        {link.label}
+                        {link.primary && product.price ? `${link.label} — ${formatPrice(product.price)}` : link.label}
                       </a>
                     ))}
                   </div>
                 )}
               </div>
-              <p className="text-[11px] sm:text-[12px] text-white/30">One-time payment &middot; Lifetime access &middot; Instant delivery</p>
+              <p className="text-[11px] sm:text-[12px] text-white/50">Bayar sekali &middot; Pakai selamanya &middot; Langsung dikirim</p>
             </div>
           </div>
         </div>
@@ -256,24 +263,30 @@ export default async function ProductPage({ params }: Props) {
         <section className="py-14 sm:py-24 border-t border-white/[0.06]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="mb-8 sm:mb-14">
-              <span className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold">What&apos;s included</span>
-              <h2 className="text-2xl sm:text-3xl font-bold mt-2 tracking-tight">Features</h2>
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold">Fitur Utama</span>
+              <h2 className="text-2xl sm:text-3xl font-bold mt-2 tracking-tight">Kenapa Kamu Bakal Suka</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {product.features.map((feature: { icon?: string; title: string; description?: string }, index: number) => (
                 <div
                   key={index}
                   className={`p-5 rounded-xl bg-[#0c0c0c] border hover:border-white/[0.12] transition-all duration-300 group ${
-  index === 0 ? 'border-amber-500/20 hover:border-amber-500/30' : 'border-white/[0.06]'
-}`}
+                    index === 0
+                      ? 'lg:col-span-2 border-amber-500/20 hover:border-amber-500/30 border-l-2 border-l-amber-500/40'
+                      : 'border-white/[0.06]'
+                  }`}
                 >
-                  <div className="mb-3 w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                    {getLucideIcon(feature.icon || 'Star')}
+                  <div className={`${index === 0 ? 'flex items-start gap-4' : ''}`}>
+                    <div className={`mb-3 ${index === 0 ? 'w-12 h-12 mb-0 flex-shrink-0' : 'w-10 h-10'} rounded-lg bg-amber-500/10 flex items-center justify-center`}>
+                      {getLucideIcon(feature.icon || 'Star')}
+                    </div>
+                    <div>
+                      <h3 className={`font-semibold mb-1.5 ${index === 0 ? 'text-[16px]' : 'text-[14px]'}`}>{feature.title}</h3>
+                      {feature.description && (
+                        <p className={`text-white/30 leading-relaxed ${index === 0 ? 'text-[14px]' : 'text-[13px]'}`}>{feature.description}</p>
+                      )}
+                    </div>
                   </div>
-                  <h3 className="text-[14px] font-semibold mb-1.5">{feature.title}</h3>
-                  {feature.description && (
-                    <p className="text-[13px] text-white/30 leading-relaxed">{feature.description}</p>
-                  )}
                 </div>
               ))}
             </div>
@@ -286,8 +299,8 @@ export default async function ProductPage({ params }: Props) {
         <section className="py-14 sm:py-24 border-t border-white/[0.06]">
           <div className="max-w-3xl mx-auto px-4 sm:px-6">
             <div className="mb-8 sm:mb-14">
-              <span className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold">Details</span>
-              <h2 className="text-2xl sm:text-3xl font-bold mt-2 tracking-tight">About this product</h2>
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold">Detail</span>
+              <h2 className="text-2xl sm:text-3xl font-bold mt-2 tracking-tight">Tentang Produk Ini</h2>
             </div>
             <div className="prose prose-invert prose-base prose-p:text-white/40 prose-p:leading-relaxed prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-3 prose-strong:text-white/70 prose-a:text-amber-400 prose-a:no-underline hover:prose-a:underline prose-ul:text-white/40 prose-ol:text-white/40 prose-li:marker:text-amber-500/40 prose-blockquote:border-amber-500/30 prose-blockquote:text-white/30 prose-hr:border-white/[0.06] max-w-none">
               <RichText data={product.description} />
@@ -301,8 +314,8 @@ export default async function ProductPage({ params }: Props) {
         <section className="py-14 sm:py-24 border-t border-white/[0.06]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="mb-8 sm:mb-14">
-              <span className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold">Screenshots</span>
-              <h2 className="text-2xl sm:text-3xl font-bold mt-2 tracking-tight">Gallery</h2>
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold">Tangkapan Layar</span>
+              <h2 className="text-2xl sm:text-3xl font-bold mt-2 tracking-tight">Galeri</h2>
             </div>
             <ProductGallery images={galleryImages} />
           </div>
@@ -314,8 +327,8 @@ export default async function ProductPage({ params }: Props) {
         <section className="py-14 sm:py-24 border-t border-white/[0.06]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="mb-8 sm:mb-14">
-              <span className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold">Watch</span>
-              <h2 className="text-2xl sm:text-3xl font-bold mt-2 tracking-tight">Videos</h2>
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold">Tonton</span>
+              <h2 className="text-2xl sm:text-3xl font-bold mt-2 tracking-tight">Video</h2>
             </div>
             <div className={`grid gap-6 ${videos.length === 1 ? 'max-w-4xl mx-auto' : 'grid-cols-1 lg:grid-cols-2'}`}>
               {videos.map((video, i) => (
@@ -339,6 +352,9 @@ export default async function ProductPage({ params }: Props) {
         </section>
       )}
 
+      {/* ═══ FAQ ═══ */}
+      <FAQSection />
+
       {/* ═══ FINAL CTA ═══ */}
       <section id="buy" className={`border-t relative scroll-mt-16 ${promo ? 'border-red-500/20' : 'border-white/[0.06]'}`}>
         <div className={`absolute inset-0 pointer-events-none ${promo ? 'bg-gradient-to-b from-transparent via-red-500/[0.03] to-transparent' : 'bg-gradient-to-b from-transparent via-amber-500/[0.02] to-transparent'}`} />
@@ -350,8 +366,11 @@ export default async function ProductPage({ params }: Props) {
               </span>
             </div>
           )}
+          <p className="text-[13px] sm:text-[14px] text-white/35 mb-3">
+            Ribuan kreator udah pakai — sekarang giliran kamu
+          </p>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight mb-3 sm:mb-4">
-            Get {product.name} today
+            Ambil {product.name} Sekarang
           </h2>
           {product.price && product.price > 0 && (
             <div className="flex items-center justify-center gap-3 mb-2">
@@ -366,7 +385,7 @@ export default async function ProductPage({ params }: Props) {
               )}
             </div>
           )}
-          <p className="text-[13px] sm:text-[14px] text-white/25 mb-8 sm:mb-10">One-time payment. No subscription. Lifetime access.</p>
+          <p className="text-[13px] sm:text-[14px] text-white/25 mb-8 sm:mb-10">Bayar sekali aja. Gak ada langganan. Pakai selamanya.</p>
           {buyLinks.length === 1 ? (
             <a
               href={ensureUrl(buyLinks[0].url)}
@@ -374,7 +393,7 @@ export default async function ProductPage({ params }: Props) {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-base sm:text-lg shadow-[0_0_40px_-8px_rgba(245,158,11,0.4)] hover:shadow-[0_0_50px_-8px_rgba(245,158,11,0.5)] transition-all"
             >
-              {buyLinks[0].label} <ArrowRight className="w-5 h-5" />
+              Beli Sekarang — {formatPrice(product.price)} <ArrowRight className="w-5 h-5" />
             </a>
           ) : (
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -390,21 +409,46 @@ export default async function ProductPage({ params }: Props) {
                       : 'bg-[#0c0c0c] hover:bg-white/[0.06] text-white border border-white/[0.07] hover:border-white/[0.15]'
                   }`}
                 >
-                  {link.label}
+                  {link.primary && product.price ? `${link.label} — ${formatPrice(product.price)}` : link.label}
                 </a>
               ))}
             </div>
           )}
+          {/* Reassurance icons */}
+          <div className="flex items-center justify-center gap-6 sm:gap-8 mt-8">
+            <div className="flex items-center gap-2 text-white/25">
+              <Shield className="w-4 h-4" />
+              <span className="text-[11px] sm:text-[12px]">Bayar Aman</span>
+            </div>
+            <div className="flex items-center gap-2 text-white/25">
+              <Download className="w-4 h-4" />
+              <span className="text-[11px] sm:text-[12px]">Langsung Pakai</span>
+            </div>
+            <div className="flex items-center gap-2 text-white/25">
+              <RefreshCw className="w-4 h-4" />
+              <span className="text-[11px] sm:text-[12px]">Update Gratis</span>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ═══ FOOTER ═══ */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 border-t border-white/[0.06]">
-        <Link href="/" className="inline-flex items-center gap-2 text-white/25 hover:text-white/50 text-[13px] transition-colors">
-          <ArrowLeft className="w-3.5 h-3.5" />
-          Back to all products
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 pb-24 md:pb-10 border-t border-white/[0.06]">
+        <Link href="/" className="inline-flex items-center gap-2 min-h-[44px] px-4 py-2.5 -ml-4 text-white/40 hover:text-white/70 text-[14px] font-medium rounded-lg hover:bg-white/[0.04] transition-all">
+          <ArrowLeft className="w-4 h-4" />
+          Kembali ke semua produk
         </Link>
       </div>
+
+      {/* ═══ STICKY MOBILE BUY BAR ═══ */}
+      {primaryLink && (
+        <StickyBuyBar
+          productName={product.name}
+          price={formatPrice(product.price)}
+          promoPrice={promo?.originalPrice ? formatPrice(promo.originalPrice) : undefined}
+          buyUrl={primaryLink.url}
+        />
+      )}
     </div>
   )
 }

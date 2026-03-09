@@ -22,11 +22,11 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://pixelas.store'),
-  title: "Pixelas — Creative Software Tools",
-  description: "Premium AI-powered software tools for creative professionals",
+  title: "Pixelas — Alat Software Kreatif",
+  description: "Alat software bertenaga AI premium untuk profesional kreatif",
   openGraph: {
-    title: "Pixelas — Creative Software Tools",
-    description: "Premium AI-powered software tools for creative professionals",
+    title: "Pixelas — Alat Software Kreatif",
+    description: "Alat software bertenaga AI premium untuk profesional kreatif",
     siteName: "Pixelas",
     type: "website",
   },
@@ -41,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="id">
       <body className={`${jakarta.variable} ${instrumentSerif.variable} ${jakarta.className}`}>{children}</body>
     </html>
   );

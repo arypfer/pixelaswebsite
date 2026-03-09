@@ -173,3 +173,23 @@ body {
 .featured-accent:hover {
   border-left-color: rgba(245, 158, 11, 0.6);
 }
+
+/* ── Promo pulsing dot ── */
+@keyframes promo-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.4); }
+}
+.promo-pulse-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #fff;
+  animation: promo-pulse 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* ── Safe area padding for sticky bars on notched devices ── */
+.safe-area-pb {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}

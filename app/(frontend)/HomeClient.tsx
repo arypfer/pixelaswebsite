@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Search, X, ArrowRight, ArrowUpRight, ChevronDown } from 'lucide-react'
+import { Search, X, ArrowRight, ArrowUpRight, ChevronDown, Zap, Shield, RefreshCw, Headphones } from 'lucide-react'
 import { PixelasLogo } from '@/components/PixelasLogo'
 
 interface Product {
@@ -27,16 +27,21 @@ interface Product {
   } | null
 }
 
-const categories = ['All', 'Standalone Apps', 'Photoshop Plugins', 'AI Tools']
+const categories = ['Semua', 'Standalone Apps', 'Photoshop Plugins', 'AI Tools']
 
 function formatPrice(price: number): string {
   if (!price) return ''
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
 }
 
+function getDiscountPercent(original: number, current: number): number {
+  if (!original || !current || original <= current) return 0
+  return Math.round(((original - current) / original) * 100)
+}
+
 export function HomeClient({ products }: { products: Product[] }) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [selectedCategory, setSelectedCategory] = useState('Semua')
   const [showTikTokMessage, setShowTikTokMessage] = useState(false)
 
   useEffect(() => {
@@ -50,13 +55,13 @@ export function HomeClient({ products }: { products: Product[] }) {
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.tagline.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.shortDescription.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory
+    const matchesCategory = selectedCategory === 'Semua' || product.category === selectedCategory
     return matchesSearch && matchesCategory
   })
 
   const featuredProducts = products.filter((p) => p.featured)
   const categoryCounts = categories.reduce((acc, cat) => {
-    acc[cat] = cat === 'All' ? products.length : products.filter((p) => p.category === cat).length
+    acc[cat] = cat === 'Semua' ? products.length : products.filter((p) => p.category === cat).length
     return acc
   }, {} as Record<string, number>)
 
@@ -71,9 +76,9 @@ export function HomeClient({ products }: { products: Product[] }) {
                 <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Open in Browser</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Buka di Browser</h2>
             <p className="text-gray-600 mb-6 leading-relaxed">
-              You&apos;re viewing this in TikTok&apos;s browser. For the best experience, please copy this link and open it in Chrome or Safari:
+              Kamu lagi buka ini dari browser TikTok. Biar lebih enak, copy link-nya terus buka di Chrome atau Safari ya:
             </p>
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
               <p className="text-sm font-mono text-gray-800 break-all select-all">
@@ -91,7 +96,7 @@ export function HomeClient({ products }: { products: Product[] }) {
                 onClick={() => setShowTikTokMessage(false)}
                 className="flex-1 px-4 py-3 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
               >
-                Dismiss
+                Tutup
               </button>
             </div>
           </div>
@@ -111,23 +116,23 @@ export function HomeClient({ products }: { products: Product[] }) {
             <Search className="absolute left-3 sm:left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Cari..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-9 sm:pl-10 pr-8 py-2 text-[13px] bg-white/[0.05] border border-white/[0.08] rounded-lg text-white placeholder:text-white/25 focus:outline-none focus:border-amber-500/40 focus:bg-white/[0.07] transition-all"
             />
             {searchQuery && (
-              <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors">
+              <button onClick={() => setSearchQuery('')} className="absolute right-1 top-1/2 -translate-y-1/2 p-2 text-white/30 hover:text-white/60 transition-colors">
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
           </div>
 
           <button
-            className="px-3 sm:px-4 py-2 text-[12px] sm:text-[13px] font-medium text-white/60 hover:text-white border border-white/[0.08] hover:border-white/[0.15] rounded-lg transition-all flex-shrink-0"
+            className="px-3 sm:px-4 py-2 min-h-[44px] flex items-center text-[12px] sm:text-[13px] font-medium text-white/60 hover:text-white border border-white/[0.08] hover:border-white/[0.15] rounded-lg transition-all flex-shrink-0"
             onClick={() => window.open('mailto:amlolife.contact@gmail.com', '_self')}
           >
-            Contact
+            Hubungi Kami
           </button>
         </div>
       </header>
@@ -136,20 +141,31 @@ export function HomeClient({ products }: { products: Product[] }) {
       <section className="relative ambient-glow">
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-8 sm:pb-12">
           <div className="max-w-2xl">
-            <p className="text-amber-400/80 text-xs sm:text-sm font-medium tracking-wide mb-3 sm:mb-4">Creative Software Studio</p>
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] sm:leading-[1.05] mb-4 sm:mb-6">
-              Pixelas Store<br />
-              <span className="font-display text-amber-300">by Amlolife</span>
+            <p className="text-amber-400/80 text-xs sm:text-sm font-medium tracking-wide mb-3 sm:mb-4">Software Kreatif</p>
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] sm:leading-[1.05] mb-3 sm:mb-4">
+              Tools Kreatif yang<br />
+              <span className="text-gradient">Beneran Hemat Waktu Kamu</span>
             </h1>
-            <p className="text-sm sm:text-lg text-white/40 leading-relaxed max-w-lg mb-8 sm:mb-10">
-              Professional AI-powered plugins and standalone apps for photographers, designers, and digital artists.
+            <p className="font-display text-base sm:text-lg text-white/50 mb-4 sm:mb-5">
+              by Amlolife
             </p>
-            <a
-              href="#products"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-[15px] shadow-[0_0_30px_-5px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_-5px_rgba(245,158,11,0.5)] transition-all"
-            >
-              Browse Products <ArrowRight className="w-4 h-4" />
-            </a>
+            <p className="text-sm sm:text-lg text-white/40 leading-relaxed max-w-lg mb-8 sm:mb-10">
+              Plugin &amp; aplikasi AI buat fotografer, desainer, dan digital artist — bayar sekali, pakai selamanya.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+              <a
+                href="#products"
+                className="inline-flex items-center gap-2 px-7 py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl text-[15px] shadow-[0_0_30px_-5px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_-5px_rgba(245,158,11,0.5)] transition-all"
+              >
+                Lihat Produk <ArrowRight className="w-4 h-4" />
+              </a>
+              <a
+                href="#featured"
+                className="inline-flex items-center gap-2 px-6 py-3.5 border border-white/[0.12] hover:border-white/[0.25] text-white/60 hover:text-white font-semibold rounded-xl text-[15px] transition-all"
+              >
+                Yang Terbaru
+              </a>
+            </div>
           </div>
         </div>
         {/* Scroll indicator */}
@@ -158,12 +174,53 @@ export function HomeClient({ products }: { products: Product[] }) {
         </div>
       </section>
 
+      {/* ═══════════════════ TRUST / CREDIBILITY ═══════════════════ */}
+      <section className="px-4 sm:px-6 pb-12 sm:pb-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-4 mb-8">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-semibold">Kenapa Pilih Pixelas</span>
+            <div className="flex-1 h-px bg-gradient-to-r from-white/[0.08] to-transparent" />
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+            {[
+              { icon: Zap, title: 'Langsung Pakai', desc: 'Download & langsung bisa dipake' },
+              { icon: Shield, title: 'Bayar Sekali', desc: 'Gak ada langganan, gak ada biaya tambahan' },
+              { icon: RefreshCw, title: 'Update Gratis', desc: 'Semua update ke depan gratis selamanya' },
+              { icon: Headphones, title: 'Support Langsung', desc: 'Butuh bantuan? Langsung hubungi kami' },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-xl bg-white/[0.02] border border-white/[0.06] p-4 sm:p-5 hover:border-white/[0.12] transition-colors"
+              >
+                <item.icon className="w-5 h-5 text-amber-400 mb-3" />
+                <h3 className="text-sm font-semibold text-white mb-1">{item.title}</h3>
+                <p className="text-[12px] sm:text-[13px] text-white/30 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Compatible with */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <span className="text-[11px] uppercase tracking-[0.15em] text-white/20 font-medium mr-1">Support untuk</span>
+            {['Adobe Photoshop', 'Adobe Lightroom', 'Standalone App'].map((platform) => (
+              <span
+                key={platform}
+                className="px-3 py-1 text-[11px] sm:text-[12px] font-medium text-white/35 border border-white/[0.06] rounded-full"
+              >
+                {platform}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ═══════════════════ FEATURED ═══════════════════ */}
-      {featuredProducts.length > 0 && !searchQuery && selectedCategory === 'All' && (
-        <section className="px-4 sm:px-6 pb-12 sm:pb-16">
+      {featuredProducts.length > 0 && !searchQuery && selectedCategory === 'Semua' && (
+        <section id="featured" className="px-4 sm:px-6 pb-12 sm:pb-16">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-8">
-              <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-semibold">Featured</span>
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-semibold">Unggulan</span>
               <div className="flex-1 h-px bg-gradient-to-r from-white/[0.08] to-transparent" />
             </div>
 
@@ -183,6 +240,7 @@ export function HomeClient({ products }: { products: Product[] }) {
                         fill
                         className="object-cover opacity-30 group-hover:opacity-40 scale-105 group-hover:scale-100 transition-all duration-700"
                         sizes="(max-width: 768px) 100vw, 50vw"
+                        priority
                       />
                       <div className="absolute inset-0 bg-gradient-to-r from-[#0c0c0c] via-[#0c0c0c]/90 to-transparent" />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-transparent to-[#0c0c0c]/60" />
@@ -192,7 +250,7 @@ export function HomeClient({ products }: { products: Product[] }) {
                   <div className="relative z-10 p-5 sm:p-8 md:p-10">
                     <div className="flex items-center gap-3 mb-5">
                       <span className="px-2.5 py-1 bg-amber-500/15 rounded-md text-[11px] font-semibold text-amber-400 uppercase tracking-wider">
-                        {product.badge || 'Featured'}
+                        {product.badge || 'Unggulan'}
                       </span>
                       <span className="text-[11px] text-white/30 tracking-wide">{product.category}</span>
                     </div>
@@ -211,12 +269,13 @@ export function HomeClient({ products }: { products: Product[] }) {
                         </div>
                       )}
                       {product.promo && product.promo.label && (
-                        <span className="px-2.5 py-1 bg-red-500 text-white text-[11px] font-bold uppercase tracking-wider rounded-md animate-pulse">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-500 text-white text-[11px] font-bold uppercase tracking-wider rounded-md">
+                          <span className="promo-pulse-dot" />
                           {product.promo.label}
                         </span>
                       )}
                       <span className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/15 hover:bg-amber-500/25 text-sm font-semibold text-amber-400 rounded-lg group-hover:gap-3 transition-all duration-300">
-                        View Product <ArrowRight className="w-4 h-4" />
+                        Lihat <ArrowRight className="w-4 h-4" />
                       </span>
                     </div>
                   </div>
@@ -231,12 +290,12 @@ export function HomeClient({ products }: { products: Product[] }) {
       )}
 
       {/* ═══════════════════ PRODUCTS GRID ═══════════════════ */}
-      <section id="products" className={`px-4 sm:px-6 pb-16 sm:pb-24 ${featuredProducts.length > 0 && !searchQuery && selectedCategory === 'All' ? '' : 'pt-4'}`}>
+      <section id="products" className={`px-4 sm:px-6 pb-16 sm:pb-24 ${featuredProducts.length > 0 && !searchQuery && selectedCategory === 'Semua' ? '' : 'pt-4'}`}>
         <div className="max-w-6xl mx-auto">
           {/* Section header + filters */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div className="flex items-center gap-4">
-              <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-semibold">All Products</span>
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-semibold">Semua Produk ({products.length} produk)</span>
               <div className="w-12 h-px bg-white/[0.08]" />
             </div>
 
@@ -245,7 +304,7 @@ export function HomeClient({ products }: { products: Product[] }) {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-3.5 py-1.5 rounded-md text-[12px] font-medium transition-all duration-200 ${
+                  className={`px-3.5 py-1.5 min-h-[44px] sm:min-h-0 flex items-center rounded-md text-[12px] font-medium transition-all duration-200 ${
                     selectedCategory === category
                       ? 'bg-white text-black'
                       : 'text-white/35 hover:text-white/70 hover:bg-white/[0.05]'
@@ -263,11 +322,11 @@ export function HomeClient({ products }: { products: Product[] }) {
           </div>
 
           {/* Search Results Count */}
-          {(searchQuery || selectedCategory !== 'All') && (
+          {(searchQuery || selectedCategory !== 'Semua') && (
             <p className="text-white/35 text-sm mb-6">
-              {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
-              {searchQuery && <> matching &ldquo;{searchQuery}&rdquo;</>}
-              {selectedCategory !== 'All' && <> in {selectedCategory}</>}
+              {filteredProducts.length} produk
+              {searchQuery && <> untuk &ldquo;{searchQuery}&rdquo;</>}
+              {selectedCategory !== 'Semua' && <> di {selectedCategory}</>}
             </p>
           )}
 
@@ -283,21 +342,21 @@ export function HomeClient({ products }: { products: Product[] }) {
                   <div className="w-14 h-14 mx-auto mb-5 rounded-xl bg-white/[0.05] flex items-center justify-center">
                     <Search className="w-6 h-6 text-white/20" />
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">No products found</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">Produk gak ketemu</h3>
                   <p className="text-white/35 text-sm mb-8 max-w-sm mx-auto">
                     {searchQuery
-                      ? `No results for "${searchQuery}"`
-                      : `Nothing in ${selectedCategory} yet`}
+                      ? `Gak nemu hasil untuk "${searchQuery}"`
+                      : `Belum ada produk di ${selectedCategory}`}
                   </p>
                   <div className="flex justify-center gap-3">
                     {searchQuery && (
                       <button onClick={() => setSearchQuery('')} className="px-5 py-2 text-[13px] font-medium text-white/60 border border-white/[0.1] hover:border-white/[0.2] rounded-lg transition-all">
-                        Clear search
+                        Hapus pencarian
                       </button>
                     )}
-                    {selectedCategory !== 'All' && (
-                      <button onClick={() => setSelectedCategory('All')} className="px-5 py-2 text-[13px] font-medium bg-white text-black rounded-lg hover:bg-white/90 transition-all">
-                        View all
+                    {selectedCategory !== 'Semua' && (
+                      <button onClick={() => setSelectedCategory('Semua')} className="px-5 py-2 text-[13px] font-medium bg-white text-black rounded-lg hover:bg-white/90 transition-all">
+                        Lihat semua
                       </button>
                     )}
                   </div>
@@ -313,22 +372,31 @@ export function HomeClient({ products }: { products: Product[] }) {
         <div className="max-w-6xl mx-auto px-6 py-16">
           {/* Quick links */}
           <div className="flex items-center gap-4 mb-10">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-amber-400/40 font-semibold">Browse</span>
+            <span className="text-[11px] uppercase tracking-[0.2em] text-amber-400/40 font-semibold">Jelajahi</span>
             <div className="flex-1 h-px bg-gradient-to-r from-amber-500/10 to-transparent" />
           </div>
           <div className="flex flex-wrap gap-2 mb-12">
-            {categories.filter(c => c !== 'All').map((category) => (
+            {categories.filter(c => c !== 'Semua').map((category) => (
               <button
                 key={category}
                 onClick={() => {
                   setSelectedCategory(category)
                   document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })
                 }}
-                className="px-4 py-2 text-[13px] font-medium text-white/30 hover:text-white/60 border border-white/[0.06] hover:border-white/[0.12] rounded-lg transition-all"
+                className="px-4 py-2 min-h-[44px] flex items-center text-[13px] font-medium text-white/30 hover:text-white/60 border border-white/[0.06] hover:border-white/[0.12] rounded-lg transition-all"
               >
                 {category}
               </button>
             ))}
+            <button
+              onClick={() => {
+                setSelectedCategory('Semua')
+                document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="px-4 py-2 min-h-[44px] flex items-center gap-1.5 text-[13px] font-medium text-amber-400/60 hover:text-amber-400 border border-amber-500/20 hover:border-amber-500/40 rounded-lg transition-all"
+            >
+              Lihat Semua <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
 
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-8">
@@ -338,7 +406,7 @@ export function HomeClient({ products }: { products: Product[] }) {
                 <span className="text-sm font-bold text-white">Pixelas</span>
               </div>
               <p className="text-sm text-white/40 max-w-sm leading-relaxed">
-                Professional AI-powered tools for creative professionals.<br />One-time payment, lifetime access.
+                Tools AI buat para kreator profesional.<br />Bayar sekali, pakai selamanya.
               </p>
             </div>
             <div className="text-right">
@@ -360,6 +428,10 @@ export function HomeClient({ products }: { products: Product[] }) {
 /* ─────────────────── PRODUCT CARD ─────────────────── */
 
 function ProductCard({ product, index }: { product: Product; index: number }) {
+  const discountPercent = product.promo?.originalPrice
+    ? getDiscountPercent(product.promo.originalPrice, product.price)
+    : 0
+
   return (
     <Link
       href={`/products/${product.slug}`}
@@ -390,12 +462,27 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           {/* Promo banner */}
           {product.promo && product.promo.label && (
             <div className="absolute top-3 left-3 right-3 flex items-center gap-2">
-              <span className="px-2.5 py-1 bg-red-500 text-white text-[11px] font-bold uppercase tracking-wider rounded shadow-[0_0_20px_rgba(239,68,68,0.5)]">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-500 text-white text-[11px] font-bold uppercase tracking-wider rounded shadow-[0_0_20px_rgba(239,68,68,0.5)]">
+                <span className="promo-pulse-dot" />
                 {product.promo.label}
               </span>
               {product.promo.endDate && new Date(product.promo.endDate) > new Date() && (
-                <PromoCountdown endDate={product.promo.endDate} />
+                <>
+                  <PromoCountdown endDate={product.promo.endDate} />
+                  <span className="px-2 py-0.5 bg-black/60 backdrop-blur-sm text-red-300 text-[10px] font-semibold rounded">
+                    Waktu Terbatas
+                  </span>
+                </>
               )}
+            </div>
+          )}
+
+          {/* Discount percentage badge */}
+          {discountPercent > 0 && (
+            <div className="absolute top-3 right-3">
+              <span className="px-2 py-1 bg-red-500 text-white text-[12px] font-bold rounded-full shadow-lg">
+                -{discountPercent}%
+              </span>
             </div>
           )}
         </div>
@@ -430,10 +517,10 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
               <span className={`text-[15px] font-bold ${product.promo ? 'text-red-400' : 'text-white'}`}>{formatPrice(product.price)}</span>
             </div>
           ) : (
-            <span className="text-[13px] text-white/30">Free</span>
+            <span className="text-[13px] text-white/30">Gratis</span>
           )}
-          <span className="flex items-center gap-1 px-2.5 py-1 text-[12px] font-medium text-white/30 border border-transparent group-hover:border-amber-500/30 group-hover:text-amber-400 rounded-md transition-all duration-300">
-            View <ArrowUpRight className="w-3.5 h-3.5" />
+          <span className="flex items-center gap-1 px-2.5 py-1 text-[12px] font-medium text-white/30 border border-transparent group-hover:border-amber-500/30 group-hover:text-amber-400 group-hover:bg-amber-500/10 rounded-md transition-all duration-300">
+            Lihat Detail <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
           </span>
         </div>
       </div>
