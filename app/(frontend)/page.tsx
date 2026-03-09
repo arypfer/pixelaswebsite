@@ -35,6 +35,13 @@ export default async function Home() {
     badge: product.badge || null,
     featured: product.featured || false,
     order: product.order || 0,
+    promo: product.promo?.active
+      ? {
+          originalPrice: product.promo.originalPrice || null,
+          label: product.promo.label || null,
+          endDate: product.promo.endDate || null,
+        }
+      : null,
   }))
 
   return <HomeClient products={serializedProducts} />

@@ -35,9 +35,18 @@ export default buildConfig({
   plugins: [
     s3Storage({
       collections: {
-        media: true,
+        media: {
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename, prefix }) => {
+            const bucket = process.env.SUPABASE_STORAGE_BUCKET || 'product-images'
+            const projectRef = (process.env.SUPABASE_STORAGE_ENDPOINT || '').match(/https:\/\/([^.]+)/)?.[1] || ''
+            const filePath = prefix ? `${prefix}/${filename}` : filename
+            return `https://${projectRef}.supabase.co/storage/v1/object/public/${bucket}/${filePath}`
+          },
+        },
       },
       bucket: process.env.SUPABASE_STORAGE_BUCKET || 'product-images',
+      acl: 'public-read',
       config: {
         credentials: {
           accessKeyId: process.env.SUPABASE_STORAGE_ACCESS_KEY_ID || '',

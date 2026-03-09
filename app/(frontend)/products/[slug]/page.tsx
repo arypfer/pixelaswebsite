@@ -37,6 +37,17 @@ function formatPrice(price: number): string {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)
 }
 
+function extractYouTubeId(url: string): string | null {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtube\.com\/embed\/|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,
+  ]
+  for (const pattern of patterns) {
+    const match = url.match(pattern)
+    if (match) return match[1]
+  }
+  return null
+}
+
 function ensureUrl(url: string): string {
   if (!url) return '#'
   if (url.startsWith('http://') || url.startsWith('https://')) return url
@@ -86,6 +97,21 @@ export default async function ProductPage({ params }: Props) {
       : []
 
   const primaryLink = buyLinks.find((l) => l.primary) || buyLinks[0]
+
+  const videos = (product.videos as { url: string; title?: string; id?: string }[] | undefined)
+    ?.map((v) => {
+      const id = extractYouTubeId(v.url)
+      return id ? { id, title: v.title } : null
+    })
+    .filter(Boolean) as { id: string; title?: string }[] || []
+
+  const promo = product.promo?.active
+    ? {
+        originalPrice: product.promo.originalPrice as number | undefined,
+        label: product.promo.label as string | undefined,
+        endDate: product.promo.endDate as string | undefined,
+      }
+    : null
 
   return (
     <div className="min-h-screen bg-[#060606] text-white noise">
@@ -143,7 +169,21 @@ export default async function ProductPage({ params }: Props) {
 
             {/* Text */}
             <div className="order-last lg:order-first">
-              {product.badge && (
+              {/* Promo banner */}
+              {promo && promo.label && (
+                <div className="mb-5 sm:mb-6 inline-flex items-center gap-3 px-4 py-2.5 bg-red-500/15 border border-red-500/30 rounded-xl">
+                  <span className="px-2.5 py-1 bg-red-500 text-white text-[12px] font-bold uppercase tracking-wider rounded shadow-[0_0_20px_rgba(239,68,68,0.4)]">
+                    {promo.label}
+                  </span>
+                  {promo.endDate && new Date(promo.endDate) > new Date() && (
+                    <span className="text-[12px] text-red-300/80 font-medium">
+                      Ends {new Date(promo.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {product.badge && !promo && (
                 <span className="inline-block px-2.5 py-1 mb-4 sm:mb-6 bg-amber-500/15 rounded-md text-[11px] font-semibold text-amber-400 uppercase tracking-wider">
                   {product.badge}
                 </span>
@@ -160,7 +200,17 @@ export default async function ProductPage({ params }: Props) {
               <div className="flex flex-col gap-4 sm:gap-5 mb-4">
                 {product.price && product.price > 0 && (
                   <div>
-                    <span className="text-2xl sm:text-3xl font-extrabold">{formatPrice(product.price)}</span>
+                    <div className="flex items-center gap-3">
+                      {promo && promo.originalPrice && (
+                        <span className="text-lg sm:text-xl text-white/25 line-through font-medium">{formatPrice(promo.originalPrice)}</span>
+                      )}
+                      <span className={`text-2xl sm:text-3xl font-extrabold ${promo ? 'text-red-400' : 'text-white'}`}>{formatPrice(product.price)}</span>
+                      {promo && promo.originalPrice && promo.originalPrice > 0 && product.price && (
+                        <span className="px-2 py-0.5 bg-red-500/20 text-red-400 text-[13px] font-bold rounded">
+                          -{Math.round(((promo.originalPrice - product.price) / promo.originalPrice) * 100)}%
+                        </span>
+                      )}
+                    </div>
                     {product.priceLabel && (
                       <p className="text-[12px] sm:text-[13px] text-white/30 mt-1">{product.priceLabel}</p>
                     )}
@@ -233,9 +283,15 @@ export default async function ProductPage({ params }: Props) {
 
       {/* ═══ RICH TEXT ═══ */}
       {product.description && (
-        <section className="py-14 sm:py-20 border-t border-white/[0.06]">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 prose prose-invert prose-sm prose-p:text-white/40 prose-headings:font-bold prose-strong:text-white/70 prose-a:text-amber-400">
-            <RichText data={product.description} />
+        <section className="py-14 sm:py-24 border-t border-white/[0.06]">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6">
+            <div className="mb-8 sm:mb-14">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold">Details</span>
+              <h2 className="text-2xl sm:text-3xl font-bold mt-2 tracking-tight">About this product</h2>
+            </div>
+            <div className="prose prose-invert prose-base prose-p:text-white/40 prose-p:leading-relaxed prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-3 prose-strong:text-white/70 prose-a:text-amber-400 prose-a:no-underline hover:prose-a:underline prose-ul:text-white/40 prose-ol:text-white/40 prose-li:marker:text-amber-500/40 prose-blockquote:border-amber-500/30 prose-blockquote:text-white/30 prose-hr:border-white/[0.06] max-w-none">
+              <RichText data={product.description} />
+            </div>
           </div>
         </section>
       )}
@@ -253,15 +309,62 @@ export default async function ProductPage({ params }: Props) {
         </section>
       )}
 
+      {/* ═══ VIDEOS ═══ */}
+      {videos.length > 0 && (
+        <section className="py-14 sm:py-24 border-t border-white/[0.06]">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="mb-8 sm:mb-14">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/20 font-semibold">Watch</span>
+              <h2 className="text-2xl sm:text-3xl font-bold mt-2 tracking-tight">Videos</h2>
+            </div>
+            <div className={`grid gap-6 ${videos.length === 1 ? 'max-w-4xl mx-auto' : 'grid-cols-1 lg:grid-cols-2'}`}>
+              {videos.map((video, i) => (
+                <div key={i}>
+                  {video.title && (
+                    <p className="text-[14px] font-medium text-white/50 mb-3">{video.title}</p>
+                  )}
+                  <div className="relative aspect-video rounded-xl overflow-hidden border border-white/[0.08] bg-[#0c0c0c]">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${video.id}`}
+                      title={video.title || 'Product video'}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 w-full h-full"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ═══ FINAL CTA ═══ */}
-      <section id="buy" className="border-t border-white/[0.06] relative scroll-mt-16">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/[0.02] to-transparent pointer-events-none" />
+      <section id="buy" className={`border-t relative scroll-mt-16 ${promo ? 'border-red-500/20' : 'border-white/[0.06]'}`}>
+        <div className={`absolute inset-0 pointer-events-none ${promo ? 'bg-gradient-to-b from-transparent via-red-500/[0.03] to-transparent' : 'bg-gradient-to-b from-transparent via-amber-500/[0.02] to-transparent'}`} />
         <div className="relative py-16 sm:py-24 text-center max-w-2xl mx-auto px-4 sm:px-6">
+          {promo && promo.label && (
+            <div className="mb-6">
+              <span className="px-3 py-1.5 bg-red-500 text-white text-[13px] font-bold uppercase tracking-wider rounded-lg shadow-[0_0_30px_rgba(239,68,68,0.4)]">
+                {promo.label}
+              </span>
+            </div>
+          )}
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight mb-3 sm:mb-4">
             Get {product.name} today
           </h2>
           {product.price && product.price > 0 && (
-            <p className="text-xl sm:text-2xl font-bold text-amber-400 mb-2">{formatPrice(product.price)}</p>
+            <div className="flex items-center justify-center gap-3 mb-2">
+              {promo && promo.originalPrice && (
+                <span className="text-lg sm:text-xl text-white/25 line-through">{formatPrice(promo.originalPrice)}</span>
+              )}
+              <p className={`text-xl sm:text-2xl font-bold ${promo ? 'text-red-400' : 'text-amber-400'}`}>{formatPrice(product.price)}</p>
+              {promo && promo.originalPrice && promo.originalPrice > 0 && product.price && (
+                <span className="px-2 py-0.5 bg-red-500/20 text-red-400 text-[13px] font-bold rounded">
+                  -{Math.round(((promo.originalPrice - product.price) / promo.originalPrice) * 100)}%
+                </span>
+              )}
+            </div>
           )}
           <p className="text-[13px] sm:text-[14px] text-white/25 mb-8 sm:mb-10">One-time payment. No subscription. Lifetime access.</p>
           {buyLinks.length === 1 ? (

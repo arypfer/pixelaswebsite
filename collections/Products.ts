@@ -153,6 +153,30 @@ export const Products: CollectionConfig = {
                 },
               ],
             },
+            {
+              name: 'videos',
+              type: 'array',
+              admin: {
+                description: 'YouTube video URLs to embed on the product page',
+              },
+              fields: [
+                {
+                  name: 'url',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    description: 'YouTube URL (e.g. https://www.youtube.com/watch?v=... or https://youtu.be/...)',
+                  },
+                },
+                {
+                  name: 'title',
+                  type: 'text',
+                  admin: {
+                    description: 'Optional label shown above the video',
+                  },
+                },
+              ],
+            },
           ],
         },
         {
@@ -165,6 +189,48 @@ export const Products: CollectionConfig = {
             {
               name: 'priceLabel',
               type: 'text',
+            },
+            {
+              name: 'promo',
+              type: 'group',
+              admin: {
+                description: 'Promotional pricing — leave empty for no promotion',
+              },
+              fields: [
+                {
+                  name: 'active',
+                  type: 'checkbox',
+                  defaultValue: false,
+                  admin: {
+                    description: 'Enable promotional pricing',
+                  },
+                },
+                {
+                  name: 'originalPrice',
+                  type: 'number',
+                  admin: {
+                    description: 'Original price before discount (shown as strikethrough)',
+                    condition: (_, siblingData) => siblingData?.active,
+                  },
+                },
+                {
+                  name: 'label',
+                  type: 'text',
+                  admin: {
+                    description: 'Promo label e.g. "50% OFF", "LAUNCH SALE", "LIMITED OFFER"',
+                    condition: (_, siblingData) => siblingData?.active,
+                  },
+                },
+                {
+                  name: 'endDate',
+                  type: 'date',
+                  admin: {
+                    description: 'Optional end date — leave empty for no expiry',
+                    date: { pickerAppearance: 'dayAndTime' },
+                    condition: (_, siblingData) => siblingData?.active,
+                  },
+                },
+              ],
             },
             {
               name: 'buyUrl',

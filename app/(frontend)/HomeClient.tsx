@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Search, X, ArrowRight, ArrowUpRight, ChevronDown } from 'lucide-react'
@@ -20,6 +20,11 @@ interface Product {
   badge: string | null
   featured: boolean
   order: number
+  promo: {
+    originalPrice: number | null
+    label: string | null
+    endDate: string | null
+  } | null
 }
 
 const categories = ['All', 'Standalone Apps', 'Photoshop Plugins', 'AI Tools']
@@ -198,7 +203,17 @@ export function HomeClient({ products }: { products: Product[] }) {
 
                     <div className="flex items-center gap-6">
                       {product.price > 0 && (
-                        <span className="text-xl font-bold text-amber-400">{formatPrice(product.price)}</span>
+                        <div className="flex items-center gap-3">
+                          {product.promo && product.promo.originalPrice && (
+                            <span className="text-base text-white/25 line-through font-medium">{formatPrice(product.promo.originalPrice)}</span>
+                          )}
+                          <span className="text-xl font-bold text-amber-400">{formatPrice(product.price)}</span>
+                        </div>
+                      )}
+                      {product.promo && product.promo.label && (
+                        <span className="px-2.5 py-1 bg-red-500 text-white text-[11px] font-bold uppercase tracking-wider rounded-md animate-pulse">
+                          {product.promo.label}
+                        </span>
                       )}
                       <span className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/15 hover:bg-amber-500/25 text-sm font-semibold text-amber-400 rounded-lg group-hover:gap-3 transition-all duration-300">
                         View Product <ArrowRight className="w-4 h-4" />
@@ -364,11 +379,23 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-transparent to-transparent opacity-60" />
 
           {/* Badge overlay */}
-          {product.badge && (
+          {product.badge && !product.promo && (
             <div className="absolute top-3 left-3">
               <span className="px-2 py-0.5 bg-amber-500/90 text-black text-[10px] font-bold uppercase tracking-wider rounded">
                 {product.badge}
               </span>
+            </div>
+          )}
+
+          {/* Promo banner */}
+          {product.promo && product.promo.label && (
+            <div className="absolute top-3 left-3 right-3 flex items-center gap-2">
+              <span className="px-2.5 py-1 bg-red-500 text-white text-[11px] font-bold uppercase tracking-wider rounded shadow-[0_0_20px_rgba(239,68,68,0.5)]">
+                {product.promo.label}
+              </span>
+              {product.promo.endDate && new Date(product.promo.endDate) > new Date() && (
+                <PromoCountdown endDate={product.promo.endDate} />
+              )}
             </div>
           )}
         </div>
@@ -396,7 +423,12 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
 
         <div className="flex items-center justify-between">
           {product.price > 0 ? (
-            <span className="text-[15px] font-bold text-white">{formatPrice(product.price)}</span>
+            <div className="flex items-center gap-2">
+              {product.promo && product.promo.originalPrice && (
+                <span className="text-[13px] text-white/25 line-through">{formatPrice(product.promo.originalPrice)}</span>
+              )}
+              <span className={`text-[15px] font-bold ${product.promo ? 'text-red-400' : 'text-white'}`}>{formatPrice(product.price)}</span>
+            </div>
           ) : (
             <span className="text-[13px] text-white/30">Free</span>
           )}
@@ -405,6 +437,42 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           </span>
         </div>
       </div>
+
+      {/* Promo border glow */}
+      {product.promo && (
+        <div className="absolute inset-0 rounded-xl border-2 border-red-500/40 pointer-events-none" />
+      )}
     </Link>
+  )
+}
+
+/* ─────────────────── PROMO COUNTDOWN ─────────────────── */
+
+function PromoCountdown({ endDate }: { endDate: string }) {
+  const [now, setNow] = useState(() => Date.now())
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const diff = new Date(endDate).getTime() - now
+  if (diff <= 0) return null
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24)
+  const minutes = Math.floor((diff / (1000 * 60)) % 60)
+  const seconds = Math.floor((diff / 1000) % 60)
+
+  const parts = []
+  if (days > 0) parts.push(`${days}d`)
+  parts.push(`${hours}h`)
+  parts.push(`${String(minutes).padStart(2, '0')}m`)
+  parts.push(`${String(seconds).padStart(2, '0')}s`)
+
+  return (
+    <span className="px-2 py-0.5 bg-black/60 backdrop-blur-sm text-red-300 text-[10px] font-mono font-bold rounded tracking-wider">
+      {parts.join(' ')}
+    </span>
   )
 }
