@@ -19,14 +19,14 @@ This is a **Next.js 15 + Payload CMS 3.0** monolith deployed to Vercel. Products
 
 ### Route Groups
 
-- `app/(frontend)/` — Public storefront. Server components fetch data via Payload local API (`getPayload({ config })`), then pass serialized props to client components.
+- `app/(frontend)/` — Public site. `/` is a static English company homepage (`page.tsx`, no DB); the storefront is at `/products` (`products/page.tsx` + `StoreClient.tsx`). Server components fetch data via Payload local API (`getPayload({ config })`), then pass serialized props to client components.
 - `app/(payload)/` — Payload CMS admin panel, mounted at `/admin`. Not linked from the storefront.
 
 ### Key Data Flow
 
 1. **Products collection** (`collections/Products.ts`) — The central content type. Has `visible` field controlling public access (enforced at collection-level `read` access).
 2. **Server pages** (`page.tsx`) call `payload.find()` with `depth: 1-2`, serialize results (strip non-serializable Payload internals), and pass to client components.
-3. **Client components** (e.g., `HomeClient.tsx`) handle search, filtering, animations via Framer Motion.
+3. **Client components** (e.g., `products/StoreClient.tsx`) handle search, filtering, animations via Framer Motion.
 4. **Revalidation**: Pages use `export const revalidate = 60` (ISR).
 
 ### Standalone Product Pages
