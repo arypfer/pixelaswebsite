@@ -908,7 +908,7 @@ export default function CanonStylePage() {
                 Canon Picture Style Package - Transformasi foto digital Anda dengan film look analog
               </p>
             </div>
-            <Link href="/" className="text-[13px] text-white/30 hover:text-amber-400/80 transition-colors">
+            <Link href="/products" className="text-[13px] text-white/30 hover:text-amber-400/80 transition-colors">
               Back to Store
             </Link>
           </div>

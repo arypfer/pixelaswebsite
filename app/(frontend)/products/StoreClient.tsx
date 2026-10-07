@@ -39,7 +39,7 @@ function getDiscountPercent(original: number, current: number): number {
   return Math.round(((original - current) / original) * 100)
 }
 
-export function HomeClient({ products }: { products: Product[] }) {
+export function StoreClient({ products }: { products: Product[] }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('Semua')
   const [showTikTokMessage, setShowTikTokMessage] = useState(false)
@@ -130,7 +130,7 @@ export function HomeClient({ products }: { products: Product[] }) {
 
           <button
             className="px-3 sm:px-4 py-2 min-h-[44px] flex items-center text-[12px] sm:text-[13px] font-medium text-white/60 hover:text-white border border-white/[0.08] hover:border-white/[0.15] rounded-lg transition-all flex-shrink-0"
-            onClick={() => window.open('mailto:amlolife.contact@gmail.com', '_self')}
+            onClick={() => window.open('mailto:syarifsuganda@pixelas.store', '_self')}
           >
             Hubungi Kami
           </button>
@@ -146,9 +146,6 @@ export function HomeClient({ products }: { products: Product[] }) {
               Tools Kreatif yang<br />
               <span className="text-gradient">Beneran Hemat Waktu Kamu</span>
             </h1>
-            <p className="font-display text-base sm:text-lg text-white/50 mb-4 sm:mb-5">
-              by Amlolife
-            </p>
             <p className="text-sm sm:text-lg text-white/40 leading-relaxed max-w-lg mb-8 sm:mb-10">
               Plugin &amp; aplikasi AI buat fotografer, desainer, dan digital artist — bayar sekali, pakai selamanya.
             </p>
@@ -410,8 +407,8 @@ export function HomeClient({ products }: { products: Product[] }) {
               </p>
             </div>
             <div className="text-right">
-              <a href="mailto:amlolife.contact@gmail.com" className="text-[13px] text-white/30 hover:text-amber-400/80 transition-colors">
-                amlolife.contact@gmail.com
+              <a href="mailto:syarifsuganda@pixelas.store" className="text-[13px] text-white/30 hover:text-amber-400/80 transition-colors">
+                syarifsuganda@pixelas.store
               </a>
             </div>
           </div>

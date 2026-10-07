@@ -434,7 +434,7 @@ export default async function ProductPage({ params }: Props) {
 
       {/* ═══ FOOTER ═══ */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 pb-24 md:pb-10 border-t border-white/[0.06]">
-        <Link href="/" className="inline-flex items-center gap-2 min-h-[44px] px-4 py-2.5 -ml-4 text-white/40 hover:text-white/70 text-[14px] font-medium rounded-lg hover:bg-white/[0.04] transition-all">
+        <Link href="/products" className="inline-flex items-center gap-2 min-h-[44px] px-4 py-2.5 -ml-4 text-white/40 hover:text-white/70 text-[14px] font-medium rounded-lg hover:bg-white/[0.04] transition-all">
           <ArrowLeft className="w-4 h-4" />
           Kembali ke semua produk
         </Link>

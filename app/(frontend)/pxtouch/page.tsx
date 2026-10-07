@@ -422,7 +422,7 @@ export default function PXTouchPage() {
               </p>
             </div>
             <a
-              href="/"
+              href="/products"
               className="inline-flex items-center gap-2 text-[13px] text-white/30 hover:text-amber-400/80 transition-colors"
             >
               Back to Store <ArrowRight className="w-4 h-4" />
