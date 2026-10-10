@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
-export const alt = 'Pixelas — AI software for creators'
+export const alt = 'Pixelas — Creative Software Tools'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -91,7 +91,7 @@ export default async function Image() {
                 fontWeight: 500,
               }}
             >
-              AI software for creators
+              Creative Software Tools
             </div>
           </div>
         </div>
