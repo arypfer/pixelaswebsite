@@ -22,7 +22,7 @@ const faqs = [
   {
     question: 'Kalau butuh bantuan gimana?',
     answer:
-      'Langsung aja email ke syarifsuganda@pixelas.store — kita bantu sampai beres.',
+      'Langsung aja email ke amlolife.contact@gmail.com — kita bantu sampai beres.',
   },
   {
     question: 'Bisa jalan di perangkat aku gak?',
