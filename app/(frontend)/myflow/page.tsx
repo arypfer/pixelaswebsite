@@ -87,16 +87,28 @@ function BuyButton({ className = '' }: { className?: string }) {
   );
 }
 
+function PartnerLockup() {
+  return (
+    <div className="flex items-center gap-3">
+      <a href="/" className="flex items-center gap-2.5">
+        <PixelasLogo size={24} />
+        <span className="text-sm font-bold text-zinc-900">Pixelas</span>
+      </a>
+      <span className="text-zinc-400 text-sm" aria-hidden="true">×</span>
+      <a href="https://doss.co.id" target="_blank" rel="noopener noreferrer">
+        <img src="/myflow/doss-logo.webp" alt="DOSS Camera & Gadget" width={323} height={96} className="h-7 w-auto" />
+      </a>
+    </div>
+  );
+}
+
 export default function MyFlowPage() {
   return (
     <div className="bg-white min-h-screen text-zinc-900 antialiased pt-16">
       {/* --- NAV --- */}
       <header className="fixed top-0 inset-x-0 z-40 bg-white/85 backdrop-blur-md border-b border-zinc-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2.5">
-            <PixelasLogo size={24} />
-            <span className="text-sm font-bold text-zinc-900">Pixelas</span>
-          </a>
+          <PartnerLockup />
           <nav className="hidden md:flex items-center gap-8 text-[14px] text-zinc-600">
             <a href="#cara-kerja" className="hover:text-zinc-900 transition-colors">Cara kerja</a>
             <a href="#tutorial" className="hover:text-zinc-900 transition-colors">Tutorial</a>
@@ -334,10 +346,7 @@ export default function MyFlowPage() {
       {/* --- FOOTER --- */}
       <footer className="border-t border-zinc-200 pb-24 sm:pb-0">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          <div className="flex items-center gap-2.5">
-            <PixelasLogo size={22} />
-            <span className="text-sm font-bold">Pixelas</span>
-          </div>
+          <PartnerLockup />
           <a href="/" className="inline-flex items-center gap-2 text-[14px] text-zinc-600 hover:text-zinc-900 transition-colors">
             Kembali ke toko <ArrowRight className="w-4 h-4" />
           </a>
