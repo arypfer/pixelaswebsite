@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Download, ArrowRight, Zap, ShieldCheck, Layers, Sparkles, MessageCircle, Play } from 'lucide-react';
 import { PixelasLogo } from '@/components/PixelasLogo';
 
-const BUY_URL = 'https://doss.co.id/products/myflow-ai-photo-culler-smart-saver-edition';
+const BUY_URL = 'https://doss.co.id/products/myflow-ai-photo-culler-smart-saver-edition?sca_ref=10348027.41ha7Ug4pC9xxmV';
 const WHATSAPP_URL = 'https://wa.me/62811121300';
 const YOUTUBE_ID = 'snoLkPs2sYY';
 
